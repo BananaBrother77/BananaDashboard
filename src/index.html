@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7c58cc" />
+    <title>BananaDashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         SIDEBAR
+         ============================================================ -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img
+          src="../src/assets/icon.png"
+          alt="Logo"
+          class="sidebar-logo"
+        />
+        BananaDashboard
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <span class="nav-section-label">Main</span>
+
+      <button class="nav-item active" data-tab="overview">
+        <i data-lucide="grid" width="20" height="20"></i>
+        System Overview
+      </button>
+
+      <button class="nav-item" data-tab="resources">
+        <i data-lucide="activity" width="20" height="20"></i>
+        Resources
+      </button>
+
+      <button class="nav-item" data-tab="network">
+        <i data-lucide="wifi" width="20" height="20"></i>
+        Network
+      </button>
+
+      <button class="nav-item" data-tab="battery">
+        <i data-lucide="battery" width="20" height="20"></i>
+        Battery
+      </button>
+
+      <div class="sidebar-divider"></div>
+
+      <span class="nav-section-label">Tools</span>
+
+      <button class="nav-item" data-tab="processes">
+        <i data-lucide="list-checks" width="20" height="20"></i>
+        Process Manager
+      </button>
+
+      <button class="nav-item" data-tab="startup">
+        <i data-lucide="rocket" width="20" height="20"></i>
+        Startup Apps
+      </button>
+
+      <button class="nav-item" data-tab="files">
+        <i data-lucide="folder" width="20" height="20"></i>
+        File Manager
+      </button>
+
+      <button class="nav-item" data-tab="stats">
+        <i data-lucide="bar-chart-3" width="20" height="20"></i>
+        Website Statistics
+      </button>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="sidebar-divider"></div>
+
+      <button class="nav-item" id="settingsBtn">
+        <i data-lucide="settings" width="20" height="20"></i>
+        Settings
+      </button>
+    </aside>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">System Overview</h1>
+        <div class="header-actions">
+          <button class="icon-btn" title="Refresh">
+            <i data-lucide="refresh-cw" width="20" height="20"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           TAB: OVERVIEW (active by default)
+           ============================================================ -->
+      <div class="tab-content active" id="tab-overview">
+        <section class="panel welcome-section">
+          <h2 class="welcome-heading">Welcome back, Banana!</h2>
+        </section>
+
+        <section class="panel info-panel">
+          <div class="info-row">
+            <i data-lucide="monitor" width="20" height="20"></i>
+            <span class="info-label">OS</span>
+            <span class="info-value" id="osVersionCard">--</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row">
+            <i data-lucide="cpu" width="20" height="20"></i>
+            <span class="info-label">Kernel</span>
+            <span class="info-value" id="kernelVersionCard">--</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row">
+            <i data-lucide="cpu" width="20" height="20"></i>
+            <span class="info-label">CPU</span>
+            <span class="info-value" id="cpuCard">--</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row">
+            <i data-lucide="layers" width="20" height="20"></i>
+            <span class="info-label">Cores</span>
+            <span class="info-value" id="cpuCoresCard">--</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row">
+            <i data-lucide="memory-stick" width="20" height="20"></i>
+            <span class="info-label">RAM</span>
+            <span class="info-value" id="ramCard">--</span>
+          </div>
+        </section>
+
+        <section class="quick-actions">
+          <div class="action-card">
+            <i data-lucide="server" width="24" height="24"></i>
+            <div>
+              <div class="action-text">System Information</div>
+              <div class="action-sub">View detailed system info</div>
+            </div>
+          </div>
+          <div class="action-card">
+            <i data-lucide="activity" width="24" height="24"></i>
+            <div>
+              <div class="action-text">Live Resources</div>
+              <div class="action-sub">Monitor CPU, RAM, disk</div>
+            </div>
+          </div>
+          <div class="action-card">
+            <i data-lucide="folder" width="24" height="24"></i>
+            <div>
+              <div class="action-text">File Manager</div>
+              <div class="action-sub">Browse and manage files</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: RESOURCES (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-resources">
+        <section class="panel placeholder-section">
+          <i data-lucide="activity" width="48" height="48"></i>
+          <h2 class="placeholder-title">Resource Monitoring</h2>
+          <p class="placeholder-desc">
+            Live CPU, RAM, disk, and network usage graphs will appear here.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: FILE MANAGER (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-files">
+        <section class="panel placeholder-section">
+          <i data-lucide="folder" width="48" height="48"></i>
+          <h2 class="placeholder-title">File Manager</h2>
+          <p class="placeholder-desc">
+            Browse, upload, and manage your files. SFTP support coming in a
+            future update.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: NETWORK (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-network">
+        <section class="panel placeholder-section">
+          <i data-lucide="wifi" width="48" height="48"></i>
+          <h2 class="placeholder-title">Network</h2>
+          <p class="placeholder-desc">
+            View network interfaces, IP addresses, active connections, and usage
+            statistics.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: BATTERY (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-battery">
+        <section class="panel placeholder-section">
+          <i data-lucide="battery" width="48" height="48"></i>
+          <h2 class="placeholder-title">Battery</h2>
+          <p class="placeholder-desc">
+            Monitor battery status, charge level, estimated time, and power
+            usage.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: PROCESS MANAGER (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-processes">
+        <section class="panel placeholder-section">
+          <i data-lucide="list-checks" width="48" height="48"></i>
+          <h2 class="placeholder-title">Process Manager</h2>
+          <p class="placeholder-desc">
+            View and manage running processes, CPU and memory usage per process.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: STARTUP APPS (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-startup">
+        <section class="panel placeholder-section">
+          <i data-lucide="rocket" width="48" height="48"></i>
+          <h2 class="placeholder-title">Startup Apps</h2>
+          <p class="placeholder-desc">
+            Manage applications and services that start when your system boots.
+          </p>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB: WEBSITE STATISTICS (placeholder)
+           ============================================================ -->
+      <div class="tab-content" id="tab-stats">
+        <section class="panel placeholder-section">
+          <i data-lucide="bar-chart-3" width="48" height="48"></i>
+          <h2 class="placeholder-title">Website Statistics</h2>
+          <p class="placeholder-desc">
+            Analytics and visitor data from your BananaBrother77 websites will
+            be displayed here.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/lucide@1.17.0"></script>
+    <script src="../src/app.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
