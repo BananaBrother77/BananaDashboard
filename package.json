@@ -1,0 +1,16 @@
+{
+  "name": "bananadashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "meow.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^43.0.0"
+  }
+}
