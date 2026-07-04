@@ -63,6 +63,24 @@ document.querySelector('.icon-btn[title="Refresh"]').addEventListener('click', (
   if (tab === 'resources' && resources.interval) resources.fetchAndUpdate();
 });
 
+// Theme switching
+function setTheme(theme) {
+  const body = document.body;
+  body.className = body.className.replace(/theme-\w+/g, '').trim();
+  if (theme !== 'purple') body.classList.add('theme-' + theme);
+  localStorage.setItem('banana-theme', theme);
+  document.querySelectorAll('.theme-card').forEach((c) => {
+    c.classList.toggle('active', c.dataset.theme === theme);
+  });
+}
+
+document.querySelectorAll('.theme-card').forEach((card) => {
+  card.addEventListener('click', () => setTheme(card.dataset.theme));
+});
+
+const saved = localStorage.getItem('banana-theme');
+if (saved) setTheme(saved);
+
 async function loadSystemInfo() {
   const info = await window.dashboardAPI.getSystemInfo();
   overview.osVersion.textContent = info.distro;
