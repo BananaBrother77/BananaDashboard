@@ -3,15 +3,17 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 const { execFileSync } = require('child_process');
+const discord = require('./modules/discord');
 
+// App configuration
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('disable-software-rasterizer');
+
+const PLATFORM = os.platform();
 
 app.name = 'bananadashboard';
 app.setAppUserModelId('online.bananabrother77.dashboard');
 if (PLATFORM === 'linux') app.setDesktopName('bananadashboard');
-
-const PLATFORM = os.platform();
 
 function getDistro() {
   try {
@@ -42,6 +44,7 @@ function getDistro() {
   return os.version();
 }
 
+// Window management
 let mainWindow;
 
 function resolveIcon() {
@@ -252,4 +255,17 @@ ipcMain.handle('get-resources', () => {
 
 app.whenReady().then(() => {
   createWindow();
+  discord.onStatus((status) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('rpc-status', status);
+    }
+  });
+  discord.init();
 });
+
+app.on('will-quit', () => discord.destroy());
+
+ipcMain.handle('set-presence-tab', (_, tab) => discord.setTab(tab));
+ipcMain.handle('get-rpc-status', () => discord.getStatus());
+ipcMain.handle('reconnect-rpc', () => discord.reconnect());
+ipcMain.handle('set-rpc-enabled', (_, val) => discord.setEnabled(val));

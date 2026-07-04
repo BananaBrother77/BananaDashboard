@@ -19,18 +19,26 @@
     "appId": "online.bananabrother77.dashboard",
     "productName": "BananaDashboard",
     "linux": {
-      "target": ["AppImage", "deb", "pacman"],
+      "target": [
+        "AppImage",
+        "deb",
+        "pacman"
+      ],
       "syncDesktopName": true,
       "icon": "src/assets/icons/",
       "category": "Utility"
     },
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "icon": "src/assets/icon.icns",
       "category": "public.app-category.utilities"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "src/assets/icon.ico"
     },
     "files": [
@@ -45,7 +53,6 @@
       "main": "meow.js"
     }
   },
-  "dependencies": {},
   "devDependencies": {
     "electron": "^43.0.0",
     "electron-builder": "^26.0.0"

@@ -13,8 +13,7 @@
          ============================================================ -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <img src="../src/assets/icon.png" alt="Logo" class="sidebar-logo" />
-        BananaDashboard
+        <span class="sidebar-brand-name">BananaDashboard</span>
       </div>
 
       <div class="sidebar-divider"></div>
@@ -363,6 +362,36 @@
               <div class="select-option" data-value="0">Off</div>
             </div>
           </div>
+
+          <h2 class="section-header" style="margin-top: 32px">
+            <i data-lucide="disc" width="22" height="22"></i>
+            <span data-i18n="settings_rpc">Discord Rich Presence</span>
+          </h2>
+
+          <div class="rpc-status" id="rpcStatusBar">
+            <span class="rpc-dot" id="rpcDot"></span>
+            <span
+              class="rpc-status-text"
+              id="rpcStatusText"
+              data-i18n="rpc_connecting"
+              >Connecting...</span
+            >
+          </div>
+
+          <div class="rpc-actions">
+            <button class="lang-btn" id="rpcReconnectBtn">
+              <i data-lucide="refresh-cw" width="16" height="16"></i>
+              <span data-i18n="rpc_reconnect">Reconnect</span>
+            </button>
+            <button class="lang-btn" id="rpcToggleBtn">
+              <i data-lucide="power" width="16" height="16"></i>
+              <span data-i18n="rpc_disable">Disable</span>
+            </button>
+          </div>
+
+          <p class="settings-desc" data-i18n="rpc_desc">
+            Show your current tab and system info in your Discord status.
+          </p>
         </section>
       </div>
     </main>

@@ -139,8 +139,14 @@ body {
 }
 
 .sidebar-brand {
+  display: flex;
+  justify-content: center;
+  padding: 20px 12px 18px;
+}
+
+.sidebar-brand-name {
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   background: linear-gradient(
     147deg,
     var(--grad-text-start) 0%,
@@ -150,20 +156,7 @@ body {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  padding: 8px 12px 20px;
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sidebar-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 1px solid var(--panel-border);
+  letter-spacing: -0.3px;
 }
 
 .sidebar-divider {
@@ -710,6 +703,57 @@ body {
 .lang-name {
   flex: 1;
   text-align: left;
+}
+
+.rpc-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  margin-bottom: 12px;
+}
+
+.rpc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rpc-dot.connected {
+  background: var(--online-green);
+  box-shadow: 0 0 6px var(--online-green);
+}
+
+.rpc-dot.disconnected {
+  background: var(--offline-red);
+  box-shadow: 0 0 6px var(--offline-red);
+}
+
+.rpc-dot.disabled {
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+
+.rpc-status-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.rpc-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.rpc-actions .lang-btn {
+  width: auto;
+  flex: 1;
+  justify-content: center;
 }
 
 .custom-select {

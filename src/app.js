@@ -14,6 +14,14 @@ const overview = {
   ram: document.getElementById('ramCard'),
 };
 
+const rpc = {
+  bar: document.getElementById('rpcStatusBar'),
+  dot: document.getElementById('rpcDot'),
+  text: document.getElementById('rpcStatusText'),
+  reconnect: document.getElementById('rpcReconnectBtn'),
+  toggle: document.getElementById('rpcToggleBtn'),
+};
+
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
   nav.contents.forEach((t) => t.classList.remove('active'));
@@ -28,6 +36,18 @@ function switchTab(tabName) {
     const text = label ? label.textContent : btn.textContent.trim();
     nav.pageTitle.textContent = text;
     document.title = text + ' - BananaDashboard | BananaBrother77';
+    const rpcTexts = {
+      overview: 'Viewing System Information',
+      resources: 'Monitoring Live Resources',
+      network: 'Checking Network Status',
+      battery: 'Viewing Battery Status',
+      processes: 'Managing Processes',
+      startup: 'Managing Startup Apps',
+      files: 'Browsing Files',
+      stats: 'Viewing Website Statistics',
+      settings: 'Tweaking Settings',
+    };
+    window.dashboardAPI.setTab(rpcTexts[tabName] || text);
   }
   history.replaceState(null, '', '?tab=' + tabName);
 
@@ -145,3 +165,55 @@ async function loadSystemInfo() {
 }
 
 loadSystemInfo();
+
+// Discord RPC status UI
+if (rpc.bar) {
+  const rpcStates = {
+    connected: { cls: 'connected', key: 'rpc_connected' },
+    disconnected: { cls: 'disconnected', key: 'rpc_disconnected' },
+    disabled: { cls: 'disabled', key: 'rpc_disabled' },
+    connecting: { cls: 'connecting', key: 'rpc_connecting' },
+  };
+
+  function updateRpcUI(status) {
+    let state;
+    if (!status.enabled) {
+      state = rpcStates.disabled;
+    } else if (status.connected) {
+      state = rpcStates.connected;
+    } else {
+      state = rpcStates.disconnected;
+    }
+
+    rpc.bar.className = 'rpc-status ' + state.cls;
+    rpc.dot.className = 'rpc-dot ' + state.cls;
+
+    const text = getTranslation(state.key) || state.key;
+    rpc.text.textContent = text;
+
+    const isEnabled = status.enabled;
+    const toggleSpan = rpc.toggle.querySelector('span');
+    const toggleIcon = rpc.toggle.querySelector('i');
+    if (toggleSpan) {
+      toggleSpan.textContent = getTranslation(
+        isEnabled ? 'rpc_disable' : 'rpc_enable',
+      );
+    }
+    if (toggleIcon) {
+      toggleIcon.setAttribute('data-lucide', isEnabled ? 'power' : 'power-off');
+    }
+    if (window.lucide) lucide.createIcons();
+  }
+
+  window.dashboardAPI.onRpcStatus(updateRpcUI);
+
+  rpc.reconnect.addEventListener('click', () => {
+    window.dashboardAPI.reconnectRpc();
+  });
+
+  rpc.toggle.addEventListener('click', () => {
+    window.dashboardAPI.getRpcStatus().then((s) => {
+      window.dashboardAPI.setRpcEnabled(!s.enabled);
+    });
+  });
+}
