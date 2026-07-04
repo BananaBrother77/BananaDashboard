@@ -235,6 +235,8 @@ if (rpc.bar) {
 
 // Auto-updater UI
 if (update.bar) {
+  let updateReady = false;
+
   window.dashboardAPI.onUpdateStatus((data) => {
     switch (data.status) {
       case 'checking':
@@ -245,11 +247,16 @@ if (update.bar) {
         update.installBtn.classList.add('hidden');
         break;
       case 'available':
+        const ver = data.info ? data.info.version : '';
         update.text.textContent =
-          getTranslation('update_available') || 'Update available';
+          getTranslation('update_available') + ' (v' + ver + ')';
         update.bar.className = 'update-status available';
-        update.installBtn.classList.add('hidden');
-        window.dashboardAPI.downloadUpdate();
+        updateReady = false;
+        update.installBtn.classList.remove('hidden');
+        update.installBtn.querySelector('i').setAttribute('data-lucide', 'download');
+        update.installBtn.querySelector('span').textContent =
+          getTranslation('update_download_btn') || 'Download';
+        if (window.lucide) lucide.createIcons();
         break;
       case 'not-available':
         update.text.textContent =
@@ -274,7 +281,12 @@ if (update.bar) {
         update.text.textContent =
           getTranslation('update_downloaded') || 'Update ready to install';
         update.progress.classList.add('hidden');
+        updateReady = true;
         update.installBtn.classList.remove('hidden');
+        update.installBtn.querySelector('i').setAttribute('data-lucide', 'download');
+        update.installBtn.querySelector('span').textContent =
+          getTranslation('update_install_btn') || 'Restart & Install';
+        if (window.lucide) lucide.createIcons();
         break;
       case 'error':
         update.bar.className = 'update-status error';
@@ -291,6 +303,11 @@ if (update.bar) {
   });
 
   update.installBtn.addEventListener('click', () => {
-    window.dashboardAPI.quitAndInstall();
+    if (updateReady) {
+      window.dashboardAPI.quitAndInstall();
+    } else {
+      update.installBtn.classList.add('hidden');
+      window.dashboardAPI.downloadUpdate();
+    }
   });
 }
