@@ -1,17 +1,53 @@
 {
   "name": "bananadashboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "Desktop system dashboard by BananaBrother77",
   "main": "meow.js",
+  "desktopName": "bananadashboard",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "BananaBrother77",
+    "email": "bananabrother77@online"
+  },
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "chart.js": "^4.5.1",
-    "electron": "^43.0.0"
+  "build": {
+    "appId": "online.bananabrother77.dashboard",
+    "productName": "BananaDashboard",
+    "linux": {
+      "target": ["AppImage", "deb", "pacman"],
+      "syncDesktopName": true,
+      "icon": "src/assets/icons/",
+      "category": "Utility"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "src/assets/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "src/assets/icon.ico"
+    },
+    "files": [
+      "meow.js",
+      "preload.js",
+      "src/**/*",
+      "modules/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "meow.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^25.1.8"
   }
 }
