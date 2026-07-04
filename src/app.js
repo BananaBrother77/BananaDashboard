@@ -25,6 +25,13 @@ function switchTab(tabName) {
 
   if (btn) nav.pageTitle.textContent = btn.textContent.trim();
   history.replaceState(null, '', '?tab=' + tabName);
+
+  if (tabName === 'resources' && typeof resources !== 'undefined') {
+    if (!resources.interval) resources.init();
+  } else if (typeof resources !== 'undefined') {
+    resources.destroy();
+  }
+
 }
 
 function getTabFromURL() {
@@ -36,6 +43,10 @@ nav.btns.forEach((btn) => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
+document.querySelectorAll('.action-card[data-tab]').forEach((card) => {
+  card.addEventListener('click', () => switchTab(card.dataset.tab));
+});
+
 document.addEventListener('keydown', (e) => {
   const num = parseInt(e.key);
   if (num >= 1 && num <= nav.btns.length) {
@@ -44,6 +55,13 @@ document.addEventListener('keydown', (e) => {
 });
 
 switchTab(getTabFromURL());
+
+document.querySelector('.icon-btn[title="Refresh"]').addEventListener('click', () => {
+  const active = document.querySelector('.tab-content.active');
+  const tab = active ? active.id.replace('tab-', '') : 'overview';
+  if (tab === 'overview') loadSystemInfo();
+  if (tab === 'resources' && resources.interval) resources.fetchAndUpdate();
+});
 
 async function loadSystemInfo() {
   const info = await window.dashboardAPI.getSystemInfo();

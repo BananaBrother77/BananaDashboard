@@ -13,11 +13,7 @@
          ============================================================ -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <img
-          src="../src/assets/icon.png"
-          alt="Logo"
-          class="sidebar-logo"
-        />
+        <img src="../src/assets/icon.png" alt="Logo" class="sidebar-logo" />
         BananaDashboard
       </div>
 
@@ -96,11 +92,11 @@
            TAB: OVERVIEW (active by default)
            ============================================================ -->
       <div class="tab-content active" id="tab-overview">
-        <section class="panel welcome-section">
+        <section class="panel welcome-section reveal">
           <h2 class="welcome-heading">Welcome back, Banana!</h2>
         </section>
 
-        <section class="panel info-panel">
+        <section class="panel info-panel reveal">
           <div class="info-row">
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="info-label">OS</span>
@@ -132,22 +128,22 @@
           </div>
         </section>
 
-        <section class="quick-actions">
-          <div class="action-card">
+        <section class="quick-actions reveal">
+          <div class="action-card" data-tab="overview">
             <i data-lucide="server" width="24" height="24"></i>
             <div>
               <div class="action-text">System Information</div>
               <div class="action-sub">View detailed system info</div>
             </div>
           </div>
-          <div class="action-card">
+          <div class="action-card" data-tab="resources">
             <i data-lucide="activity" width="24" height="24"></i>
             <div>
               <div class="action-text">Live Resources</div>
               <div class="action-sub">Monitor CPU, RAM, disk</div>
             </div>
           </div>
-          <div class="action-card">
+          <div class="action-card" data-tab="files">
             <i data-lucide="folder" width="24" height="24"></i>
             <div>
               <div class="action-text">File Manager</div>
@@ -158,23 +154,64 @@
       </div>
 
       <!-- ============================================================
-           TAB: RESOURCES (placeholder)
+           TAB: RESOURCES
            ============================================================ -->
       <div class="tab-content" id="tab-resources">
-        <section class="panel placeholder-section">
-          <i data-lucide="activity" width="48" height="48"></i>
-          <h2 class="placeholder-title">Resource Monitoring</h2>
-          <p class="placeholder-desc">
-            Live CPU, RAM, disk, and network usage graphs will appear here.
-          </p>
-        </section>
+        <div class="resource-stats reveal">
+          <div class="resource-stat">
+            <i data-lucide="cpu" width="20" height="20"></i>
+            <span class="resource-label">CPU</span>
+            <span class="resource-value" id="cpuValue">--</span>
+          </div>
+          <div class="resource-stat">
+            <i data-lucide="memory-stick" width="20" height="20"></i>
+            <span class="resource-label">RAM</span>
+            <span class="resource-value" id="ramValue">--</span>
+          </div>
+          <div class="resource-stat">
+            <i data-lucide="hard-drive" width="20" height="20"></i>
+            <span class="resource-label">Disk</span>
+            <span class="resource-value" id="diskValue">--</span>
+          </div>
+        </div>
+        <div class="chart-grid">
+          <section class="panel chart-panel reveal">
+            <div class="chart-header">
+              <i data-lucide="cpu" width="18" height="18"></i>
+              <span>CPU Usage</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="cpuChart"></canvas>
+            </div>
+          </section>
+          <section class="panel chart-panel reveal">
+            <div class="chart-header">
+              <i data-lucide="memory-stick" width="18" height="18"></i>
+              <span>RAM Usage</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="ramChart"></canvas>
+            </div>
+          </section>
+          <section class="panel chart-panel reveal">
+            <div class="chart-header">
+              <i data-lucide="hard-drive" width="18" height="18"></i>
+              <span>Storage</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="diskChart"></canvas>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel disk-panel reveal" id="diskInfo"></section>
       </div>
 
       <!-- ============================================================
            TAB: FILE MANAGER (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-files">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="folder" width="48" height="48"></i>
           <h2 class="placeholder-title">File Manager</h2>
           <p class="placeholder-desc">
@@ -188,7 +225,7 @@
            TAB: NETWORK (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-network">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="wifi" width="48" height="48"></i>
           <h2 class="placeholder-title">Network</h2>
           <p class="placeholder-desc">
@@ -202,7 +239,7 @@
            TAB: BATTERY (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-battery">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="battery" width="48" height="48"></i>
           <h2 class="placeholder-title">Battery</h2>
           <p class="placeholder-desc">
@@ -216,7 +253,7 @@
            TAB: PROCESS MANAGER (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-processes">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="list-checks" width="48" height="48"></i>
           <h2 class="placeholder-title">Process Manager</h2>
           <p class="placeholder-desc">
@@ -229,7 +266,7 @@
            TAB: STARTUP APPS (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-startup">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="rocket" width="48" height="48"></i>
           <h2 class="placeholder-title">Startup Apps</h2>
           <p class="placeholder-desc">
@@ -242,7 +279,7 @@
            TAB: WEBSITE STATISTICS (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tab-stats">
-        <section class="panel placeholder-section">
+        <section class="panel placeholder-section reveal">
           <i data-lucide="bar-chart-3" width="48" height="48"></i>
           <h2 class="placeholder-title">Website Statistics</h2>
           <p class="placeholder-desc">
@@ -253,7 +290,10 @@
       </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@1.17.0"></script>
+    <script src="../modules/resources.js"></script>
+    <script src="../src/reveal.js"></script>
     <script src="../src/app.js"></script>
     <script>
       lucide.createIcons();

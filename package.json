@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "devDependencies": {
+  "dependencies": {
+    "chart.js": "^4.5.1",
     "electron": "^43.0.0"
   }
 }

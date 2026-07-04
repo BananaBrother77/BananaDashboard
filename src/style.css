@@ -104,7 +104,8 @@
   border-radius: 4px;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
@@ -473,4 +474,152 @@ body {
   font-size: 0.9rem;
   max-width: 400px;
   line-height: 1.6;
+}
+
+/* ============================================================
+   RESOURCES TAB
+   ============================================================ */
+
+.resource-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.resource-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px var(--shadow-md);
+  flex: 1;
+}
+
+.resource-stat svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted-bright);
+  flex-shrink: 0;
+}
+
+.resource-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.resource-value {
+  margin-left: auto;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.chart-panel {
+  padding: 20px;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted-bright);
+  margin-bottom: 12px;
+}
+
+.chart-header svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chart-container {
+  position: relative;
+  height: 220px;
+}
+
+/* ============================================================
+   DISK PARTITIONS
+   ============================================================ */
+
+.disk-panel {
+  padding: 8px 0;
+}
+
+.disk-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+}
+
+.disk-row + .disk-row {
+  border-top: 1px solid var(--panel-border);
+}
+
+.disk-mount {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.disk-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.disk-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.disk-pct {
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: right;
+}
+
+.disk-used,
+.disk-free {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   REVEAL ANIMATIONS
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
