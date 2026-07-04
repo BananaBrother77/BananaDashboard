@@ -206,36 +206,49 @@ resources.updateDiskStat = function (partitions) {
 resources.updateDiskSummary = function (partitions) {
   const container = document.getElementById('diskInfo');
   if (!container) return;
+  if (!this._diskRows) this._diskRows = new Map();
 
   const colors = getPartitionColors();
-  container.innerHTML = '';
+  const seen = new Set();
+
   partitions.forEach((p, i) => {
+    seen.add(p.target);
     const pct = p.size > 0 ? Math.round((p.used / p.size) * 100) : 0;
     const color = colors[i % colors.length];
-    const row = document.createElement('div');
-    row.className = 'disk-row';
-    row.innerHTML =
-      '<span class="disk-mount">' +
-      p.target +
-      '</span>' +
-      '<div class="disk-bar"><div class="disk-fill" style="width:' +
-      pct +
-      '%;background:' +
-      color +
-      '"></div></div>' +
-      '<span class="disk-pct" style="color:' +
-      color +
-      '">' +
-      pct +
-      '%</span>' +
-      '<span class="disk-used">' +
-      resources.formatBytes(p.used) +
-      '</span>' +
-      '<span class="disk-free">' +
-      resources.formatBytes(p.avail) +
-      '</span>';
-    container.appendChild(row);
+
+    let row = this._diskRows.get(p.target);
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'disk-row';
+      row.innerHTML =
+        '<span class="disk-mount"></span>' +
+        '<div class="disk-bar"><div class="disk-fill"></div></div>' +
+        '<span class="disk-pct"></span>' +
+        '<span class="disk-used"></span>' +
+        '<span class="disk-free"></span>';
+      container.appendChild(row);
+      this._diskRows.set(p.target, row);
+    }
+
+    row.querySelector('.disk-mount').textContent = p.target;
+    const fill = row.querySelector('.disk-fill');
+    fill.style.width = pct + '%';
+    fill.style.setProperty('--disk-color', color);
+    const pctEl = row.querySelector('.disk-pct');
+    pctEl.textContent = pct + '%';
+    pctEl.style.setProperty('--disk-color', color);
+    row.querySelector('.disk-used').textContent = resources.formatBytes(p.used);
+    row.querySelector('.disk-free').textContent = resources.formatBytes(
+      p.avail,
+    );
   });
+
+  for (const [target, row] of this._diskRows) {
+    if (!seen.has(target)) {
+      row.remove();
+      this._diskRows.delete(target);
+    }
+  }
 };
 
 resources.fetchAndUpdate = async function () {
