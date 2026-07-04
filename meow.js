@@ -80,6 +80,7 @@ ipcMain.handle('get-system-info', () => {
   return {
     hostname: os.hostname(),
     distro: getDistro(),
+    user: os.userInfo().username,
     platform: PLATFORM,
     release: os.release(),
     arch: os.arch(),

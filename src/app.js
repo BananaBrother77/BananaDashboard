@@ -8,6 +8,8 @@ const nav = {
 
 const overview = {
   osVersion: document.getElementById('osVersionCard'),
+  welcome: document.getElementById('welcomeHeading'),
+  userName: document.getElementById('userName'),
   kernelVersion: document.getElementById('kernelVersionCard'),
   cpu: document.getElementById('cpuCard'),
   cpuCores: document.getElementById('cpuCoresCard'),
@@ -169,6 +171,7 @@ document
 async function loadSystemInfo() {
   const info = await window.dashboardAPI.getSystemInfo();
   overview.osVersion.textContent = info.distro;
+  if (overview.userName) overview.userName.textContent = info.user;
   overview.kernelVersion.textContent = info.release;
   overview.cpu.textContent = info.cpuModel;
   overview.cpuCores.textContent = `${info.cpuCores} cores`;

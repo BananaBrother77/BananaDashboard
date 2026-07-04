@@ -8,7 +8,10 @@ A desktop system dashboard built with Electron. Think of it like a server dashbo
 - **Resources** -- Live CPU, RAM, and disk usage graphs with configurable refresh rate
 - **Theme system** -- Five color themes (purple, green, red, yellow, blue) that persist across sessions
 - **Multi-language** -- English and German UI, switchable on the fly
-- **Settings** -- Theme picker, language toggle, refresh rate control, all saved to localStorage
+- **Discord Rich Presence** -- Shows your current tab and system status in Discord
+- **Auto-updates** -- Checks for new versions on startup, manual download flow with progress bar
+- **Settings** -- Theme picker, language toggle, refresh rate control, version info, update management, Discord RPC toggle
+- **Loading screen** -- Animated splash with logo and spinner while system info loads
 
 ### Planned
 
@@ -89,11 +92,28 @@ npm run build -- --win
 
 Output: NSIS installer (`.exe`)
 
+## Auto-Updates
+
+The app uses `electron-updater` to check for new versions from GitHub Releases on startup. When an update is available:
+
+1. A status bar shows "Update available (vX.X.X)"
+2. Click **Download Update** to download in the background
+3. Once downloaded, the button changes to **Restart & Install**
+4. Click to restart and apply the update
+
+You can also manually check from **Settings > Updates > Check for Updates**.
+
+## Discord Rich Presence
+
+BananaDashboard can show your current tab and activity in your Discord status. Enable/disable it from **Settings > Discord Rich Presence**.
+
+If Discord is running, the app connects automatically and updates presence every 15 seconds with per-tab descriptions (e.g., "Monitoring system resources", "Browsing files").
+
 ## Project Structure
 
 ```
 BananaDashboard/
-├── main.js              # Electron main process
+├── meow.js              # Electron main process (window, IPC, system info)
 ├── preload.js           # Context bridge (secure IPC)
 ├── src/
 │   ├── index.html       # Main app shell
@@ -103,7 +123,8 @@ BananaDashboard/
 │   ├── reveal.js        # Scroll animations
 │   └── assets/          # Icons
 ├── modules/
-│   └── resources.js     # Live resource monitoring (Chart.js)
+│   ├── resources.js     # Live resource monitoring (Chart.js)
+│   └── discord.js       # Discord RPC via raw IPC socket
 ├── package.json
 └── README.md
 ```
