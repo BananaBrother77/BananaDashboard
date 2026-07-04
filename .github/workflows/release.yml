@@ -75,37 +75,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-  update-repo:
-    needs: build-linux
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: linux
-      - name: Find pacman package
-        run: |
-          PKG=$(ls *.pkg.tar.zst | head -1)
-          echo "PKG=$PKG" >> $GITHUB_ENV
-      - uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: repo
-      - name: Update pacman repo
-        run: |
-          cd repo
-          cp "../$PKG" .
-          repo-add bananadashboard.db.tar.gz "$PKG"
-          # Keep only the latest package, remove older ones
-          LATEST=$(ls -t bananadashboard-*.pkg.tar.zst | head -1)
-          for f in bananadashboard-*.pkg.tar.zst; do
-            [ "$f" = "$LATEST" ] && continue
-            rm -f "$f"
-          done
-          repo-add bananadashboard.db.tar.gz "$LATEST"
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "update repo to ${{ github.ref_name }}"
-          git push
