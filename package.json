@@ -41,11 +41,11 @@
       ],
       "icon": "src/assets/icon.ico"
     },
-    "publish": {
+    "publish": [{
       "provider": "github",
       "owner": "BananaBrother77",
       "repo": "BananaDashboard"
-    },
+    }],
     "files": [
       "meow.js",
       "preload.js",

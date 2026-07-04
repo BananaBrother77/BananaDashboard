@@ -263,6 +263,7 @@ app.whenReady().then(() => {
   createWindow();
 
   autoUpdater.autoDownload = false;
+  autoUpdater.logger = console;
   autoUpdater.on('checking-for-update', () =>
     sendToWindow('update-status', { status: 'checking' }),
   );
@@ -272,13 +273,9 @@ app.whenReady().then(() => {
   autoUpdater.on('update-not-available', (info) =>
     sendToWindow('update-status', { status: 'not-available', info }),
   );
-  autoUpdater.on('error', (err) => {
-    if (err.message.includes('404')) {
-      sendToWindow('update-status', { status: 'not-available' });
-      return;
-    }
-    sendToWindow('update-status', { status: 'error', message: err.message });
-  });
+  autoUpdater.on('error', (err) =>
+    sendToWindow('update-status', { status: 'error', message: err.message }),
+  );
   autoUpdater.on('download-progress', (progress) =>
     sendToWindow('update-status', { status: 'downloading', progress }),
   );

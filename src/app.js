@@ -273,9 +273,7 @@ if (update.bar) {
       case 'error':
         update.bar.className = 'update-status error';
         update.text.textContent =
-          (getTranslation('update_error') || 'Update failed') +
-          ': ' +
-          data.message;
+          getTranslation('update_error') || 'Could not check for updates';
         update.progress.classList.add('hidden');
         update.installBtn.classList.add('hidden');
         break;
