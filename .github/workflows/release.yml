@@ -59,7 +59,7 @@ jobs:
           artifacts=()
           for d in linux windows macos; do
             for f in "$d"/*; do
-              artifacts+=("$f")
+              [ -f "$f" ] && artifacts+=("$f")
             done
           done
           gh release create "${{ github.ref_name }}" \
