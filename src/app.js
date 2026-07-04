@@ -175,12 +175,6 @@ async function loadSystemInfo() {
   overview.ram.textContent = `${(info.totalMem / 1024 ** 3).toFixed(2)} GB`;
 }
 
-loadSystemInfo();
-
-if (versionEl) {
-  window.dashboardAPI.getAppVersion().then((v) => { versionEl.textContent = 'v' + v; });
-}
-
 // Discord RPC status UI
 if (rpc.bar) {
   const rpcStates = {
@@ -253,7 +247,9 @@ if (update.bar) {
         update.bar.className = 'update-status available';
         updateReady = false;
         update.installBtn.classList.remove('hidden');
-        update.installBtn.querySelector('i').setAttribute('data-lucide', 'download');
+        update.installBtn
+          .querySelector('i')
+          .setAttribute('data-lucide', 'download');
         update.installBtn.querySelector('span').textContent =
           getTranslation('update_download_btn') || 'Download';
         if (window.lucide) lucide.createIcons();
@@ -283,7 +279,9 @@ if (update.bar) {
         update.progress.classList.add('hidden');
         updateReady = true;
         update.installBtn.classList.remove('hidden');
-        update.installBtn.querySelector('i').setAttribute('data-lucide', 'download');
+        update.installBtn
+          .querySelector('i')
+          .setAttribute('data-lucide', 'download');
         update.installBtn.querySelector('span').textContent =
           getTranslation('update_install_btn') || 'Restart & Install';
         if (window.lucide) lucide.createIcons();
@@ -311,3 +309,16 @@ if (update.bar) {
     }
   });
 }
+
+const loader = document.getElementById('loaderOverlay');
+Promise.all([
+  loadSystemInfo(),
+  versionEl
+    ? window.dashboardAPI.getAppVersion().then((v) => {
+        versionEl.textContent = 'v' + v;
+      })
+    : Promise.resolve(),
+  new Promise((r) => setTimeout(r, 1000)),
+]).then(() => {
+  if (loader) loader.classList.add('hidden');
+});

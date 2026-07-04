@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="loader-overlay" id="loaderOverlay">
+      <div class="loader-content">
+        <img src="../src/assets/icon.png" alt="" class="loader-logo" />
+        <h1 class="loader-title">BananaDashboard</h1>
+        <p class="loader-sub" data-i18n="loader_sub">Loading your Dashboard</p>
+        <div class="loader-spinner"></div>
+      </div>
+    </div>
+
     <!-- ============================================================
          SIDEBAR
          ============================================================ -->
@@ -362,11 +371,18 @@
               <div class="select-option" data-value="0">Off</div>
             </div>
           </div>
+        </section>
 
-          <h2 class="section-header section-header-spaced">
+        <section class="panel settings-section reveal">
+          <h2 class="section-header">
             <i data-lucide="refresh-cw" width="22" height="22"></i>
             <span data-i18n="settings_updates">Updates</span>
           </h2>
+
+          <div class="version-info">
+            <span class="version-label" data-i18n="settings_version">Version</span>
+            <span class="version-value" id="appVersion">--</span>
+          </div>
 
           <div class="update-status" id="updateStatusBar">
             <span class="update-status-text" id="updateStatusText" data-i18n="update_checking">Checking for updates...</span>
@@ -386,13 +402,10 @@
               <span data-i18n="update_install_btn">Restart & Install</span>
             </button>
           </div>
+        </section>
 
-          <div class="version-info">
-            <span class="version-label" data-i18n="settings_version">Version</span>
-            <span class="version-value" id="appVersion">--</span>
-          </div>
-
-          <h2 class="section-header section-header-spaced">
+        <section class="panel settings-section reveal">
+          <h2 class="section-header">
             <i data-lucide="disc" width="22" height="22"></i>
             <span data-i18n="settings_rpc">Discord Rich Presence</span>
           </h2>
