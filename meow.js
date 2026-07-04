@@ -296,6 +296,8 @@ ipcMain.handle('get-rpc-status', () => discord.getStatus());
 ipcMain.handle('reconnect-rpc', () => discord.reconnect());
 ipcMain.handle('set-rpc-enabled', (_, val) => discord.setEnabled(val));
 
+ipcMain.handle('get-app-version', () => app.getVersion());
+
 ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
 ipcMain.handle('download-update', () => autoUpdater.downloadUpdate());
 ipcMain.handle('quit-and-install', () => autoUpdater.quitAndInstall());

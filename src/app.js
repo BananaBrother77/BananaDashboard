@@ -31,6 +31,8 @@ const update = {
   installBtn: document.getElementById('updateInstallBtn'),
 };
 
+const versionEl = document.getElementById('appVersion');
+
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
   nav.contents.forEach((t) => t.classList.remove('active'));
@@ -174,6 +176,10 @@ async function loadSystemInfo() {
 }
 
 loadSystemInfo();
+
+if (versionEl) {
+  window.dashboardAPI.getAppVersion().then((v) => { versionEl.textContent = 'v' + v; });
+}
 
 // Discord RPC status UI
 if (rpc.bar) {

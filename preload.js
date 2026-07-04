@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
     ipcRenderer.on('rpc-status', (_, data) => callback(data));
     ipcRenderer.invoke('get-rpc-status').then((data) => callback(data));
   },
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
   quitAndInstall: () => ipcRenderer.invoke('quit-and-install'),
