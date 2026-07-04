@@ -1,6 +1,6 @@
 {
   "name": "bananadashboard",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Desktop system dashboard by BananaBrother77",
   "main": "meow.js",
   "desktopName": "bananadashboard",
@@ -41,11 +41,13 @@
       ],
       "icon": "src/assets/icon.ico"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "BananaBrother77",
-      "repo": "BananaDashboard"
-    }],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "BananaBrother77",
+        "repo": "BananaDashboard"
+      }
+    ],
     "files": [
       "meow.js",
       "preload.js",
