@@ -1,5 +1,8 @@
+let loaderHidden = false;
+
 const observer = new IntersectionObserver(
   (entries) => {
+    if (!loaderHidden) return;
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
@@ -9,15 +12,8 @@ const observer = new IntersectionObserver(
   { threshold: 0.1 },
 );
 
-document.querySelectorAll('.reveal').forEach((el, index) => {
-  const tab = el.closest('.tab-content');
-  const visible = !tab || tab.classList.contains('active');
-  if (visible) {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      el.style.transitionDelay = `${index * 0.1}s`;
-    }
-  }
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.1}s`;
   observer.observe(el);
 });
 

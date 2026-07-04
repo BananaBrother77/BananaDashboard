@@ -38,7 +38,7 @@ const translations = {
     update_checking: 'Checking for updates...',
     update_available: 'Update available',
     update_current: 'You are up to date',
-    update_download_btn: 'Download',
+    update_download_btn: 'Download Update',
     update_downloading: 'Downloading',
     update_downloaded: 'Update ready to install',
     update_error: 'Update failed',

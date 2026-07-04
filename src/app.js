@@ -247,12 +247,8 @@ if (update.bar) {
         update.bar.className = 'update-status available';
         updateReady = false;
         update.installBtn.classList.remove('hidden');
-        update.installBtn
-          .querySelector('i')
-          .setAttribute('data-lucide', 'download');
         update.installBtn.querySelector('span').textContent =
           getTranslation('update_download_btn') || 'Download';
-        if (window.lucide) lucide.createIcons();
         break;
       case 'not-available':
         update.text.textContent =
@@ -279,12 +275,8 @@ if (update.bar) {
         update.progress.classList.add('hidden');
         updateReady = true;
         update.installBtn.classList.remove('hidden');
-        update.installBtn
-          .querySelector('i')
-          .setAttribute('data-lucide', 'download');
         update.installBtn.querySelector('span').textContent =
           getTranslation('update_install_btn') || 'Restart & Install';
-        if (window.lucide) lucide.createIcons();
         break;
       case 'error':
         update.bar.className = 'update-status error';
@@ -320,5 +312,10 @@ Promise.all([
     : Promise.resolve(),
   new Promise((r) => setTimeout(r, 1000)),
 ]).then(() => {
-  if (loader) loader.classList.add('hidden');
+  if (loader) {
+    loaderHidden = true;
+    loader.classList.add('hidden');
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab && window.resetReveal) resetReveal(activeTab);
+  }
 });
