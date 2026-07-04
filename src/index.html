@@ -337,7 +337,7 @@
             </div>
           </div>
 
-          <h2 class="section-header" style="margin-top: 32px">
+          <h2 class="section-header section-header-spaced">
             <i data-lucide="languages" width="22" height="22"></i>
             <span data-i18n="settings_language">Language</span>
           </h2>
@@ -345,7 +345,7 @@
             <span class="lang-name" data-i18n="lang_name">English</span>
           </button>
 
-          <h2 class="section-header" style="margin-top: 32px">
+          <h2 class="section-header section-header-spaced">
             <i data-lucide="gauge" width="22" height="22"></i>
             <span data-i18n="settings_refresh">Resource Refresh</span>
           </h2>
@@ -363,7 +363,31 @@
             </div>
           </div>
 
-          <h2 class="section-header" style="margin-top: 32px">
+          <h2 class="section-header section-header-spaced">
+            <i data-lucide="refresh-cw" width="22" height="22"></i>
+            <span data-i18n="settings_updates">Updates</span>
+          </h2>
+
+          <div class="update-status" id="updateStatusBar">
+            <span class="update-status-text" id="updateStatusText" data-i18n="update_checking">Checking for updates...</span>
+          </div>
+
+          <div class="update-bar hidden" id="updateProgressBar">
+            <div class="update-fill" id="updateProgressFill"></div>
+          </div>
+
+          <div class="rpc-actions">
+            <button class="lang-btn" id="updateCheckBtn">
+              <i data-lucide="refresh-cw" width="16" height="16"></i>
+              <span data-i18n="update_check_btn">Check for Updates</span>
+            </button>
+            <button class="lang-btn hidden" id="updateInstallBtn">
+              <i data-lucide="download" width="16" height="16"></i>
+              <span data-i18n="update_install_btn">Restart & Install</span>
+            </button>
+          </div>
+
+          <h2 class="section-header section-header-spaced">
             <i data-lucide="disc" width="22" height="22"></i>
             <span data-i18n="settings_rpc">Discord Rich Presence</span>
           </h2>

@@ -838,3 +838,51 @@ body {
   color: var(--text-muted-bright);
   font-weight: 600;
 }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   UPDATE STATUS
+   ============================================================ */
+
+.section-header-spaced {
+  margin-top: 32px;
+}
+
+.update-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  margin-bottom: 12px;
+}
+
+.update-status-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.update-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.update-fill {
+  height: 100%;
+  background: var(--accent-purple);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}

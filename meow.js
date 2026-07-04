@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 const { execFileSync } = require('child_process');
+const { autoUpdater } = require('electron-updater');
 const discord = require('./modules/discord');
 
 // App configuration
@@ -253,13 +254,37 @@ ipcMain.handle('get-resources', () => {
   };
 });
 
+function sendToWindow(channel, data) {
+  if (mainWindow && !mainWindow.isDestroyed())
+    mainWindow.webContents.send(channel, data);
+}
+
 app.whenReady().then(() => {
   createWindow();
-  discord.onStatus((status) => {
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('rpc-status', status);
-    }
-  });
+
+  autoUpdater.autoDownload = false;
+  autoUpdater.on('checking-for-update', () =>
+    sendToWindow('update-status', { status: 'checking' }),
+  );
+  autoUpdater.on('update-available', (info) =>
+    sendToWindow('update-status', { status: 'available', info }),
+  );
+  autoUpdater.on('update-not-available', (info) =>
+    sendToWindow('update-status', { status: 'not-available', info }),
+  );
+  autoUpdater.on('error', (err) =>
+    sendToWindow('update-status', { status: 'error', message: err.message }),
+  );
+  autoUpdater.on('download-progress', (progress) =>
+    sendToWindow('update-status', { status: 'downloading', progress }),
+  );
+  autoUpdater.on('update-downloaded', (info) =>
+    sendToWindow('update-status', { status: 'downloaded', info }),
+  );
+
+  autoUpdater.checkForUpdates();
+
+  discord.onStatus((status) => sendToWindow('rpc-status', status));
   discord.init();
 });
 
@@ -269,3 +294,7 @@ ipcMain.handle('set-presence-tab', (_, tab) => discord.setTab(tab));
 ipcMain.handle('get-rpc-status', () => discord.getStatus());
 ipcMain.handle('reconnect-rpc', () => discord.reconnect());
 ipcMain.handle('set-rpc-enabled', (_, val) => discord.setEnabled(val));
+
+ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
+ipcMain.handle('download-update', () => autoUpdater.downloadUpdate());
+ipcMain.handle('quit-and-install', () => autoUpdater.quitAndInstall());

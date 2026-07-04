@@ -22,6 +22,15 @@ const rpc = {
   toggle: document.getElementById('rpcToggleBtn'),
 };
 
+const update = {
+  bar: document.getElementById('updateStatusBar'),
+  text: document.getElementById('updateStatusText'),
+  progress: document.getElementById('updateProgressBar'),
+  progressFill: document.getElementById('updateProgressFill'),
+  checkBtn: document.getElementById('updateCheckBtn'),
+  installBtn: document.getElementById('updateInstallBtn'),
+};
+
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
   nav.contents.forEach((t) => t.classList.remove('active'));
@@ -215,5 +224,69 @@ if (rpc.bar) {
     window.dashboardAPI.getRpcStatus().then((s) => {
       window.dashboardAPI.setRpcEnabled(!s.enabled);
     });
+  });
+}
+
+// Auto-updater UI
+if (update.bar) {
+  window.dashboardAPI.onUpdateStatus((data) => {
+    switch (data.status) {
+      case 'checking':
+        update.text.textContent =
+          getTranslation('update_checking') || 'Checking for updates...';
+        update.bar.className = 'update-status';
+        update.progress.classList.add('hidden');
+        update.installBtn.classList.add('hidden');
+        break;
+      case 'available':
+        update.text.textContent =
+          getTranslation('update_available') || 'Update available';
+        update.bar.className = 'update-status available';
+        update.installBtn.classList.add('hidden');
+        window.dashboardAPI.downloadUpdate();
+        break;
+      case 'not-available':
+        update.text.textContent =
+          getTranslation('update_current') || 'You are up to date';
+        update.bar.className = 'update-status current';
+        update.progress.classList.add('hidden');
+        update.installBtn.classList.add('hidden');
+        break;
+      case 'downloading':
+        update.bar.className = 'update-status downloading';
+        update.text.textContent =
+          (getTranslation('update_downloading') || 'Downloading') +
+          ' ' +
+          Math.round(data.progress.percent) +
+          '%';
+        update.progress.classList.remove('hidden');
+        update.progressFill.style.width = data.progress.percent + '%';
+        update.installBtn.classList.add('hidden');
+        break;
+      case 'downloaded':
+        update.bar.className = 'update-status downloaded';
+        update.text.textContent =
+          getTranslation('update_downloaded') || 'Update ready to install';
+        update.progress.classList.add('hidden');
+        update.installBtn.classList.remove('hidden');
+        break;
+      case 'error':
+        update.bar.className = 'update-status error';
+        update.text.textContent =
+          (getTranslation('update_error') || 'Update failed') +
+          ': ' +
+          data.message;
+        update.progress.classList.add('hidden');
+        update.installBtn.classList.add('hidden');
+        break;
+    }
+  });
+
+  update.checkBtn.addEventListener('click', () => {
+    window.dashboardAPI.checkForUpdates();
+  });
+
+  update.installBtn.addEventListener('click', () => {
+    window.dashboardAPI.quitAndInstall();
   });
 }
