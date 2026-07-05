@@ -103,6 +103,10 @@ The app uses `electron-updater` to check for new versions from GitHub Releases o
 
 You can also manually check from **Settings > Updates > Check for Updates**.
 
+## Downloads
+
+Pre-built binaries for Linux (AppImage, deb, pacman), Windows (NSIS installer), and macOS (DMG) are available on the [Releases page](https://github.com/BananaBrother77/BananaDashboard/releases).
+
 ## Discord Rich Presence
 
 BananaDashboard can show your current tab and activity in your Discord status. Enable/disable it from **Settings > Discord Rich Presence**.
