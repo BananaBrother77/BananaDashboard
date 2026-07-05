@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
     ipcRenderer.invoke('get-rpc-status').then((data) => callback(data));
   },
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  getDetailedSysinfo: () => ipcRenderer.invoke('get-detailed-sysinfo'),
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
   quitAndInstall: () => ipcRenderer.invoke('quit-and-install'),

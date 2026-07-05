@@ -9,8 +9,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 14px;
-  background: var(--panel-bg);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--panel-border);
   border-radius: 14px;
   box-shadow: 0 10px 30px var(--shadow-md);

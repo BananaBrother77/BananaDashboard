@@ -17,6 +17,7 @@ const translations = {
     action_files: 'File Manager',
     action_files_sub: 'Browse and manage files',
     label_os: 'OS',
+    label_host: 'Host',
     label_kernel: 'Kernel',
     label_cpu: 'CPU',
     label_cores: 'Cores',
@@ -62,6 +63,7 @@ const translations = {
     rpc_disable: 'Disable',
     rpc_enable: 'Enable',
     rpc_desc: 'Show your current tab and system info in your Discord status.',
+    more_info: 'More Info',
   },
   de: {
     tab_overview: 'Systemübersicht',
@@ -81,6 +83,7 @@ const translations = {
     action_files: 'Dateimanager',
     action_files_sub: 'Dateien durchsuchen und verwalten',
     label_os: 'Betriebssystem',
+    label_host: 'Host',
     label_kernel: 'Kernel',
     label_cpu: 'CPU',
     label_cores: 'Kerne',
@@ -126,6 +129,7 @@ const translations = {
     rpc_disable: 'Deaktivieren',
     rpc_enable: 'Aktivieren',
     rpc_desc: 'Zeige aktuellen Tab und Systeminfo in deinem Discord-Status.',
+    more_info: 'Weitere Infos',
   },
 };
 

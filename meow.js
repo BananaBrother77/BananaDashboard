@@ -77,8 +77,28 @@ function createWindow() {
 // Get system information
 ipcMain.handle('get-system-info', () => {
   const cpus = os.cpus();
+
+  function readFile(p) {
+    try {
+      return fs.readFileSync(p, 'utf8').trim();
+    } catch {
+      return null;
+    }
+  }
+
+  let deviceName = null;
+  if (PLATFORM === 'linux') {
+    const vendor = readFile('/sys/class/dmi/id/sys_vendor');
+    const product = readFile('/sys/class/dmi/id/product_name');
+    if (product && vendor && !product.startsWith(vendor))
+      deviceName = vendor + ' ' + product;
+    else if (product) deviceName = product;
+    else if (vendor) deviceName = vendor;
+  }
+
   return {
     hostname: os.hostname(),
+    deviceName: deviceName,
     distro: getDistro(),
     user: os.userInfo().username,
     platform: PLATFORM,
@@ -549,3 +569,217 @@ ipcMain.handle('get-app-version', () => app.getVersion());
 ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
 ipcMain.handle('download-update', () => autoUpdater.downloadUpdate());
 ipcMain.handle('quit-and-install', () => autoUpdater.quitAndInstall());
+
+ipcMain.handle('get-detailed-sysinfo', () => {
+  function readFile(p) {
+    try {
+      return fs.readFileSync(p, 'utf8').trim();
+    } catch {
+      return null;
+    }
+  }
+
+  // Try fastfetch first
+  try {
+    const out = execFileSync('fastfetch', ['--json'], {
+      encoding: 'utf8',
+      timeout: 3000,
+    });
+    const data = JSON.parse(out);
+    const get = (type) => data.find((d) => d.type === type)?.result;
+
+    const uptime = get('Uptime');
+    const shell = get('Shell');
+    const de = get('DE');
+    const term = get('Terminal');
+    const pkgs = get('Packages');
+    const lip = get('LocalIp');
+    const bat = get('Battery');
+    const swap = get('Swap');
+
+    const info = {};
+
+    // Uptime
+    if (uptime) {
+      const s = uptime.uptime / 1000;
+      const d = Math.floor(s / 86400);
+      const h = Math.floor((s % 86400) / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      info.uptime = d > 0 ? d + 'd ' + h + 'h ' + m + 'm' : h + 'h ' + m + 'm';
+    }
+
+    // Shell
+    info.shell = shell?.prettyName || null;
+
+    // DE
+    info.de = de?.prettyName || null;
+
+    // Terminal
+    info.terminal = term?.prettyName || null;
+
+    // Packages
+    if (pkgs?.all != null) {
+      const managers = Object.keys(pkgs).filter(
+        (k) => k !== 'all' && pkgs[k] > 0,
+      );
+      info.packages =
+        pkgs.all + (managers.length ? ' (' + managers.join(', ') + ')' : '');
+    }
+
+    // Local IP
+    if (lip?.length) {
+      const entry = lip.find((e) => e.defaultRoute?.ipv4) || lip[0];
+      info.localIp = entry.ipv4?.split('/')[0] || null;
+    }
+
+    // Battery
+    if (bat?.length) {
+      const b = bat[0];
+      info.battery =
+        b.capacity + '% [' + (b.status?.join(', ') || 'Unknown') + ']';
+    }
+
+    // Swap
+    if (swap?.length) {
+      const total = swap.reduce((s, d) => s + d.total, 0);
+      const used = swap.reduce((s, d) => s + d.used, 0);
+      if (total > 0) {
+        info.swap =
+          (used / 1024 / 1024 / 1024).toFixed(1) +
+          ' GiB / ' +
+          (total / 1024 / 1024 / 1024).toFixed(1) +
+          ' GiB (' +
+          Math.round((used / total) * 100) +
+          '%)';
+      }
+    }
+
+    return info;
+  } catch {}
+
+  // Fallback: manual gathering
+  const info = {};
+
+  // Host
+  if (PLATFORM === 'linux') {
+    const product = readFile('/sys/class/dmi/id/product_name');
+    const vendor = readFile('/sys/class/dmi/id/sys_vendor');
+    if (product && vendor && !product.startsWith(vendor))
+      info.host = vendor + ' ' + product;
+    else if (product) info.host = product;
+    else if (vendor) info.host = vendor;
+  }
+
+  // Uptime
+  const uptimeSec = os.uptime();
+  const d = Math.floor(uptimeSec / 86400);
+  const h = Math.floor((uptimeSec % 86400) / 3600);
+  const m = Math.floor((uptimeSec % 3600) / 60);
+  info.uptime = d > 0 ? d + 'd ' + h + 'h ' + m + 'm' : h + 'h ' + m + 'm';
+
+  // Shell
+  info.shell = process.env.SHELL || null;
+
+  // DE / WM
+  if (PLATFORM === 'linux') {
+    info.de =
+      process.env.XDG_CURRENT_DESKTOP || process.env.DESKTOP_SESSION || null;
+  }
+
+  // Terminal
+  info.terminal = process.env.TERM || null;
+  if (PLATFORM === 'linux') {
+    try {
+      let pid = process.ppid;
+      for (;;) {
+        const comm = execFileSync('cat', ['/proc/' + pid + '/comm'], {
+          encoding: 'utf8',
+          timeout: 500,
+        }).trim();
+        if (
+          [
+            'bash',
+            'zsh',
+            'sh',
+            'dash',
+            'fish',
+            'node',
+            'npm',
+            'electron',
+            'sudo',
+            'tmux',
+            'screen',
+          ].includes(comm)
+        ) {
+          const m = execFileSync('cat', ['/proc/' + pid + '/status'], {
+            encoding: 'utf8',
+            timeout: 500,
+          }).match(/PPid:\s*(\d+)/);
+          if (!m) break;
+          pid = parseInt(m[1]);
+        } else {
+          info.terminal = comm;
+          break;
+        }
+      }
+    } catch {}
+  }
+
+  // Packages (pacman)
+  if (PLATFORM === 'linux') {
+    try {
+      const count = execFileSync(
+        'sh',
+        ['-c', 'ls -d /var/lib/pacman/local/*/desc 2>/dev/null | wc -l'],
+        { encoding: 'utf8', timeout: 3000 },
+      );
+      info.packages = parseInt(count.trim()) + ' (pacman)';
+    } catch {
+      info.packages = null;
+    }
+  }
+
+  // Local IP
+  try {
+    const nets = os.networkInterfaces();
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name]) {
+        if (!net.internal && net.family === 'IPv4') {
+          info.localIp = net.address;
+          break;
+        }
+      }
+      if (info.localIp) break;
+    }
+  } catch {}
+
+  // Battery
+  if (PLATFORM === 'linux') {
+    try {
+      const cap = readFile('/sys/class/power_supply/BAT0/capacity');
+      const status = readFile('/sys/class/power_supply/BAT0/status');
+      if (cap !== null)
+        info.battery = cap + '% [' + (status || 'Unknown') + ']';
+    } catch {}
+  }
+
+  // Swap
+  if (PLATFORM === 'linux') {
+    const meminfo = readFile('/proc/meminfo');
+    if (meminfo) {
+      const total = parseInt(meminfo.match(/SwapTotal:\s+(\d+)/)?.[1]);
+      const free = parseInt(meminfo.match(/SwapFree:\s+(\d+)/)?.[1]);
+      if (total > 0) {
+        info.swap =
+          ((total - free) / 1024 / 1024).toFixed(1) +
+          ' GiB / ' +
+          (total / 1024 / 1024).toFixed(1) +
+          ' GiB (' +
+          Math.round(((total - free) / total) * 100) +
+          '%)';
+      }
+    }
+  }
+
+  return info;
+});

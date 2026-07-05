@@ -10,6 +10,7 @@ const overview = {
   osVersion: document.getElementById('osVersionCard'),
   welcome: document.getElementById('welcomeHeading'),
   userName: document.getElementById('userName'),
+  hostname: document.getElementById('hostnameCard'),
   kernelVersion: document.getElementById('kernelVersionCard'),
   cpu: document.getElementById('cpuCard'),
   cpuCores: document.getElementById('cpuCoresCard'),
@@ -177,6 +178,42 @@ async function loadSystemInfo() {
   overview.cpuCores.textContent = `${info.cpuCores} cores`;
   overview.ram.textContent = `${(info.totalMem / 1024 ** 3).toFixed(2)} GB`;
   if (overview.gpu) overview.gpu.textContent = info.gpu;
+  if (overview.hostname)
+    overview.hostname.textContent = info.deviceName || info.hostname;
+}
+
+// More Info toggle
+const detailToggle = document.getElementById('detailToggle');
+const detailGrid = document.getElementById('detailGrid');
+const detailFields = [
+  'uptime',
+  'shell',
+  'de',
+  'terminal',
+  'packages',
+  'localIp',
+  'battery',
+  'swap',
+];
+
+if (detailToggle && detailGrid) {
+  detailToggle.addEventListener('click', async () => {
+    const isOpen = detailToggle.classList.toggle('open');
+    detailGrid.style.display = isOpen ? 'grid' : 'none';
+
+    if (isOpen && !detailToggle.dataset.loaded) {
+      detailToggle.dataset.loaded = 'true';
+      try {
+        const info = await window.dashboardAPI.getDetailedSysinfo();
+        for (const field of detailFields) {
+          const el = document.getElementById(
+            'detail' + field.charAt(0).toUpperCase() + field.slice(1),
+          );
+          if (el) el.textContent = info[field] || '\u2014';
+        }
+      } catch {}
+    }
+  });
 }
 
 // Discord RPC status UI
