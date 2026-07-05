@@ -52,7 +52,6 @@
       "meow.js",
       "preload.js",
       "src/**/*",
-      "modules/**/*",
       "node_modules/**/*",
       "package.json"
     ],

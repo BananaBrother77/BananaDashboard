@@ -1,0 +1,170 @@
+/* Resource stats bar */
+.resource-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.resource-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px var(--shadow-md);
+  flex: 1;
+}
+
+.resource-stat svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted-bright);
+  flex-shrink: 0;
+}
+
+.resource-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.resource-value {
+  margin-left: auto;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Charts */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.chart-panel {
+  padding: 20px;
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted-bright);
+  margin-bottom: 12px;
+}
+
+.chart-header svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chart-container {
+  position: relative;
+  height: 220px;
+}
+
+/* Disk partitions */
+.disk-panel {
+  padding: 8px 0;
+}
+
+.disk-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+}
+
+.disk-row + .disk-row {
+  border-top: 1px solid var(--panel-border);
+}
+
+.disk-mount {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.disk-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.disk-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--disk-color);
+  transition: width 0.5s ease;
+}
+
+.disk-pct {
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: right;
+  color: var(--disk-color);
+}
+
+.disk-used,
+.disk-free {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* App Resources */
+.app-panel {
+  padding: 20px 24px;
+}
+
+.app-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.app-stat {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.app-stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.app-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.app-versions {
+  margin-top: 14px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.3px;
+}

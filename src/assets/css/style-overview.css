@@ -1,0 +1,118 @@
+/* Welcome section */
+.welcome-section {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.welcome-heading {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(
+    147deg,
+    var(--grad-text-start) 0%,
+    var(--grad-text-end) 82%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.welcome-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Info panel (system spec sheet) */
+.info-panel {
+  padding: 6px 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+}
+
+.info-row svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted-bright);
+  flex-shrink: 0;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.info-divider {
+  height: 1px;
+  background: var(--panel-border);
+  margin: 0 24px;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-purple);
+  box-shadow: 0 10px 25px var(--accent-bright-shadow);
+}
+
+.action-card svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-muted-bright);
+  flex-shrink: 0;
+}
+
+.action-text {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.action-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}

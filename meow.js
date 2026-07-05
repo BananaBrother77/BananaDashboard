@@ -4,7 +4,7 @@ const os = require('os');
 const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { autoUpdater } = require('electron-updater');
-const discord = require('./modules/discord');
+const discord = require('./src/assets/js/modules/discord');
 
 // App configuration
 app.disableHardwareAcceleration();
