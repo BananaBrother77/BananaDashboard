@@ -119,6 +119,11 @@
 }
 
 /* Custom dropdown (refresh rate) */
+.panel:has(#refreshSelect) {
+  position: relative;
+  z-index: 1;
+}
+
 .custom-select {
   position: relative;
   width: 100%;

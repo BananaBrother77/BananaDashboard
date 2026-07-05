@@ -65,8 +65,7 @@ function switchTab(tabName) {
   history.replaceState(null, '', '?tab=' + tabName);
 
   if (tabName === 'resources' && typeof resources !== 'undefined') {
-    if (!resources.interval) resources.init();
-    else resources.fetchAndUpdate();
+    setTimeout(() => resources.init(), 500);
   } else if (typeof resources !== 'undefined') {
     resources.destroy();
   }
