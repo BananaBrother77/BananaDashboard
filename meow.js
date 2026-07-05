@@ -89,11 +89,50 @@ ipcMain.handle('get-system-info', () => {
     totalMem: os.totalmem(),
     freeMem: os.freemem(),
     uptime: os.uptime(),
+    gpu: getGpuInfo(),
   };
 });
 
 let _prevCpuUsage = null;
 let _prevCpuTime = null;
+
+function getGpuInfo() {
+  try {
+    if (PLATFORM === 'linux') {
+      const output = execFileSync(
+        'sh',
+        ['-c', 'lspci 2>/dev/null | grep -iE "vga|3d|display"'],
+        { encoding: 'utf8', timeout: 3000 },
+      );
+      const match = output.trim().split('\n')[0];
+      if (match) return match.replace(/^.*?: /, '').trim();
+    } else if (PLATFORM === 'darwin') {
+      const output = execFileSync('system_profiler', ['SPDisplaysDataType'], {
+        encoding: 'utf8',
+        timeout: 3000,
+      });
+      for (const line of output.split('\n')) {
+        const m = line.match(/Chipset Model:\s*(.+)/);
+        if (m) return m[1].trim();
+      }
+    } else if (PLATFORM === 'win32') {
+      const output = execFileSync(
+        'wmic',
+        ['path', 'win32_VideoController', 'get', 'name'],
+        { encoding: 'utf8', timeout: 3000 },
+      );
+      return (
+        output
+          .trim()
+          .split('\n')
+          .slice(1)
+          .map((l) => l.trim())
+          .filter(Boolean)[0] || 'Unknown'
+      );
+    }
+  } catch {}
+  return 'Unknown';
+}
 
 ipcMain.handle('get-app-usage', () => {
   const mem = process.memoryUsage();
@@ -297,9 +336,171 @@ ipcMain.handle('get-resources', () => {
     cpu: calcCpuUsage(),
     ram: { used: usedMem, total: totalMem },
     disk: getDiskInfo(),
+    gpu: getGpuStats(),
     timestamp: Date.now(),
   };
 });
+
+let _gpuIntelCache = null;
+
+function getGpuStats() {
+  const fallback = {
+    usage: null,
+    memUsed: null,
+    memTotal: null,
+    temp: null,
+    name: null,
+  };
+
+  try {
+    if (PLATFORM === 'win32') {
+      const out = execFileSync(
+        'nvidia-smi',
+        [
+          '--query-gpu=utilization.gpu,memory.used,memory.total,temperature.gpu,name',
+          '--format=csv,noheader,nounits',
+        ],
+        { encoding: 'utf8', timeout: 3000 },
+      );
+      const cols = out.trim().split(', ');
+      if (cols.length >= 5) {
+        return {
+          usage: parseFloat(cols[0]),
+          memUsed: parseInt(cols[1]) * 1024 * 1024,
+          memTotal: parseInt(cols[2]) * 1024 * 1024,
+          temp: parseInt(cols[3]),
+          name: cols.slice(4).join(', ').trim(),
+        };
+      }
+    }
+
+    if (PLATFORM === 'linux') {
+      try {
+        const out = execFileSync(
+          'nvidia-smi',
+          [
+            '--query-gpu=utilization.gpu,memory.used,memory.total,temperature.gpu,name',
+            '--format=csv,noheader,nounits',
+          ],
+          { encoding: 'utf8', timeout: 3000 },
+        );
+        const cols = out.trim().split(', ');
+        if (cols.length >= 5) {
+          return {
+            usage: parseFloat(cols[0]),
+            memUsed: parseInt(cols[1]) * 1024 * 1024,
+            memTotal: parseInt(cols[2]) * 1024 * 1024,
+            temp: parseInt(cols[3]),
+            name: cols.slice(4).join(', ').trim(),
+          };
+        }
+      } catch {}
+
+      try {
+        const out = execFileSync('rocm-smi', ['--json'], {
+          encoding: 'utf8',
+          timeout: 3000,
+        });
+        const data = JSON.parse(out);
+        const card = Object.values(data)[0];
+        if (card) {
+          return {
+            usage: parseFloat(card['GPU use (%)']) || null,
+            memUsed: parseInt(card['VRAM Total Memory (MB)'])
+              ? parseInt(card['VRAM Total Memory (MB)']) * 1024 * 1024
+              : null,
+            memTotal: parseInt(card['VRAM Total Memory (MB)'])
+              ? parseInt(card['VRAM Total Memory (MB)']) * 1024 * 1024
+              : null,
+            temp:
+              parseFloat(card['Temperature (Sensor memory) (C)']) ||
+              parseFloat(card['Temperature (Sensor edge) (C)']) ||
+              null,
+            name: card['Card series'] || null,
+          };
+        }
+      } catch {}
+
+      try {
+        if (!_gpuIntelCache) {
+          const dirs = execFileSync(
+            'sh',
+            [
+              '-c',
+              'for d in /sys/class/drm/card[0-9]*/device/vendor; do [ -f "$d" ] && echo "$d"; done',
+            ],
+            { encoding: 'utf8', timeout: 1000 },
+          );
+          for (const vp of dirs.trim().split(/\s+/).filter(Boolean)) {
+            const vendor = execFileSync('cat', [vp], {
+              encoding: 'utf8',
+              timeout: 500,
+            }).trim();
+            if (vendor === '0x8086') {
+              const cardDir = vp.replace('/vendor', '');
+              const cardN = cardDir.match(/card(\d+)/)?.[1];
+              const actPath =
+                cardDir + '/drm/card' + cardN + '/gt/gt0/rps_act_freq_mhz';
+              const rp0Path =
+                cardDir + '/drm/card' + cardN + '/gt/gt0/rps_RP0_freq_mhz';
+              const maxVal = parseInt(
+                execFileSync('cat', [rp0Path], {
+                  encoding: 'utf8',
+                  timeout: 500,
+                }),
+              );
+              _gpuIntelCache = { actPath, max: maxVal, name: 'Intel' };
+              break;
+            }
+          }
+        }
+        if (_gpuIntelCache && _gpuIntelCache.max > 0) {
+          const cur = parseInt(
+            execFileSync('cat', [_gpuIntelCache.actPath], {
+              encoding: 'utf8',
+              timeout: 500,
+            }),
+          );
+          return {
+            usage: Math.round((cur / _gpuIntelCache.max) * 100),
+            memUsed: null,
+            memTotal: null,
+            temp: null,
+            name: _gpuIntelCache.name,
+          };
+        }
+        if (_gpuIntelCache)
+          return {
+            usage: null,
+            memUsed: null,
+            memTotal: null,
+            temp: null,
+            name: _gpuIntelCache.name,
+          };
+      } catch {}
+    }
+
+    if (PLATFORM === 'darwin') {
+      const out = execFileSync('system_profiler', ['SPDisplaysDataType'], {
+        encoding: 'utf8',
+        timeout: 3000,
+      });
+      for (const line of out.split('\n')) {
+        const m = line.match(/Chipset Model:\s*(.+)/);
+        if (m)
+          return {
+            usage: null,
+            memUsed: null,
+            memTotal: null,
+            temp: null,
+            name: m[1].trim(),
+          };
+      }
+    }
+  } catch {}
+
+  return fallback;
+}
 
 function sendToWindow(channel, data) {
   if (mainWindow && !mainWindow.isDestroyed())

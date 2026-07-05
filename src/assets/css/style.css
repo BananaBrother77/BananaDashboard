@@ -85,6 +85,19 @@
   --focus-ring: rgba(168, 200, 247, 0.18);
 }
 
+.theme-pink {
+  --text-muted: #e880a8;
+  --text-muted-bright: #f0a0bf;
+  --grad-text-start: #d4507a;
+  --grad-text-end: #e880a8;
+  --grad-title-start: #d4507a;
+  --accent-purple: #e880a8;
+  --accent-purple-dark: #d06088;
+  --accent-bright-shadow: rgba(232, 128, 168, 0.3);
+  --accent-focus-ring: rgba(232, 128, 168, 0.2);
+  --focus-ring: rgba(232, 128, 168, 0.18);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

@@ -136,6 +136,12 @@
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
+            <i data-lucide="monitor" width="20" height="20"></i>
+            <span class="info-label" data-i18n="label_gpu">GPU</span>
+            <span class="info-value" id="gpuCard">--</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row">
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_ram">RAM</span>
             <span class="info-value" id="ramCard">--</span>
@@ -190,6 +196,16 @@
             <span class="resource-value" id="cpuValue">--</span>
           </div>
           <div class="resource-stat">
+            <i data-lucide="monitor" width="20" height="20"></i>
+            <span class="resource-label" data-i18n="label_gpu">GPU</span>
+            <span class="resource-value" id="gpuValue">--</span>
+          </div>
+          <div class="resource-stat">
+            <i data-lucide="thermometer" width="20" height="20"></i>
+            <span class="resource-label" data-i18n="label_temp">Temp</span>
+            <span class="resource-value" id="gpuTempValue">--</span>
+          </div>
+          <div class="resource-stat">
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_ram">RAM</span>
             <span class="resource-value" id="ramValue">--</span>
@@ -208,6 +224,15 @@
             </div>
             <div class="chart-container">
               <canvas id="cpuChart"></canvas>
+            </div>
+          </section>
+          <section class="panel chart-panel reveal">
+            <div class="chart-header">
+              <i data-lucide="monitor" width="18" height="18"></i>
+              <span data-i18n="chart_gpu">GPU Usage</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="gpuChart"></canvas>
             </div>
           </section>
           <section class="panel chart-panel reveal">
@@ -377,6 +402,10 @@
             <div class="theme-card" data-theme="blue">
               <div class="theme-swatch" style="background: #4372c7"></div>
               <span class="theme-name">Blue</span>
+            </div>
+            <div class="theme-card" data-theme="pink">
+              <div class="theme-swatch" style="background: #e880a8"></div>
+              <span class="theme-name">Pink</span>
             </div>
           </div>
 

@@ -14,6 +14,7 @@ const overview = {
   cpu: document.getElementById('cpuCard'),
   cpuCores: document.getElementById('cpuCoresCard'),
   ram: document.getElementById('ramCard'),
+  gpu: document.getElementById('gpuCard'),
 };
 
 const rpc = {
@@ -175,6 +176,7 @@ async function loadSystemInfo() {
   overview.cpu.textContent = info.cpuModel;
   overview.cpuCores.textContent = `${info.cpuCores} cores`;
   overview.ram.textContent = `${(info.totalMem / 1024 ** 3).toFixed(2)} GB`;
+  if (overview.gpu) overview.gpu.textContent = info.gpu;
 }
 
 // Discord RPC status UI

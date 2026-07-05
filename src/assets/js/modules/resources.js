@@ -11,6 +11,8 @@ const stats = {
   cpuValue: document.getElementById('cpuValue'),
   ramValue: document.getElementById('ramValue'),
   diskValue: document.getElementById('diskValue'),
+  gpuValue: document.getElementById('gpuValue'),
+  gpuTempValue: document.getElementById('gpuTempValue'),
 };
 
 const disk = {
@@ -21,6 +23,7 @@ const charts = {
   cpu: document.getElementById('cpuChart'),
   ram: document.getElementById('ramChart'),
   disk: document.getElementById('diskChart'),
+  gpu: document.getElementById('gpuChart'),
 };
 
 const app = {
@@ -34,7 +37,7 @@ const app = {
 
 const resources = {
   charts: {},
-  data: { cpu: [], ram: [], labels: [] },
+  data: { cpu: [], ram: [], gpu: [], labels: [] },
   maxPoints: 30,
   interval: null,
   intervalMs: parseInt(localStorage.getItem('banana-refresh')) || 2000,
@@ -69,6 +72,7 @@ resources.init = function () {
     cpu: charts.cpu.getContext('2d'),
     ram: charts.ram.getContext('2d'),
     disk: charts.disk.getContext('2d'),
+    gpu: charts.gpu.getContext('2d'),
   };
 
   const accent = cssVar('--accent-purple');
@@ -187,6 +191,48 @@ resources.init = function () {
           label: (ctx) => {
             const raw = ctx.dataset.data[ctx.dataIndex];
             return ctx.label + ': ' + resources.formatBytes(raw);
+          },
+        },
+      },
+    },
+  });
+
+  this.charts.gpu = new Chart(this.ctx.gpu, {
+    type: 'line',
+    data: {
+      labels: this.data.labels,
+      datasets: [
+        {
+          label: 'GPU Usage',
+          data: this.data.gpu,
+          borderColor: accent,
+          backgroundColor: 'rgba(' + ar + ', ' + ag + ', ' + ab + ', 0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          display: true,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: muted, font: { size: 10 } },
+        },
+        y: {
+          min: 0,
+          max: 100,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: {
+            color: muted,
+            font: { size: 10 },
+            callback: (v) => v + '%',
           },
         },
       },
@@ -316,6 +362,25 @@ resources.fetchAndUpdate = async function () {
     stats.ramValue.textContent =
       ramGB + ' GB / ' + (res.ram.total / 1024 ** 3).toFixed(1) + ' GB';
 
+    if (res.gpu && res.gpu.usage !== null) {
+      const gpuPct = Math.round(res.gpu.usage);
+      stats.gpuValue.textContent = gpuPct + '%';
+      if (res.gpu.memTotal) {
+        const memUsedGB = (res.gpu.memUsed / 1024 ** 3).toFixed(1);
+        const memTotalGB = (res.gpu.memTotal / 1024 ** 3).toFixed(1);
+        stats.gpuValue.textContent +=
+          '  \u00B7  ' + memUsedGB + ' / ' + memTotalGB + ' GB';
+      }
+    } else {
+      stats.gpuValue.textContent = '\u2014';
+    }
+
+    if (res.gpu && res.gpu.temp !== null) {
+      stats.gpuTempValue.textContent = Math.round(res.gpu.temp) + '\u00B0C';
+    } else {
+      stats.gpuTempValue.textContent = '\u2014';
+    }
+
     this._lastPartitions = res.disk;
     this.updateDiskChart(res.disk);
     this.updateDiskSummary(res.disk);
@@ -328,15 +393,20 @@ resources.fetchAndUpdate = async function () {
     this.data.labels.push(label);
     this.data.cpu.push(cpuPercent);
     this.data.ram.push(parseFloat(ramGB));
+    this.data.gpu.push(
+      res.gpu && res.gpu.usage !== null ? res.gpu.usage : null,
+    );
 
     if (this.data.labels.length > this.maxPoints) {
       this.data.labels.shift();
       this.data.cpu.shift();
       this.data.ram.shift();
+      this.data.gpu.shift();
     }
 
     this.charts.cpu.update();
     this.charts.ram.update();
+    this.charts.gpu.update();
   } catch (err) {
     console.error('Resources fetch error:', err);
   }
@@ -367,6 +437,16 @@ resources.applyTheme = function () {
     ram.options.scales.x.ticks.color = muted;
     ram.options.scales.y.ticks.color = muted;
     ram.update();
+  }
+
+  if (this.charts.gpu) {
+    const gpu = this.charts.gpu;
+    gpu.data.datasets[0].borderColor = accent;
+    gpu.data.datasets[0].backgroundColor =
+      'rgba(' + ar + ', ' + ag + ', ' + ab + ', 0.1)';
+    gpu.options.scales.x.ticks.color = muted;
+    gpu.options.scales.y.ticks.color = muted;
+    gpu.update();
   }
 
   if (this.charts.disk && this._lastPartitions) {
