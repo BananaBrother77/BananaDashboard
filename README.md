@@ -113,18 +113,23 @@ If Discord is running, the app connects automatically and updates presence every
 
 ```
 BananaDashboard/
-├── meow.js              # Electron main process (window, IPC, system info)
-├── preload.js           # Context bridge (secure IPC)
+├── meow.js                    # Electron main process (window, IPC, system info)
+├── preload.js                 # Context bridge (secure IPC)
 ├── src/
-│   ├── index.html       # Main app shell
-│   ├── style.css        # All styles (design system)
-│   ├── app.js           # Renderer logic
-│   ├── translations.js  # i18n (en/de)
-│   ├── reveal.js        # Scroll animations
-│   └── assets/          # Icons
-├── modules/
-│   ├── resources.js     # Live resource monitoring (Chart.js)
-│   └── discord.js       # Discord RPC via raw IPC socket
+│   ├── index.html             # Main app shell
+│   └── assets/
+│       ├── css/
+│       │   ├── style.css      # Base design system (layout, sidebar, typography)
+│       │   ├── overview.css   # Overview tab styles
+│       │   ├── resources.css  # Resources tab styles (charts, disk)
+│       │   └── settings.css   # Settings tab styles (theme, language, RPC)
+│       └── js/
+│           ├── app.js         # Renderer logic (tab switching, theme, language, RPC)
+│           ├── translations.js# i18n (en/de)
+│           ├── reveal.js      # Scroll animations
+│           └── modules/
+│               ├── resources.js # Live resource monitoring (Chart.js)
+│               └── discord.js   # Discord RPC via raw IPC socket
 ├── package.json
 └── README.md
 ```
