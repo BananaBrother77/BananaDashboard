@@ -2,6 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('dashboardAPI', {
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
+  getAppUsage: () => ipcRenderer.invoke('get-app-usage'),
   getResources: () => ipcRenderer.invoke('get-resources'),
   setTab: (tab) => ipcRenderer.invoke('set-presence-tab', tab),
   getRpcStatus: () => ipcRenderer.invoke('get-rpc-status'),

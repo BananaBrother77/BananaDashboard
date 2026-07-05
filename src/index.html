@@ -228,6 +228,36 @@
         </div>
 
         <section class="panel disk-panel reveal" id="diskInfo"></section>
+
+        <section class="panel app-panel reveal">
+          <h2 class="section-header">
+            <i data-lucide="terminal" width="22" height="22"></i>
+            <span data-i18n="app_resources">App Resources</span>
+          </h2>
+          <div class="app-stats-grid" id="appStatsGrid">
+            <div class="app-stat">
+              <div class="app-stat-label" data-i18n="app_pid">PID</div>
+              <div class="app-stat-value" id="appPid">--</div>
+            </div>
+            <div class="app-stat">
+              <div class="app-stat-label" data-i18n="app_memory">Memory</div>
+              <div class="app-stat-value" id="appMemory">--</div>
+            </div>
+            <div class="app-stat">
+              <div class="app-stat-label" data-i18n="app_heap">Heap</div>
+              <div class="app-stat-value" id="appHeap">--</div>
+            </div>
+            <div class="app-stat">
+              <div class="app-stat-label" data-i18n="app_cpu">CPU</div>
+              <div class="app-stat-value" id="appCpu">--</div>
+            </div>
+            <div class="app-stat">
+              <div class="app-stat-label" data-i18n="app_uptime">Uptime</div>
+              <div class="app-stat-value" id="appUptime">--</div>
+            </div>
+          </div>
+          <div class="app-versions" id="appVersions"></div>
+        </section>
       </div>
 
       <!-- ============================================================

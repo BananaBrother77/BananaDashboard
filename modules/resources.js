@@ -7,6 +7,31 @@ function hexToRgb(hex) {
   return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
 }
 
+const stats = {
+  cpuValue: document.getElementById('cpuValue'),
+  ramValue: document.getElementById('ramValue'),
+  diskValue: document.getElementById('diskValue'),
+};
+
+const disk = {
+  info: document.getElementById('diskInfo'),
+};
+
+const charts = {
+  cpu: document.getElementById('cpuChart'),
+  ram: document.getElementById('ramChart'),
+  disk: document.getElementById('diskChart'),
+};
+
+const app = {
+  pid: document.getElementById('appPid'),
+  memory: document.getElementById('appMemory'),
+  heap: document.getElementById('appHeap'),
+  cpu: document.getElementById('appCpu'),
+  uptime: document.getElementById('appUptime'),
+  versions: document.getElementById('appVersions'),
+};
+
 const resources = {
   charts: {},
   data: { cpu: [], ram: [], labels: [] },
@@ -41,9 +66,9 @@ resources.formatBytes = function (bytes) {
 
 resources.init = function () {
   this.ctx = {
-    cpu: document.getElementById('cpuChart').getContext('2d'),
-    ram: document.getElementById('ramChart').getContext('2d'),
-    disk: document.getElementById('diskChart').getContext('2d'),
+    cpu: charts.cpu.getContext('2d'),
+    ram: charts.ram.getContext('2d'),
+    disk: charts.disk.getContext('2d'),
   };
 
   const accent = cssVar('--accent-purple');
@@ -195,17 +220,15 @@ resources.updateDiskChart = function (partitions) {
 };
 
 resources.updateDiskStat = function (partitions) {
-  const el = document.getElementById('diskValue');
-  if (!el || !partitions || partitions.length === 0) return;
+  if (!stats.diskValue || !partitions || partitions.length === 0) return;
   const total = partitions.reduce((s, p) => s + p.size, 0);
   const used = partitions.reduce((s, p) => s + p.used, 0);
   const pct = total > 0 ? Math.round((used / total) * 100) : 0;
-  el.textContent = pct + '%';
+  stats.diskValue.textContent = pct + '%';
 };
 
 resources.updateDiskSummary = function (partitions) {
-  const container = document.getElementById('diskInfo');
-  if (!container) return;
+  if (!disk.info) return;
   if (!this._diskRows) this._diskRows = new Map();
 
   const colors = getPartitionColors();
@@ -226,7 +249,7 @@ resources.updateDiskSummary = function (partitions) {
         '<span class="disk-pct"></span>' +
         '<span class="disk-used"></span>' +
         '<span class="disk-free"></span>';
-      container.appendChild(row);
+      disk.info.appendChild(row);
       this._diskRows.set(p.target, row);
     }
 
@@ -251,21 +274,53 @@ resources.updateDiskSummary = function (partitions) {
   }
 };
 
+resources.updateAppUsage = function (data) {
+  if (!data || !app.pid) return;
+  app.pid.textContent = data.pid;
+  app.memory.textContent = this.formatBytes(data.memory);
+
+  const heapPct =
+    data.heapTotal > 0 ? Math.round((data.heapUsed / data.heapTotal) * 100) : 0;
+  app.heap.textContent =
+    this.formatBytes(data.heapUsed) +
+    ' / ' +
+    this.formatBytes(data.heapTotal) +
+    ' (' +
+    heapPct +
+    '%)';
+
+  app.cpu.textContent = data.cpu.toFixed(1) + '%';
+  app.uptime.textContent = data.uptime;
+  if (app.versions) {
+    app.versions.textContent =
+      'Node ' +
+      data.node +
+      '  ·  Electron ' +
+      data.electron +
+      '  ·  Chrome ' +
+      data.chrome;
+  }
+};
+
 resources.fetchAndUpdate = async function () {
   if (!this.charts.cpu) return;
   try {
-    const res = await window.dashboardAPI.getResources();
+    const [res, app] = await Promise.all([
+      window.dashboardAPI.getResources(),
+      window.dashboardAPI.getAppUsage(),
+    ]);
     const cpuPercent = Math.round(res.cpu.usage);
     const ramGB = (res.ram.used / 1024 ** 3).toFixed(1);
 
-    document.getElementById('cpuValue').textContent = cpuPercent + '%';
-    document.getElementById('ramValue').textContent =
+    stats.cpuValue.textContent = cpuPercent + '%';
+    stats.ramValue.textContent =
       ramGB + ' GB / ' + (res.ram.total / 1024 ** 3).toFixed(1) + ' GB';
 
     this._lastPartitions = res.disk;
     this.updateDiskChart(res.disk);
     this.updateDiskSummary(res.disk);
     this.updateDiskStat(res.disk);
+    this.updateAppUsage(app);
 
     const now = new Date();
     const label = now.getSeconds() + 's';

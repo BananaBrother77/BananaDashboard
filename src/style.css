@@ -602,8 +602,51 @@ body {
   white-space: nowrap;
 }
 
+/* App Resources */
+.app-panel {
+  padding: 20px 24px;
+}
+
+.app-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.app-stat {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.app-stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.app-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.app-versions {
+  margin-top: 14px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
 /* ============================================================
-   REVEAL ANIMATIONS
+   NETWORK TAB
    ============================================================ */
 
 .reveal {

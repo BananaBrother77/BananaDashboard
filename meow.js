@@ -92,6 +92,52 @@ ipcMain.handle('get-system-info', () => {
   };
 });
 
+let _prevCpuUsage = null;
+let _prevCpuTime = null;
+
+ipcMain.handle('get-app-usage', () => {
+  const mem = process.memoryUsage();
+  const usage = process.cpuUsage();
+  const now = Date.now();
+
+  let cpuPercent = 0;
+  if (_prevCpuUsage) {
+    const cpuDelta =
+      usage.user - _prevCpuUsage.user + (usage.system - _prevCpuUsage.system);
+    const timeDelta = (now - _prevCpuTime) * 1000;
+    cpuPercent =
+      timeDelta > 0 ? Math.min((cpuDelta / timeDelta) * 100, 100) : 0;
+  }
+  _prevCpuUsage = usage;
+  _prevCpuTime = now;
+
+  const uptime = process.uptime();
+  let uptimeStr;
+  if (uptime >= 86400)
+    uptimeStr =
+      Math.floor(uptime / 86400) +
+      'd ' +
+      Math.floor((uptime % 86400) / 3600) +
+      'h';
+  else if (uptime >= 3600)
+    uptimeStr =
+      Math.floor(uptime / 3600) + 'h ' + Math.floor((uptime % 3600) / 60) + 'm';
+  else
+    uptimeStr = Math.floor(uptime / 60) + 'm ' + Math.floor(uptime % 60) + 's';
+
+  return {
+    pid: process.pid,
+    memory: mem.rss,
+    heapUsed: mem.heapUsed,
+    heapTotal: mem.heapTotal,
+    cpu: cpuPercent,
+    uptime: uptimeStr,
+    node: process.versions.node,
+    electron: process.versions.electron,
+    chrome: process.versions.chrome,
+  };
+});
+
 let previousCpuTimes = null;
 let diskCache = null;
 let diskCacheTime = 0;
