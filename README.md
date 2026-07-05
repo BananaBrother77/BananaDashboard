@@ -1,5 +1,7 @@
 # BananaDashboard
 
+<img src="src/assets/img/screenshot.png" alt="Screenshot" width="700" style="border-radius: 12px;">
+
 A desktop system dashboard built with Electron. Think of it like a server dashboard (Pterodactyl, Cockpit) but for your local Linux machine. Works on Windows and macOS too.
 
 ## Features
