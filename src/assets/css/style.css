@@ -291,12 +291,26 @@ body {
   height: 20px;
 }
 
-/* Panel (shared glass style) */
+/* Panel */
 .panel {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--panel-border);
   border-radius: 20px;
   box-shadow: 0 10px 30px var(--shadow-md);
+}
+
+/* MCToolkit */
+#tabMctoolkit {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#mctoolkitWebview {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  height: 100%;
 }
 
 /* Tab content */

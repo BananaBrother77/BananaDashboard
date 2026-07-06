@@ -37,12 +37,26 @@ const update = {
 
 const versionEl = document.getElementById('appVersion');
 
+const mctoolkit = {
+  webview: document.getElementById('mctoolkitWebview'),
+};
+
+if (mctoolkit.webview) {
+  mctoolkit.webview.addEventListener('dom-ready', () => {
+    mctoolkit.webview.insertCSS(
+      '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
+    );
+  });
+}
+
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
   nav.contents.forEach((t) => t.classList.remove('active'));
 
   const btn = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
-  const content = document.getElementById('tab-' + tabName);
+  const content = document.getElementById(
+    'tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1),
+  );
   if (btn) btn.classList.add('active');
   if (content) content.classList.add('active');
 
@@ -59,6 +73,7 @@ function switchTab(tabName) {
       processes: 'Managing Processes',
       startup: 'Managing Startup Apps',
       files: 'Browsing Files',
+      mctoolkit: 'Using MCToolkit',
       stats: 'Viewing Website Statistics',
       settings: 'Tweaking Settings',
     };
@@ -101,9 +116,12 @@ document
   .querySelector('.icon-btn[title="Refresh"]')
   .addEventListener('click', () => {
     const active = document.querySelector('.tab-content.active');
-    const tab = active ? active.id.replace('tab-', '') : 'overview';
+    const tab = active
+      ? active.id.replace(/^tab/, '').toLowerCase()
+      : 'overview';
     if (tab === 'overview') loadSystemInfo();
     if (tab === 'resources' && resources.interval) resources.fetchAndUpdate();
+    if (tab === 'mctoolkit' && mctoolkit.webview) mctoolkit.webview.reload();
   });
 
 // Theme switching

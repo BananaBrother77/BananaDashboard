@@ -71,6 +71,11 @@
         <span data-i18n="tab_files">File Manager</span>
       </button>
 
+      <button class="nav-item" data-tab="mctoolkit">
+        <i data-lucide="gamepad-2" width="20" height="20"></i>
+        <span data-i18n="tab_mctoolkit">MCToolkit</span>
+      </button>
+
       <button class="nav-item" data-tab="stats">
         <i data-lucide="bar-chart-3" width="20" height="20"></i>
         <span data-i18n="tab_stats">Website Statistics</span>
@@ -102,7 +107,7 @@
       <!-- ============================================================
            TAB: OVERVIEW (active by default)
            ============================================================ -->
-      <div class="tab-content active" id="tab-overview">
+      <div class="tab-content active" id="tabOverview">
         <section class="panel welcome-section reveal">
           <h2 class="welcome-heading" id="welcomeHeading">
             <span data-i18n="overview_welcome">Welcome,</span>
@@ -235,7 +240,7 @@
       <!-- ============================================================
            TAB: RESOURCES
            ============================================================ -->
-      <div class="tab-content" id="tab-resources">
+      <div class="tab-content" id="tabResources">
         <div class="resource-stats reveal">
           <div class="resource-stat">
             <i data-lucide="cpu" width="20" height="20"></i>
@@ -338,7 +343,7 @@
       <!-- ============================================================
            TAB: FILE MANAGER (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-files">
+      <div class="tab-content" id="tabFiles">
         <section class="panel placeholder-section reveal">
           <i data-lucide="folder" width="48" height="48"></i>
           <h2 class="placeholder-title">File Manager</h2>
@@ -352,7 +357,7 @@
       <!-- ============================================================
            TAB: NETWORK (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-network">
+      <div class="tab-content" id="tabNetwork">
         <section class="panel placeholder-section reveal">
           <i data-lucide="wifi" width="48" height="48"></i>
           <h2 class="placeholder-title">Network</h2>
@@ -366,7 +371,7 @@
       <!-- ============================================================
            TAB: BATTERY (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-battery">
+      <div class="tab-content" id="tabBattery">
         <section class="panel placeholder-section reveal">
           <i data-lucide="battery" width="48" height="48"></i>
           <h2 class="placeholder-title">Battery</h2>
@@ -380,7 +385,7 @@
       <!-- ============================================================
            TAB: PROCESS MANAGER (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-processes">
+      <div class="tab-content" id="tabProcesses">
         <section class="panel placeholder-section reveal">
           <i data-lucide="list-checks" width="48" height="48"></i>
           <h2 class="placeholder-title">Process Manager</h2>
@@ -393,7 +398,7 @@
       <!-- ============================================================
            TAB: STARTUP APPS (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-startup">
+      <div class="tab-content" id="tabStartup">
         <section class="panel placeholder-section reveal">
           <i data-lucide="rocket" width="48" height="48"></i>
           <h2 class="placeholder-title">Startup Apps</h2>
@@ -404,9 +409,16 @@
       </div>
 
       <!-- ============================================================
+           TAB: MCTOOLKIT
+           ============================================================ -->
+      <div class="tab-content" id="tabMctoolkit">
+        <webview id="mctoolkitWebview" src="https://mctoolkit.bananabrother77.online/"></webview>
+      </div>
+
+      <!-- ============================================================
            TAB: WEBSITE STATISTICS (placeholder)
            ============================================================ -->
-      <div class="tab-content" id="tab-stats">
+      <div class="tab-content" id="tabStats">
         <section class="panel placeholder-section reveal">
           <i data-lucide="bar-chart-3" width="48" height="48"></i>
           <h2 class="placeholder-title">Website Statistics</h2>
@@ -420,7 +432,7 @@
       <!-- ============================================================
            TAB: SETTINGS
            ============================================================ -->
-      <div class="tab-content" id="tab-settings">
+      <div class="tab-content" id="tabSettings">
         <section class="panel settings-section reveal">
           <h2 class="section-header">
             <i data-lucide="palette" width="22" height="22"></i>
