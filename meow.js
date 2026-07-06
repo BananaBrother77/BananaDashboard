@@ -527,6 +527,24 @@ function sendToWindow(channel, data) {
     mainWindow.webContents.send(channel, data);
 }
 
+function rpcSettingsPath() {
+  return path.join(app.getPath('userData'), 'rpc-enabled.json');
+}
+
+function loadRpcEnabled() {
+  try {
+    return JSON.parse(fs.readFileSync(rpcSettingsPath(), 'utf8'));
+  } catch {
+    return true;
+  }
+}
+
+function saveRpcEnabled(val) {
+  try {
+    fs.writeFileSync(rpcSettingsPath(), JSON.stringify(val));
+  } catch {}
+}
+
 app.whenReady().then(() => {
   createWindow();
 
@@ -554,6 +572,7 @@ app.whenReady().then(() => {
   autoUpdater.checkForUpdates();
 
   discord.onStatus((status) => sendToWindow('rpc-status', status));
+  if (!loadRpcEnabled()) discord.setEnabled(false);
   discord.init();
 });
 
@@ -562,7 +581,10 @@ app.on('will-quit', () => discord.destroy());
 ipcMain.handle('set-presence-tab', (_, tab) => discord.setTab(tab));
 ipcMain.handle('get-rpc-status', () => discord.getStatus());
 ipcMain.handle('reconnect-rpc', () => discord.reconnect());
-ipcMain.handle('set-rpc-enabled', (_, val) => discord.setEnabled(val));
+ipcMain.handle('set-rpc-enabled', (_, val) => {
+  saveRpcEnabled(val);
+  discord.setEnabled(val);
+});
 
 ipcMain.handle('get-app-version', () => app.getVersion());
 
