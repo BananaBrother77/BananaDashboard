@@ -7,7 +7,6 @@ const { autoUpdater } = require('electron-updater');
 const discord = require('./src/assets/js/modules/discord');
 
 // App configuration
-app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('disable-software-rasterizer');
 
 const PLATFORM = os.platform();

@@ -88,6 +88,11 @@ function switchTab(tabName) {
   }
 
   if (content && window.resetReveal) resetReveal(content);
+
+  // Webview visibility — native layer ignores parent display:none
+  if (mctoolkit.webview) {
+    mctoolkit.webview.style.display = tabName === 'mctoolkit' ? '' : 'none';
+  }
 }
 
 function getTabFromURL() {
