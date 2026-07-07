@@ -78,6 +78,7 @@ jobs:
 
       - name: Discord notification
         env:
+          GH_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           RELEASE_TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
@@ -92,7 +93,7 @@ jobs:
                 "color": 8153788,
                 "description": (if $body != "" then $body[0:200] else "A new release is out!" end),
                 "fields": [
-                  { "name": "Downloads", "value": "[GitHub Release](" + $url + ")", "inline": false }
+                  { "name": "Downloads", "value": "[GitHub Release](\($url))", "inline": false }
                 ],
                 "footer": { "text": "BananaDashboard" }
               }]
