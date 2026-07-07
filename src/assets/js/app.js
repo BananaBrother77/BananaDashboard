@@ -37,16 +37,11 @@ const update = {
 
 const versionEl = document.getElementById('appVersion');
 
-const mcToolkit = {
-  webview: document.getElementById('mcToolkitWebview'),
-};
-
-const mcServerHost = {
-  webview: document.getElementById('mcServerHostWebview'),
-};
-
-const mcshTools = {
-  webview: document.getElementById('mcshToolsWebview'),
+const webviews = {
+  mcToolkit: document.getElementById('mcToolkitWebview'),
+  mcServerHost: document.getElementById('mcServerHostWebview'),
+  mcshTools: document.getElementById('mcshToolsWebview'),
+  mcshStatus: document.getElementById('mcshStatusWebview'),
 };
 
 const actionCards = document.querySelectorAll('.action-card[data-tab]');
@@ -75,7 +70,8 @@ function injectNoBlur(webview) {
   });
 }
 
-injectNoBlur(mcToolkit.webview);
+injectNoBlur(webviews.mcToolkit);
+injectNoBlur(webviews.mcshStatus);
 
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
@@ -103,6 +99,7 @@ function switchTab(tabName) {
       files: 'Browsing Files',
       mcServerHost: 'Viewing MCServerHost',
       mcshTools: 'Using MCSH Tools',
+      mcshStatus: 'Viewing MCSH Status',
       mcToolkit: 'Using MCToolkit',
       stats: 'Viewing Website Statistics',
       settings: 'Tweaking Settings',
@@ -120,10 +117,10 @@ function switchTab(tabName) {
   if (content && window.resetReveal) resetReveal(content);
 
   // Webview visibility — native layer ignores parent display:none
-  const webviews = [mcToolkit.webview, mcServerHost.webview, mcshTools.webview];
-  const activeWebviews = ['mcToolkit', 'mcServerHost', 'mcshTools'];
-  webviews.forEach((wv, i) => {
-    if (wv) wv.style.display = tabName === activeWebviews[i] ? '' : 'none';
+  const activeWebviews = ['mcToolkit', 'mcServerHost', 'mcshTools', 'mcshStatus'];
+  activeWebviews.forEach((name) => {
+    const wv = webviews[name];
+    if (wv) wv.style.display = tabName === name ? '' : 'none';
   });
 }
 
@@ -149,7 +146,7 @@ document.addEventListener('keydown', (e) => {
 
 // Webview fullscreen
 function isWebviewTab(tabName) {
-  return ['mcServerHost', 'mcshTools', 'mcToolkit'].includes(tabName);
+  return ['mcServerHost', 'mcshTools', 'mcshStatus', 'mcToolkit'].includes(tabName);
 }
 function showWebviewFullscreenBtn(show) {
   if (webviewFullscreenBtn)
@@ -190,10 +187,10 @@ refreshBtn.addEventListener('click', () => {
   const tab = active ? active.id.replace(/^tab/, '').toLowerCase() : 'overview';
   if (tab === 'overview') loadSystemInfo();
   if (tab === 'resources' && resources.interval) resources.fetchAndUpdate();
-  if (tab === 'mctoolkit' && mcToolkit.webview) mcToolkit.webview.reload();
-  if (tab === 'mcserverhost' && mcServerHost.webview)
-    mcServerHost.webview.reload();
-  if (tab === 'mcshtools' && mcshTools.webview) mcshTools.webview.reload();
+  if (tab === 'mctoolkit' && webviews.mcToolkit) webviews.mcToolkit.reload();
+  if (tab === 'mcserverhost' && webviews.mcServerHost) webviews.mcServerHost.reload();
+  if (tab === 'mcshtools' && webviews.mcshTools) webviews.mcshTools.reload();
+  if (tab === 'mcshstatus' && webviews.mcshStatus) webviews.mcshStatus.reload();
 });
 
 // Theme switching

@@ -95,6 +95,11 @@
         <span data-i18n="tab_mcshtools">MCSH Tools</span>
       </button>
 
+      <button class="nav-item" data-tab="mcshStatus">
+        <i data-lucide="eye" width="20" height="20"></i>
+        <span data-i18n="tab_mcshstatus">MCSH Status</span>
+      </button>
+
       <div class="sidebar-spacer"></div>
 
       </div>
@@ -450,6 +455,18 @@
             <i data-lucide="minimize-2" width="20" height="20"></i>
           </button>
           <webview id="mcshToolsWebview" src="https://mcsh.tools/"></webview>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           TAB: MCSH STATUS
+           ============================================================ -->
+      <div class="tab-content webview-tab" id="tabMcshStatus">
+        <div class="panel webview-panel">
+          <button class="webview-exit-btn" title="Exit fullscreen">
+            <i data-lucide="minimize-2" width="20" height="20"></i>
+          </button>
+          <webview id="mcshStatusWebview" src="https://maximerix.dev/mcsh/status/"></webview>
         </div>
       </div>
 

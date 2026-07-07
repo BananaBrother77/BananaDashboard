@@ -365,7 +365,8 @@ body {
 
 #mcToolkitWebview,
 #mcServerHostWebview,
-#mcshToolsWebview {
+#mcshToolsWebview,
+#mcshStatusWebview {
   flex: 1;
   border: none;
   border-radius: 14px;
@@ -581,7 +582,8 @@ body {
 }
 .webview-fullscreen #mcToolkitWebview,
 .webview-fullscreen #mcServerHostWebview,
-.webview-fullscreen #mcshToolsWebview {
+.webview-fullscreen #mcshToolsWebview,
+.webview-fullscreen #mcshStatusWebview {
   border-radius: 0;
 }
 .webview-fullscreen .webview-exit-btn {
