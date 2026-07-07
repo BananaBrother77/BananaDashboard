@@ -76,3 +76,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY="$(gh release view "$RELEASE_TAG" --repo "$REPO" --json body --jq '.body' | head -c 4000)"
+          curl -s -H "Content-Type: application/json" \
+            -d "$(jq -n --arg tag "$RELEASE_TAG" --arg url "https://github.com/$REPO/releases/tag/$RELEASE_TAG" --arg body "$BODY" '{
+              "content": "<@&1495199325268217977>",
+              "embeds": [{
+                "title": "BananaDashboard \($tag)",
+                "url": $url,
+                "color": 8153788,
+                "description": (if $body != "" then $body[0:200] else "A new release is out!" end),
+                "fields": [
+                  { "name": "Downloads", "value": "[GitHub Release](" + $url + ")", "inline": false }
+                ],
+                "footer": { "text": "BananaDashboard" }
+              }]
+            }')" "$DISCORD_WEBHOOK"
+

@@ -1,5 +1,6 @@
 const translations = {
   en: {
+    hide_sidebar: 'Hide Sidebar',
     tab_overview: 'System Overview',
     tab_resources: 'Resources',
     tab_network: 'Network',
@@ -7,6 +8,8 @@ const translations = {
     tab_processes: 'Process Manager',
     tab_startup: 'Startup Apps',
     tab_files: 'File Manager',
+    tab_mcserverhost: 'MCServerHost',
+    tab_mcshtools: 'MCSH Tools',
     tab_mctoolkit: 'MCToolkit',
     tab_stats: 'Website Statistics',
     tab_settings: 'Settings',
@@ -67,6 +70,7 @@ const translations = {
     more_info: 'More Info',
   },
   de: {
+    hide_sidebar: 'Sidebar ausblenden',
     tab_overview: 'Systemübersicht',
     tab_resources: 'Ressourcen',
     tab_network: 'Netzwerk',
@@ -74,6 +78,8 @@ const translations = {
     tab_processes: 'Prozessmanager',
     tab_startup: 'Autostart',
     tab_files: 'Dateimanager',
+    tab_mcserverhost: 'MCServerHost',
+    tab_mcshtools: 'MCSH Tools',
     tab_mctoolkit: 'MCToolkit',
     tab_stats: 'Webseitenstatistik',
     tab_settings: 'Einstellungen',

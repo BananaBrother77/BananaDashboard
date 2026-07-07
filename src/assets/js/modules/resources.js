@@ -351,7 +351,7 @@ resources.updateAppUsage = function (data) {
 resources.fetchAndUpdate = async function () {
   if (!this.charts.cpu) return;
   try {
-    const [res, app] = await Promise.all([
+    const [res, appUsage] = await Promise.all([
       window.dashboardAPI.getResources(),
       window.dashboardAPI.getAppUsage(),
     ]);
@@ -385,7 +385,7 @@ resources.fetchAndUpdate = async function () {
     this.updateDiskChart(res.disk);
     this.updateDiskSummary(res.disk);
     this.updateDiskStat(res.disk);
-    this.updateAppUsage(app);
+    this.updateAppUsage(appUsage);
 
     const now = new Date();
     const label = now.getSeconds() + 's';

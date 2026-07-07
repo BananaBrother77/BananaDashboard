@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -47,6 +47,90 @@ function getDistro() {
 // Window management
 let mainWindow;
 
+function buildAppMenu() {
+  const isMac = PLATFORM === 'darwin';
+  const template = [
+    ...(isMac
+      ? [
+          {
+            label: app.name,
+            submenu: [
+              { role: 'about' },
+              { type: 'separator' },
+              { role: 'hide' },
+              { role: 'hideOthers' },
+              { role: 'unhide' },
+              { type: 'separator' },
+              { role: 'quit' },
+            ],
+          },
+        ]
+      : []),
+    {
+      label: 'File',
+      submenu: [isMac ? { role: 'close' } : { role: 'quit' }],
+    },
+    { role: 'editMenu' },
+    {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+R',
+          click: () => {
+            if (mainWindow && !mainWindow.isDestroyed())
+              mainWindow.webContents.reload();
+          },
+        },
+        {
+          label: 'Force Reload',
+          accelerator: 'CmdOrCtrl+Shift+R',
+          click: () => {
+            if (mainWindow && !mainWindow.isDestroyed())
+              mainWindow.webContents.reloadIgnoringCache();
+          },
+        },
+        { type: 'separator' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' },
+      ],
+    },
+    { role: 'windowMenu' },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'Toggle Developer Tools',
+          accelerator: isMac ? 'Alt+Cmd+I' : 'Ctrl+Shift+I',
+          click: () => {
+            toggleDevTools();
+          },
+        },
+        {
+          label: 'Toggle Developer Tools (F12)',
+          accelerator: 'F12',
+          click: () => {
+            toggleDevTools();
+          },
+        },
+      ],
+    },
+  ];
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
+function toggleDevTools() {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    const wc = mainWindow.webContents;
+    if (wc.isDevToolsOpened()) wc.closeDevTools();
+    else wc.openDevTools({ mode: 'right' });
+  }
+}
+
 function resolveIcon() {
   if (PLATFORM === 'darwin')
     return path.join(__dirname, 'src', 'assets', 'icon.icns');
@@ -70,6 +154,8 @@ function createWindow() {
       webviewTag: true,
     },
   });
+
+  buildAppMenu();
 
   mainWindow.loadFile(path.join(__dirname, 'src', 'index.html'));
 }

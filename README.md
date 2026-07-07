@@ -6,23 +6,16 @@ A desktop system dashboard built with Electron. Think of it like a server dashbo
 
 ## Features
 
-- **Overview** -- System info at a glance: OS, kernel, CPU, RAM, uptime
-- **Resources** -- Live CPU, RAM, and disk usage graphs with configurable refresh rate
-- **Theme system** -- Five color themes (purple, green, red, yellow, blue) that persist across sessions
+- **Overview** -- System info at a glance: OS, kernel, CPU, RAM, GPU, uptime, plus a collapsible More Info panel (shell, DE, terminal, packages, local IP, battery, swap)
+- **Resources** -- Live CPU, RAM, GPU, and disk usage graphs with configurable refresh rate; per-partition disk breakdown; app resource usage (PID, memory, heap)
+- **Theme system** -- Six color themes (purple, green, red, yellow, blue, pink) that persist across sessions
 - **Multi-language** -- English and German UI, switchable on the fly
 - **Discord Rich Presence** -- Shows your current tab and system status in Discord
 - **Auto-updates** -- Checks for new versions on startup, manual download flow with progress bar
-- **Settings** -- Theme picker, language toggle, refresh rate control, version info, update management, Discord RPC toggle
+- **Settings** -- Theme picker, language toggle, refresh rate control, settings search, version info, update management, Discord RPC toggle
+- **Webview tabs** -- Embedded MCToolkit, MCServerHost, and MCSH Tools panels with fullscreen mode
+- **Sidebar collapse** -- Click the edge bar or press Ctrl+B to collapse the sidebar for more content space
 - **Loading screen** -- Animated splash with logo and spinner while system info loads
-
-### Planned
-
-- Network tab (interfaces, IPs, live bandwidth)
-- Battery tab
-- Process manager
-- Startup apps
-- File manager (with future SFTP support)
-- Website statistics from BananaBrother77 services
 
 ## Tech Stack
 
@@ -55,7 +48,7 @@ npm start
 npm start
 ```
 
-The app starts with an auto-hidden menu bar (press Alt to show it). Tab shortcuts: 1-9 on your keyboard.
+The app starts with an auto-hidden menu bar (press Alt to show it). Tab shortcuts: 1-9 on your keyboard. Press Ctrl+B to collapse the sidebar.
 
 ## Building
 
@@ -73,7 +66,7 @@ Output in `dist/`:
 Install the pacman package:
 
 ```bash
-sudo pacman -U dist/bananadashboard-1.0.0.pacman
+sudo pacman -U dist/bananadashboard-*.pacman
 ```
 
 After installing, you may need to log out and back in to pick up the icon in KDE.

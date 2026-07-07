@@ -8,7 +8,6 @@
   --panel-bg: rgba(255, 255, 255, 0.03);
   --panel-border: rgba(255, 255, 255, 0.08);
   --online-green: #50fa7b;
-  --online-green-shadow: rgba(80, 250, 123, 0.5);
   --warn-yellow: #f1fa8c;
   --offline-red: #ff5555;
   --text-main: #f8f8f2;
@@ -21,16 +20,10 @@
   --accent-purple-dark: #6a47b8;
   --accent-bright-shadow: rgba(124, 88, 204, 0.3);
   --accent-focus-ring: rgba(124, 88, 204, 0.18);
-  --btn-text: #ffffff;
-  --shadow-sm: rgba(0, 0, 0, 0.4);
   --shadow-md: rgba(0, 0, 0, 0.5);
   --shadow-lg: rgba(0, 0, 0, 0.6);
-  --shadow-xl: rgba(0, 0, 0, 0.7);
   --hover-bg: rgba(255, 255, 255, 0.05);
-  --focus-bg: rgba(255, 255, 255, 0.06);
   --focus-ring: rgba(124, 88, 204, 0.18);
-  --border-light: rgba(255, 255, 255, 0.15);
-  --input-bg: rgba(255, 255, 255, 0.04);
 }
 
 .theme-green {
@@ -146,12 +139,61 @@ body {
   flex-direction: column;
   padding: 20px 12px;
   gap: 6px;
+  transition:
+    width 0.25s ease,
+    min-width 0.25s ease,
+    padding 0.25s ease;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-edge {
+  width: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.sidebar-edge:hover,
+.sidebar-edge.active {
+  background: var(--accent-focus-ring);
+}
+
+.sidebar-edge::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.sidebar-edge:hover::before,
+.sidebar-edge.active::before {
+  opacity: 0.5;
 }
 
 .sidebar-brand {
   display: flex;
   justify-content: center;
-  padding: 20px 12px 18px;
+  padding: 5px 3px 4.5px;
 }
 
 .sidebar-brand-name {
@@ -224,6 +266,14 @@ body {
 
 .sidebar-spacer {
   flex: 1;
+}
+
+/* Collapsed sidebar */
+.sidebar-collapsed .sidebar {
+  width: 0;
+  min-width: 0;
+  padding: 20px 0;
+  overflow: hidden;
 }
 
 /* Main content */
@@ -299,17 +349,27 @@ body {
   box-shadow: 0 10px 30px var(--shadow-md);
 }
 
-/* MCToolkit */
-#tabMctoolkit {
-  display: flex;
+/* Webview tabs */
+.webview-tab {
   flex-direction: column;
   height: 100%;
 }
 
-#mctoolkitWebview {
+.webview-panel {
+  flex: 1;
+  display: flex;
+  padding: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+#mcToolkitWebview,
+#mcServerHostWebview,
+#mcshToolsWebview {
   flex: 1;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
+  overflow: hidden;
   height: 100%;
 }
 
@@ -469,4 +529,61 @@ body {
   background: var(--accent-purple);
   border-radius: 3px;
   transition: width 0.3s ease;
+}
+
+/* Webview exit-fullscreen button (overlaid when fullscreen) */
+.webview-exit-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: rgba(17, 17, 17, 0.75);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.webview-exit-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-purple-light);
+  transform: translateY(-1px);
+}
+
+/* Webview fullscreen mode — collapses sidebar, expands content */
+.webview-fullscreen .sidebar {
+  width: 0;
+  min-width: 0;
+  padding: 20px 0;
+  overflow: hidden;
+}
+.webview-fullscreen .sidebar-edge {
+  display: none;
+}
+.webview-fullscreen .main-content {
+  padding: 0;
+}
+.webview-fullscreen .page-header {
+  display: none;
+}
+.webview-fullscreen .webview-panel {
+  border-radius: 0;
+}
+.webview-fullscreen #mcToolkitWebview,
+.webview-fullscreen #mcServerHostWebview,
+.webview-fullscreen #mcshToolsWebview {
+  border-radius: 0;
+}
+.webview-fullscreen .webview-exit-btn {
+  display: flex;
 }

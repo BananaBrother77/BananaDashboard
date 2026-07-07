@@ -1,3 +1,107 @@
+/* Settings layout with category nav */
+#tabSettings.active {
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-layout {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-nav {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+}
+
+.settings-search input {
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+}
+
+.settings-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.settings-search svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.settings-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: left;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+
+.settings-nav-item:hover {
+  color: var(--text-main);
+  background: var(--hover-bg);
+}
+
+.settings-nav-item.active {
+  color: var(--accent-purple);
+  background: var(--accent-focus-ring);
+}
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-border) transparent;
+}
+
+.settings-category {
+  display: none;
+}
+
+.settings-category.active {
+  display: block;
+}
+
 /* Settings */
 .settings-section {
   padding: 24px;
@@ -239,6 +343,11 @@
 .rpc-dot.disabled {
   background: var(--text-muted);
   opacity: 0.5;
+}
+
+.rpc-dot.connecting {
+  background: var(--warn-yellow);
+  box-shadow: 0 0 6px var(--warn-yellow);
 }
 
 .rpc-status-text {

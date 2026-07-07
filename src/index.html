@@ -20,10 +20,10 @@
       </div>
     </div>
 
-    <!-- ============================================================
-         SIDEBAR
-         ============================================================ -->
     <aside class="sidebar">
+
+      <div class="sidebar-scroll">
+
       <div class="sidebar-brand">
         <span class="sidebar-brand-name">BananaDashboard</span>
       </div>
@@ -71,7 +71,7 @@
         <span data-i18n="tab_files">File Manager</span>
       </button>
 
-      <button class="nav-item" data-tab="mctoolkit">
+      <button class="nav-item" data-tab="mcToolkit">
         <i data-lucide="gamepad-2" width="20" height="20"></i>
         <span data-i18n="tab_mctoolkit">MCToolkit</span>
       </button>
@@ -81,7 +81,23 @@
         <span data-i18n="tab_stats">Website Statistics</span>
       </button>
 
+      <div class="sidebar-divider"></div>
+
+      <span class="nav-section-label">MCServerHost</span>
+
+      <button class="nav-item" data-tab="mcServerHost">
+        <i data-lucide="server" width="20" height="20"></i>
+        <span data-i18n="tab_mcserverhost">MCServerHost</span>
+      </button>
+
+      <button class="nav-item" data-tab="mcshTools">
+        <i data-lucide="wrench" width="20" height="20"></i>
+        <span data-i18n="tab_mcshtools">MCSH Tools</span>
+      </button>
+
       <div class="sidebar-spacer"></div>
+
+      </div>
 
       <div class="sidebar-divider"></div>
 
@@ -90,6 +106,8 @@
         <span data-i18n="tab_settings">Settings</span>
       </button>
     </aside>
+
+    <div class="sidebar-edge" id="sidebarEdge" title="Toggle sidebar"></div>
 
     <!-- ============================================================
          MAIN CONTENT
@@ -100,6 +118,9 @@
         <div class="header-actions">
           <button class="icon-btn" title="Refresh">
             <i data-lucide="refresh-cw" width="20" height="20"></i>
+          </button>
+          <button class="icon-btn webview-toggle-btn hidden" id="webviewFullscreenBtn" title="Fullscreen">
+            <i data-lucide="maximize" width="20" height="20"></i>
           </button>
         </div>
       </div>
@@ -119,43 +140,43 @@
           <div class="info-row">
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_os">OS</span>
-            <span class="info-value" id="osVersionCard">--</span>
+            <span class="info-value" id="osVersionCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="terminal" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_host">Host</span>
-            <span class="info-value" id="hostnameCard">--</span>
+            <span class="info-value" id="hostnameCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_kernel">Kernel</span>
-            <span class="info-value" id="kernelVersionCard">--</span>
+            <span class="info-value" id="kernelVersionCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_cpu">CPU</span>
-            <span class="info-value" id="cpuCard">--</span>
+            <span class="info-value" id="cpuCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="layers" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_cores">Cores</span>
-            <span class="info-value" id="cpuCoresCard">--</span>
+            <span class="info-value" id="cpuCoresCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_gpu">GPU</span>
-            <span class="info-value" id="gpuCard">--</span>
+            <span class="info-value" id="gpuCard">—</span>
           </div>
           <div class="info-divider"></div>
           <div class="info-row">
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_ram">RAM</span>
-            <span class="info-value" id="ramCard">--</span>
+            <span class="info-value" id="ramCard">—</span>
           </div>
         </section>
 
@@ -167,35 +188,35 @@
           <div class="detail-grid" id="detailGrid" style="display: none">
             <div class="detail-row">
               <span class="detail-label">Uptime</span>
-              <span class="detail-value" id="detailUptime">--</span>
+              <span class="detail-value" id="detailUptime">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Shell</span>
-              <span class="detail-value" id="detailShell">--</span>
+              <span class="detail-value" id="detailShell">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">DE</span>
-              <span class="detail-value" id="detailDe">--</span>
+              <span class="detail-value" id="detailDe">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Terminal</span>
-              <span class="detail-value" id="detailTerminal">--</span>
+              <span class="detail-value" id="detailTerminal">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Packages</span>
-              <span class="detail-value" id="detailPackages">--</span>
+              <span class="detail-value" id="detailPackages">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Local IP</span>
-              <span class="detail-value" id="detailLocalIp">--</span>
+              <span class="detail-value" id="detailLocalIp">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Battery</span>
-              <span class="detail-value" id="detailBattery">--</span>
+              <span class="detail-value" id="detailBattery">—</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Swap</span>
-              <span class="detail-value" id="detailSwap">--</span>
+              <span class="detail-value" id="detailSwap">—</span>
             </div>
           </div>
         </section>
@@ -245,27 +266,27 @@
           <div class="resource-stat">
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_cpu">CPU</span>
-            <span class="resource-value" id="cpuValue">--</span>
+            <span class="resource-value" id="cpuValue">—</span>
           </div>
           <div class="resource-stat">
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_gpu">GPU</span>
-            <span class="resource-value" id="gpuValue">--</span>
+            <span class="resource-value" id="gpuValue">—</span>
           </div>
           <div class="resource-stat">
             <i data-lucide="thermometer" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_temp">Temp</span>
-            <span class="resource-value" id="gpuTempValue">--</span>
+            <span class="resource-value" id="gpuTempValue">—</span>
           </div>
           <div class="resource-stat">
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_ram">RAM</span>
-            <span class="resource-value" id="ramValue">--</span>
+            <span class="resource-value" id="ramValue">—</span>
           </div>
           <div class="resource-stat">
             <i data-lucide="hard-drive" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_disk">Disk</span>
-            <span class="resource-value" id="diskValue">--</span>
+            <span class="resource-value" id="diskValue">—</span>
           </div>
         </div>
         <div class="chart-grid">
@@ -317,23 +338,23 @@
           <div class="app-stats-grid" id="appStatsGrid">
             <div class="app-stat">
               <div class="app-stat-label" data-i18n="app_pid">PID</div>
-              <div class="app-stat-value" id="appPid">--</div>
+              <div class="app-stat-value" id="appPid">—</div>
             </div>
             <div class="app-stat">
               <div class="app-stat-label" data-i18n="app_memory">Memory</div>
-              <div class="app-stat-value" id="appMemory">--</div>
+              <div class="app-stat-value" id="appMemory">—</div>
             </div>
             <div class="app-stat">
               <div class="app-stat-label" data-i18n="app_heap">Heap</div>
-              <div class="app-stat-value" id="appHeap">--</div>
+              <div class="app-stat-value" id="appHeap">—</div>
             </div>
             <div class="app-stat">
               <div class="app-stat-label" data-i18n="app_cpu">CPU</div>
-              <div class="app-stat-value" id="appCpu">--</div>
+              <div class="app-stat-value" id="appCpu">—</div>
             </div>
             <div class="app-stat">
               <div class="app-stat-label" data-i18n="app_uptime">Uptime</div>
-              <div class="app-stat-value" id="appUptime">--</div>
+              <div class="app-stat-value" id="appUptime">—</div>
             </div>
           </div>
           <div class="app-versions" id="appVersions"></div>
@@ -409,10 +430,39 @@
       </div>
 
       <!-- ============================================================
+           TAB: MCSERVERHOST
+           ============================================================ -->
+      <div class="tab-content webview-tab" id="tabMcServerHost">
+        <div class="panel webview-panel">
+          <button class="webview-exit-btn" title="Exit fullscreen">
+            <i data-lucide="minimize-2" width="20" height="20"></i>
+          </button>
+          <webview id="mcServerHostWebview" src="https://www.mcserverhost.com/"></webview>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           TAB: MCSH TOOLS
+           ============================================================ -->
+      <div class="tab-content webview-tab" id="tabMcshTools">
+        <div class="panel webview-panel">
+          <button class="webview-exit-btn" title="Exit fullscreen">
+            <i data-lucide="minimize-2" width="20" height="20"></i>
+          </button>
+          <webview id="mcshToolsWebview" src="https://mcsh.tools/"></webview>
+        </div>
+      </div>
+
+      <!-- ============================================================
            TAB: MCTOOLKIT
            ============================================================ -->
-      <div class="tab-content" id="tabMctoolkit">
-        <webview id="mctoolkitWebview" src="https://mctoolkit.bananabrother77.online/"></webview>
+      <div class="tab-content webview-tab" id="tabMcToolkit">
+        <div class="panel webview-panel">
+          <button class="webview-exit-btn" title="Exit fullscreen">
+            <i data-lucide="minimize-2" width="20" height="20"></i>
+          </button>
+          <webview id="mcToolkitWebview" src="https://mctoolkit.bananabrother77.online/"></webview>
+        </div>
       </div>
 
       <!-- ============================================================
@@ -433,140 +483,161 @@
            TAB: SETTINGS
            ============================================================ -->
       <div class="tab-content" id="tabSettings">
-        <section class="panel settings-section reveal">
-          <h2 class="section-header">
-            <i data-lucide="palette" width="22" height="22"></i>
-            <span data-i18n="settings_theme">Theme</span>
-          </h2>
-          <p class="settings-desc" data-i18n="settings_desc">
-            Choose your accent colour scheme.
-          </p>
-          <div class="theme-grid">
-            <div class="theme-card active" data-theme="purple">
-              <div class="theme-swatch" style="background: #7c58cc"></div>
-              <span class="theme-name">Purple</span>
+        <div class="settings-layout">
+          <aside class="settings-nav">
+            <div class="settings-search">
+              <i data-lucide="search" width="16" height="16"></i>
+              <input type="text" id="settingsSearch" placeholder="Search settings…">
             </div>
-            <div class="theme-card" data-theme="green">
-              <div class="theme-swatch" style="background: #1ad76f"></div>
-              <span class="theme-name">Green</span>
+            <div class="settings-nav-list">
+              <button class="settings-nav-item active" data-setting-cat="all">
+                <i data-lucide="layout-list" width="18" height="18"></i>
+                <span>All</span>
+              </button>
+              <button class="settings-nav-item" data-setting-cat="appearance">
+                <i data-lucide="palette" width="18" height="18"></i>
+                <span>Appearance</span>
+              </button>
+              <button class="settings-nav-item" data-setting-cat="system">
+                <i data-lucide="monitor" width="18" height="18"></i>
+                <span>System</span>
+              </button>
+              <button class="settings-nav-item" data-setting-cat="updates">
+                <i data-lucide="refresh-cw" width="18" height="18"></i>
+                <span>Updates</span>
+              </button>
+              <button class="settings-nav-item" data-setting-cat="rpc">
+                <i data-lucide="disc" width="18" height="18"></i>
+                <span>Discord RPC</span>
+              </button>
             </div>
-            <div class="theme-card" data-theme="red">
-              <div class="theme-swatch" style="background: #c74343"></div>
-              <span class="theme-name">Red</span>
-            </div>
-            <div class="theme-card" data-theme="yellow">
-              <div class="theme-swatch" style="background: #c7a043"></div>
-              <span class="theme-name">Yellow</span>
-            </div>
-            <div class="theme-card" data-theme="blue">
-              <div class="theme-swatch" style="background: #4372c7"></div>
-              <span class="theme-name">Blue</span>
-            </div>
-            <div class="theme-card" data-theme="pink">
-              <div class="theme-swatch" style="background: #e880a8"></div>
-              <span class="theme-name">Pink</span>
-            </div>
+          </aside>
+
+          <div class="settings-content">
+            <section class="panel settings-section reveal settings-category active" data-category="appearance">
+              <h2 class="section-header">
+                <i data-lucide="palette" width="22" height="22"></i>
+                <span data-i18n="settings_theme">Theme</span>
+              </h2>
+              <p class="settings-desc" data-i18n="settings_desc">
+                Choose your accent colour scheme.
+              </p>
+              <div class="theme-grid">
+                <div class="theme-card active" data-theme="purple">
+                  <div class="theme-swatch" style="background: #7c58cc"></div>
+                  <span class="theme-name">Purple</span>
+                </div>
+                <div class="theme-card" data-theme="green">
+                  <div class="theme-swatch" style="background: #1ad76f"></div>
+                  <span class="theme-name">Green</span>
+                </div>
+                <div class="theme-card" data-theme="red">
+                  <div class="theme-swatch" style="background: #c74343"></div>
+                  <span class="theme-name">Red</span>
+                </div>
+                <div class="theme-card" data-theme="yellow">
+                  <div class="theme-swatch" style="background: #c7a043"></div>
+                  <span class="theme-name">Yellow</span>
+                </div>
+                <div class="theme-card" data-theme="blue">
+                  <div class="theme-swatch" style="background: #4372c7"></div>
+                  <span class="theme-name">Blue</span>
+                </div>
+                <div class="theme-card" data-theme="pink">
+                  <div class="theme-swatch" style="background: #e880a8"></div>
+                  <span class="theme-name">Pink</span>
+                </div>
+              </div>
+
+              <h2 class="section-header section-header-spaced">
+                <i data-lucide="languages" width="22" height="22"></i>
+                <span data-i18n="settings_language">Language</span>
+              </h2>
+              <button class="lang-btn" id="langSwitchBtn">
+                <span class="lang-name" data-i18n="lang_name">English</span>
+              </button>
+            </section>
+
+            <section class="panel settings-section reveal settings-category active" data-category="system">
+              <h2 class="section-header">
+                <i data-lucide="gauge" width="22" height="22"></i>
+                <span data-i18n="settings_refresh">Resource Refresh</span>
+              </h2>
+              <div class="custom-select" id="refreshSelect" tabindex="0">
+                <button class="select-trigger" type="button">
+                  <span class="select-value">2s</span>
+                  <i data-lucide="chevron-down" width="16" height="16"></i>
+                </button>
+                <div class="select-options">
+                  <div class="select-option" data-value="500">0.5s</div>
+                  <div class="select-option" data-value="1000">1s</div>
+                  <div class="select-option selected" data-value="2000">2s</div>
+                  <div class="select-option" data-value="5000">5s</div>
+                  <div class="select-option" data-value="10000">10s</div>
+                  <div class="select-option" data-value="0">Off</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel settings-section reveal settings-category active" data-category="updates">
+              <h2 class="section-header">
+                <i data-lucide="refresh-cw" width="22" height="22"></i>
+                <span data-i18n="settings_updates">Updates</span>
+              </h2>
+
+              <div class="version-status-container">
+                <div class="version-info">
+                  <span class="version-label" data-i18n="settings_version">Version</span>
+                  <span class="version-value" id="appVersion">—</span>
+                </div>
+
+                <div class="update-status" id="updateStatusBar">
+                  <span class="update-status-text" id="updateStatusText" data-i18n="update_checking">Checking for updates...</span>
+                </div>
+              </div>
+
+              <div class="update-bar hidden" id="updateProgressBar">
+                <div class="update-fill" id="updateProgressFill"></div>
+              </div>
+
+              <div class="rpc-actions">
+                <button class="lang-btn" id="updateCheckBtn">
+                  <i data-lucide="refresh-cw" width="16" height="16"></i>
+                  <span data-i18n="update_check_btn">Check for Updates</span>
+                </button>
+                <button class="lang-btn hidden" id="updateInstallBtn">
+                  <i data-lucide="download" width="16" height="16"></i>
+                  <span data-i18n="update_install_btn">Restart & Install</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="panel settings-section reveal settings-category active" data-category="rpc">
+              <h2 class="section-header">
+                <i data-lucide="disc" width="22" height="22"></i>
+                <span data-i18n="settings_rpc">Discord Rich Presence</span>
+              </h2>
+
+              <div class="rpc-status" id="rpcStatusBar">
+                <span class="rpc-dot" id="rpcDot"></span>
+                <span class="rpc-status-text" id="rpcStatusText" data-i18n="rpc_connecting">Connecting...</span>
+              </div>
+
+              <div class="rpc-actions">
+                <button class="lang-btn" id="rpcReconnectBtn">
+                  <i data-lucide="refresh-cw" width="16" height="16"></i>
+                  <span data-i18n="rpc_reconnect">Reconnect</span>
+                </button>
+                <button class="lang-btn" id="rpcToggleBtn">
+                  <i data-lucide="power" width="16" height="16"></i>
+                  <span data-i18n="rpc_disable">Disable</span>
+                </button>
+              </div>
+
+              <p class="settings-desc" data-i18n="rpc_desc">Show your current tab and system info in your Discord status.</p>
+            </section>
           </div>
-
-          <h2 class="section-header section-header-spaced">
-            <i data-lucide="languages" width="22" height="22"></i>
-            <span data-i18n="settings_language">Language</span>
-          </h2>
-          <button class="lang-btn" id="langSwitchBtn">
-            <span class="lang-name" data-i18n="lang_name">English</span>
-          </button>
-
-          <h2 class="section-header section-header-spaced">
-            <i data-lucide="gauge" width="22" height="22"></i>
-            <span data-i18n="settings_refresh">Resource Refresh</span>
-          </h2>
-          <div class="custom-select" id="refreshSelect" tabindex="0">
-            <button class="select-trigger" type="button">
-              <span class="select-value">2s</span>
-              <i data-lucide="chevron-down" width="16" height="16"></i>
-            </button>
-            <div class="select-options">
-              <div class="select-option" data-value="500">0.5s</div>
-              <div class="select-option" data-value="1000">1s</div>
-              <div class="select-option selected" data-value="2000">2s</div>
-              <div class="select-option" data-value="5000">5s</div>
-              <div class="select-option" data-value="10000">10s</div>
-              <div class="select-option" data-value="0">Off</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel settings-section reveal">
-          <h2 class="section-header">
-            <i data-lucide="refresh-cw" width="22" height="22"></i>
-            <span data-i18n="settings_updates">Updates</span>
-          </h2>
-
-          <div class="version-status-container">
-            <div class="version-info">
-              <span class="version-label" data-i18n="settings_version"
-                >Version</span
-              >
-              <span class="version-value" id="appVersion">--</span>
-            </div>
-
-            <div class="update-status" id="updateStatusBar">
-              <span
-                class="update-status-text"
-                id="updateStatusText"
-                data-i18n="update_checking"
-                >Checking for updates...</span
-              >
-            </div>
-          </div>
-
-          <div class="update-bar hidden" id="updateProgressBar">
-            <div class="update-fill" id="updateProgressFill"></div>
-          </div>
-
-          <div class="rpc-actions">
-            <button class="lang-btn" id="updateCheckBtn">
-              <i data-lucide="refresh-cw" width="16" height="16"></i>
-              <span data-i18n="update_check_btn">Check for Updates</span>
-            </button>
-            <button class="lang-btn hidden" id="updateInstallBtn">
-              <i data-lucide="download" width="16" height="16"></i>
-              <span data-i18n="update_install_btn">Restart & Install</span>
-            </button>
-          </div>
-        </section>
-
-        <section class="panel settings-section reveal">
-          <h2 class="section-header">
-            <i data-lucide="disc" width="22" height="22"></i>
-            <span data-i18n="settings_rpc">Discord Rich Presence</span>
-          </h2>
-
-          <div class="rpc-status" id="rpcStatusBar">
-            <span class="rpc-dot" id="rpcDot"></span>
-            <span
-              class="rpc-status-text"
-              id="rpcStatusText"
-              data-i18n="rpc_connecting"
-              >Connecting...</span
-            >
-          </div>
-
-          <div class="rpc-actions">
-            <button class="lang-btn" id="rpcReconnectBtn">
-              <i data-lucide="refresh-cw" width="16" height="16"></i>
-              <span data-i18n="rpc_reconnect">Reconnect</span>
-            </button>
-            <button class="lang-btn" id="rpcToggleBtn">
-              <i data-lucide="power" width="16" height="16"></i>
-              <span data-i18n="rpc_disable">Disable</span>
-            </button>
-          </div>
-
-          <p class="settings-desc" data-i18n="rpc_desc">
-            Show your current tab and system info in your Discord status.
-          </p>
-        </section>
+        </div>
       </div>
     </main>
 
