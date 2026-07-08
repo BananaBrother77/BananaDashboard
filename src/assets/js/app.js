@@ -35,6 +35,27 @@ const update = {
   installBtn: document.getElementById('updateInstallBtn'),
 };
 
+const updateToast = document.getElementById('updateToast');
+const toastClose = document.getElementById('toastClose');
+
+function showToast(title, desc) {
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastDesc').textContent = desc;
+  updateToast.hidden = false;
+  updateToast.onclick = () => {
+    updateToast.hidden = true;
+    switchTab('settings');
+    if (window.switchSettingsCategory) switchSettingsCategory('updates');
+  };
+  if (toastClose) {
+    toastClose.onclick = (e) => {
+      e.stopPropagation();
+      updateToast.hidden = true;
+    };
+  }
+  setTimeout(() => { updateToast.hidden = true; }, 8000);
+}
+
 const versionEl = document.getElementById('appVersion');
 
 const webviews = {
@@ -373,6 +394,10 @@ if (update.bar) {
         update.installBtn.classList.remove('hidden');
         update.installBtn.querySelector('span').textContent =
           getTranslation('update_download_btn') || 'Download';
+        showToast(
+          getTranslation('update_available') || 'Update available',
+          'v' + ver
+        );
         break;
       case 'not-available':
         update.text.textContent =
@@ -444,6 +469,13 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     toggleSidebar();
   }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 't') {
+    e.preventDefault();
+    showToast(
+      getTranslation('update_available') || 'Update available',
+      'v0.0.0'
+    );
+  }
 });
 
 // Restore sidebar state
@@ -487,6 +519,8 @@ Promise.all([
       });
     }
   }
+
+  window.switchSettingsCategory = switchCategory;
 
   function animateReveal(el) {
     if (!el.classList.contains('reveal')) return;

@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#7c58cc" />
+    <link rel="icon" type="image/svg+xml" href="assets/banana-icon.svg" />
+    <link rel="icon" type="image/x-icon" href="assets/icon.ico" />
     <title>BananaDashboard | BananaBrother77</title>
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/overview.css" />
@@ -13,7 +15,7 @@
   <body>
     <div class="loader-overlay" id="loaderOverlay">
       <div class="loader-content">
-        <img src="assets/icon.png" alt="" class="loader-logo" />
+        <img src="assets/banana-icon.svg" alt="" class="loader-logo" />
         <h1 class="loader-title">BananaDashboard</h1>
         <p class="loader-sub" data-i18n="loader_sub">Loading your Dashboard</p>
         <div class="loader-spinner"></div>
@@ -33,7 +35,7 @@
       <span class="nav-section-label">Main</span>
 
       <button class="nav-item active" data-tab="overview">
-        <i data-lucide="grid" width="20" height="20"></i>
+        <div class="banana-nav-icon"></div>
         <span data-i18n="tab_overview">System Overview</span>
       </button>
 
@@ -657,6 +659,19 @@
         </div>
       </div>
     </main>
+
+    <div class="toast" id="updateToast" hidden>
+      <div class="toast-icon">
+        <i data-lucide="download" width="20" height="20"></i>
+      </div>
+      <div class="toast-body">
+        <span class="toast-title" id="toastTitle">Update available</span>
+        <span class="toast-desc" id="toastDesc">Version</span>
+      </div>
+      <button class="toast-close" id="toastClose">
+        <i data-lucide="x" width="18" height="18"></i>
+      </button>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@1.17.0"></script>

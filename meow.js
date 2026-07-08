@@ -91,9 +91,24 @@ function buildAppMenu() {
           },
         },
         { type: 'separator' },
-        { role: 'resetZoom' },
-        { role: 'zoomIn' },
-        { role: 'zoomOut' },
+        {
+          label: 'Reset Zoom',
+          click: () => mainWindow?.webContents.setZoomLevel(0),
+        },
+        {
+          label: 'Zoom In',
+          click: () => {
+            const level = mainWindow?.webContents.getZoomLevel() + 0.3;
+            mainWindow?.webContents.setZoomLevel(Math.min(level, 3));
+          },
+        },
+        {
+          label: 'Zoom Out',
+          click: () => {
+            const level = mainWindow?.webContents.getZoomLevel() - 0.3;
+            mainWindow?.webContents.setZoomLevel(Math.max(level, -3));
+          },
+        },
         { type: 'separator' },
         { role: 'togglefullscreen' },
       ],
@@ -156,6 +171,34 @@ function createWindow() {
   });
 
   buildAppMenu();
+
+  mainWindow.webContents.on('before-input-event', (e, input) => {
+    if (!input.control && !input.meta) return;
+    if (input.type !== 'keyDown') return;
+
+    const zoomStep = 0.3;
+    const maxZoom = 3;
+    const minZoom = -3;
+
+    if (input.key === '=' || input.key === '+') {
+      const level = Math.min(
+        mainWindow.webContents.getZoomLevel() + zoomStep,
+        maxZoom,
+      );
+      mainWindow.webContents.setZoomLevel(level);
+      e.preventDefault();
+    } else if (input.key === '-') {
+      const level = Math.max(
+        mainWindow.webContents.getZoomLevel() - zoomStep,
+        minZoom,
+      );
+      mainWindow.webContents.setZoomLevel(level);
+      e.preventDefault();
+    } else if (input.key === '0') {
+      mainWindow.webContents.setZoomLevel(0);
+      e.preventDefault();
+    }
+  });
 
   mainWindow.loadFile(path.join(__dirname, 'src', 'index.html'));
 }
