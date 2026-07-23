@@ -112,8 +112,6 @@ jobs:
           mkdir -p -m 700 ~/.ssh
           echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          # Re-encrypt key to PEM format
-          ssh-keygen -p -N "" -m pem -f ~/.ssh/id_ed25519 2>/dev/null || true
           ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
 
           git clone ssh://aur@aur.archlinux.org/bananadashboard-bin.git
