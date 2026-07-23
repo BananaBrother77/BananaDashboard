@@ -125,6 +125,8 @@ jobs:
           makepkg --printsrcinfo > .SRCINFO
 
           # Commit and push
+          git config --global user.email "BananaBrother7777@proton.me"
+          git config --global user.name "BananaBrother77"
           git add -A
           git commit -m "update to v$VERSION"
           git push origin master
