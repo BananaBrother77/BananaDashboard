@@ -718,7 +718,7 @@ app.whenReady().then(() => {
     sendToWindow('update-status', { status: 'downloaded', info }),
   );
 
-  if (!isAUR) autoUpdater.checkForUpdates();
+  autoUpdater.checkForUpdates();
 
   discord.onStatus((status) => sendToWindow('rpc-status', status));
   if (!loadRpcEnabled()) discord.setEnabled(false);
@@ -753,32 +753,55 @@ ipcMain.handle('download-update', async () => {
       `bananadashboard-${version}.pacman`,
     );
 
-    await new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(dest);
-      https
-        .get(url, (res) => {
-          if (res.statusCode !== 200) {
-            reject(new Error(`Download failed: HTTP ${res.statusCode}`));
-            return;
-          }
-          const total = parseInt(res.headers['content-length'], 10);
-          let downloaded = 0;
-          res.on('data', (chunk) => {
-            downloaded += chunk.length;
-            if (total) {
-              sendToWindow('update-status', {
-                status: 'downloading',
-                progress: { percent: (downloaded / total) * 100 },
-              });
+    const httpGet = (u) => {
+      return new Promise((resolve, reject) => {
+        https
+          .get(u, (res) => {
+            if (
+              res.statusCode >= 300 &&
+              res.statusCode < 400 &&
+              res.headers.location
+            ) {
+              httpGet(new URL(res.headers.location, u))
+                .then(resolve)
+                .catch(reject);
+              return;
             }
-          });
-          res.pipe(file);
-          file.on('finish', () => {
-            file.close();
-            resolve();
-          });
-        })
-        .on('error', reject);
+
+            if (res.statusCode !== 200) {
+              reject(new Error(`Download failed: HTTP ${res.statusCode}`));
+              return;
+            }
+
+            const total = parseInt(res.headers['content-length'], 10);
+            let downloaded = 0;
+
+            res.on('data', (chunk) => {
+              downloaded += chunk.length;
+              if (total) {
+                sendToWindow('update-status', {
+                  status: 'downloading',
+                  progress: { percent: (downloaded / total) * 100 },
+                });
+              }
+            });
+
+            resolve(res);
+          })
+          .on('error', reject);
+      });
+    };
+
+    const file = fs.createWriteStream(dest);
+    const res = await httpGet(url);
+    
+    await new Promise((resolve, reject) => {
+      res.pipe(file);
+      file.on('finish', () => {
+        file.close();
+        resolve();
+      });
+      file.on('error', reject);
     });
 
     downloadedPacmanPath = dest;
