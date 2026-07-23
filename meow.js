@@ -2,7 +2,8 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
-const { execFileSync } = require('child_process');
+const https = require('https');
+const { execFileSync, spawn } = require('child_process');
 const { autoUpdater } = require('electron-updater');
 const discord = require('./src/assets/js/modules/discord');
 
@@ -10,6 +11,13 @@ const discord = require('./src/assets/js/modules/discord');
 app.commandLine.appendSwitch('disable-software-rasterizer');
 
 const PLATFORM = os.platform();
+
+function isAURInstall() {
+  if (PLATFORM !== 'linux') return false;
+
+  const exe = app.getPath('exe');
+  return exe.startsWith('/opt/') || exe.startsWith('/usr/');
+}
 
 app.name = 'bananadashboard';
 app.setAppUserModelId('online.bananabrother77.dashboard');
@@ -186,12 +194,14 @@ function createWindow() {
         maxZoom,
       );
       mainWindow.webContents.setZoomLevel(level);
+
       e.preventDefault();
     } else if (input.key === '-') {
       const level = Math.max(
         mainWindow.webContents.getZoomLevel() - zoomStep,
         minZoom,
       );
+
       mainWindow.webContents.setZoomLevel(level);
       e.preventDefault();
     } else if (input.key === '0') {
@@ -674,34 +684,45 @@ function saveRpcEnabled(val) {
   } catch {}
 }
 
+const isAUR = isAURInstall();
+let lastUpdateInfo = null;
+let downloadedPacmanPath = null;
+
 app.whenReady().then(() => {
   createWindow();
 
   autoUpdater.autoDownload = false;
   autoUpdater.logger = console;
+
   autoUpdater.on('checking-for-update', () =>
     sendToWindow('update-status', { status: 'checking' }),
   );
-  autoUpdater.on('update-available', (info) =>
-    sendToWindow('update-status', { status: 'available', info }),
-  );
+
+  autoUpdater.on('update-available', (info) => {
+    lastUpdateInfo = info;
+    sendToWindow('update-status', { status: 'available', info });
+  });
+
   autoUpdater.on('update-not-available', (info) =>
     sendToWindow('update-status', { status: 'not-available', info }),
   );
   autoUpdater.on('error', (err) =>
     sendToWindow('update-status', { status: 'error', message: err.message }),
   );
+
   autoUpdater.on('download-progress', (progress) =>
     sendToWindow('update-status', { status: 'downloading', progress }),
   );
+
   autoUpdater.on('update-downloaded', (info) =>
     sendToWindow('update-status', { status: 'downloaded', info }),
   );
 
-  autoUpdater.checkForUpdates();
+  if (!isAUR) autoUpdater.checkForUpdates();
 
   discord.onStatus((status) => sendToWindow('rpc-status', status));
   if (!loadRpcEnabled()) discord.setEnabled(false);
+
   discord.init();
 });
 
@@ -717,9 +738,86 @@ ipcMain.handle('set-rpc-enabled', (_, val) => {
 
 ipcMain.handle('get-app-version', () => app.getVersion());
 
+ipcMain.handle('get-install-type', () => (isAUR ? 'aur' : 'standalone'));
+
 ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
-ipcMain.handle('download-update', () => autoUpdater.downloadUpdate());
-ipcMain.handle('quit-and-install', () => autoUpdater.quitAndInstall());
+
+ipcMain.handle('download-update', async () => {
+  if (isAUR) {
+    const version = lastUpdateInfo?.version;
+    if (!version) throw new Error('No update version available');
+
+    const url = `https://github.com/BananaBrother77/BananaDashboard/releases/download/v${version}/bananadashboard-${version}.pacman`;
+    const dest = path.join(
+      app.getPath('temp'),
+      `bananadashboard-${version}.pacman`,
+    );
+
+    await new Promise((resolve, reject) => {
+      const file = fs.createWriteStream(dest);
+      https
+        .get(url, (res) => {
+          if (res.statusCode !== 200) {
+            reject(new Error(`Download failed: HTTP ${res.statusCode}`));
+            return;
+          }
+          const total = parseInt(res.headers['content-length'], 10);
+          let downloaded = 0;
+          res.on('data', (chunk) => {
+            downloaded += chunk.length;
+            if (total) {
+              sendToWindow('update-status', {
+                status: 'downloading',
+                progress: { percent: (downloaded / total) * 100 },
+              });
+            }
+          });
+          res.pipe(file);
+          file.on('finish', () => {
+            file.close();
+            resolve();
+          });
+        })
+        .on('error', reject);
+    });
+
+    downloadedPacmanPath = dest;
+    sendToWindow('update-status', {
+      status: 'downloaded',
+      info: { version },
+    });
+  } else {
+    return autoUpdater.downloadUpdate();
+  }
+});
+
+ipcMain.handle('quit-and-install', async () => {
+  if (isAUR && downloadedPacmanPath) {
+    sendToWindow('update-status', { status: 'installing' });
+
+    await new Promise((resolve, reject) => {
+      const proc = spawn('pkexec', [
+        'pacman',
+        '-U',
+        '--noconfirm',
+        downloadedPacmanPath,
+      ]);
+      let stderr = '';
+      proc.stderr.on('data', (d) => {
+        stderr += d.toString();
+      });
+      proc.on('exit', (code) => {
+        if (code === 0) resolve();
+        else reject(new Error(`pacman exited with code ${code}: ${stderr}`));
+      });
+    });
+
+    app.relaunch();
+    app.quit();
+  } else {
+    autoUpdater.quitAndInstall();
+  }
+});
 
 ipcMain.handle('get-detailed-sysinfo', () => {
   function readFile(p) {

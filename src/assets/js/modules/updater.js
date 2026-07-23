@@ -61,12 +61,22 @@ if (update.bar) {
 
         break;
 
+      case 'installing':
+        update.bar.className = 'update-status downloading';
+        update.text.textContent =
+          getTranslation('update_aur_installing') || 'Installing via pacman...';
+        update.progress.classList.add('hidden');
+        update.installBtn.classList.add('hidden');
+
+        break;
+
       case 'error':
         update.bar.className = 'update-status error';
         update.text.textContent =
           getTranslation('update_error') || 'Could not check for updates';
         update.progress.classList.add('hidden');
-        update.installBtn.classList.add('hidden');
+        update.installBtn.classList.remove('hidden');
+
         break;
     }
   });
@@ -77,10 +87,26 @@ if (update.bar) {
 
   update.installBtn.addEventListener('click', () => {
     if (updateReady) {
-      window.dashboardAPI.quitAndInstall();
+      window.dashboardAPI.quitAndInstall().catch((err) => {
+        update.text.textContent =
+          (getTranslation('update_error') || 'Update failed') +
+          ': ' +
+          err.message;
+
+        update.bar.className = 'update-status error';
+        update.installBtn.classList.remove('hidden');
+      });
     } else {
       update.installBtn.classList.add('hidden');
-      window.dashboardAPI.downloadUpdate();
+      window.dashboardAPI.downloadUpdate().catch((err) => {
+        update.text.textContent =
+          (getTranslation('update_error') || 'Download failed') +
+          ': ' +
+          err.message;
+
+        update.bar.className = 'update-status error';
+        update.installBtn.classList.remove('hidden');
+      });
     }
   });
 }
