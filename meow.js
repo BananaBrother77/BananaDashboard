@@ -2,8 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
-const https = require('https');
-const { execFileSync, spawn } = require('child_process');
+const { execFileSync, execFile } = require('child_process');
 const { autoUpdater } = require('electron-updater');
 const discord = require('./src/assets/js/modules/discord');
 
@@ -686,7 +685,6 @@ function saveRpcEnabled(val) {
 
 const isAUR = isAURInstall();
 let lastUpdateInfo = null;
-let downloadedPacmanPath = null;
 
 app.whenReady().then(() => {
   createWindow();
@@ -742,72 +740,11 @@ ipcMain.handle('get-install-type', () => (isAUR ? 'aur' : 'standalone'));
 
 ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
 
-ipcMain.handle('download-update', async () => {
+ipcMain.handle('download-update', () => {
   if (isAUR) {
-    const version = lastUpdateInfo?.version;
-    if (!version) throw new Error('No update version available');
-
-    const url = `https://github.com/BananaBrother77/BananaDashboard/releases/download/v${version}/bananadashboard-${version}.pacman`;
-    const dest = path.join(
-      app.getPath('temp'),
-      `bananadashboard-${version}.pacman`,
-    );
-
-    const httpGet = (u) => {
-      return new Promise((resolve, reject) => {
-        https
-          .get(u, (res) => {
-            if (
-              res.statusCode >= 300 &&
-              res.statusCode < 400 &&
-              res.headers.location
-            ) {
-              httpGet(new URL(res.headers.location, u))
-                .then(resolve)
-                .catch(reject);
-              return;
-            }
-
-            if (res.statusCode !== 200) {
-              reject(new Error(`Download failed: HTTP ${res.statusCode}`));
-              return;
-            }
-
-            const total = parseInt(res.headers['content-length'], 10);
-            let downloaded = 0;
-
-            res.on('data', (chunk) => {
-              downloaded += chunk.length;
-              if (total) {
-                sendToWindow('update-status', {
-                  status: 'downloading',
-                  progress: { percent: (downloaded / total) * 100 },
-                });
-              }
-            });
-
-            resolve(res);
-          })
-          .on('error', reject);
-      });
-    };
-
-    const file = fs.createWriteStream(dest);
-    const res = await httpGet(url);
-    
-    await new Promise((resolve, reject) => {
-      res.pipe(file);
-      file.on('finish', () => {
-        file.close();
-        resolve();
-      });
-      file.on('error', reject);
-    });
-
-    downloadedPacmanPath = dest;
     sendToWindow('update-status', {
       status: 'downloaded',
-      info: { version },
+      info: lastUpdateInfo,
     });
   } else {
     return autoUpdater.downloadUpdate();
@@ -815,15 +752,28 @@ ipcMain.handle('download-update', async () => {
 });
 
 ipcMain.handle('quit-and-install', async () => {
-  if (isAUR && downloadedPacmanPath) {
+  if (isAUR) {
     sendToWindow('update-status', { status: 'installing' });
 
+    const helpers = ['paru', 'yay'];
+    let helper;
+
+    for (const h of helpers) {
+      try {
+        execFileSync('which', [h], { stdio: 'ignore' });
+        helper = h;
+        break;
+      } catch {}
+    }
+    
+    if (!helper) throw new Error('Install paru or yay to enable updates');
+
     await new Promise((resolve, reject) => {
-      const proc = spawn('pkexec', [
-        'pacman',
-        '-U',
+      const proc = execFile('pkexec', [
+        helper,
+        '-S',
+        'bananadashboard-bin',
         '--noconfirm',
-        downloadedPacmanPath,
       ]);
       let stderr = '';
       proc.stderr.on('data', (d) => {
@@ -831,7 +781,7 @@ ipcMain.handle('quit-and-install', async () => {
       });
       proc.on('exit', (code) => {
         if (code === 0) resolve();
-        else reject(new Error(`pacman exited with code ${code}: ${stderr}`));
+        else reject(new Error(`${helper} exited with code ${code}: ${stderr}`));
       });
     });
 

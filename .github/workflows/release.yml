@@ -2,7 +2,7 @@ name: Build and Release
 run-name: ${{ github.ref_name }}
 on:
   push:
-    tags: ["v*"]
+    tags: ['v*']
 
 jobs:
   build-linux:
@@ -104,30 +104,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y pacman-package-manager
-      - run: |
-          # Strip "v" prefix from tag name — gives us the version number
-          VERSION="${GITHUB_REF_NAME#v}"
 
-          # Clone the AUR repo
+      - name: Install makepkg (needed for .SRCINFO generation)
+        run: sudo apt-get update && sudo apt-get install -y pacman-package-manager
+
+      - name: Extract version from tag name
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Configure SSH for AUR
+        run: |
           mkdir -p -m 700 ~/.ssh
           echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
 
-          git clone ssh://aur@aur.archlinux.org/bananadashboard-bin.git
-          cd bananadashboard-bin
+      - name: Clone AUR repo
+        run: |
+          git clone ssh://aur@aur.archlinux.org/bananadashboard-bin.git /tmp/bananadashboard-bin
 
-          # Update pkgver in PKGBUILD
+      - name: Update PKGBUILD and .SRCINFO
+        run: |
+          cd /tmp/bananadashboard-bin
           sed -i "s/^pkgver=.*/pkgver=$VERSION/" PKGBUILD
-
-          # Generate new .SRCINFO
           makepkg --printsrcinfo > .SRCINFO
 
-          # Commit and push
+      - name: Commit and push to AUR
+        run: |
+          cd /tmp/bananadashboard-bin
           git config --global user.email "BananaBrother7777@proton.me"
           git config --global user.name "BananaBrother77"
           git add -A
           git commit -m "update to v$VERSION"
           git push origin master
-

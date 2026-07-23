@@ -75,7 +75,7 @@ if (update.bar) {
         update.text.textContent =
           getTranslation('update_error') || 'Could not check for updates';
         update.progress.classList.add('hidden');
-        update.installBtn.classList.remove('hidden');
+        update.installBtn.classList.add('hidden');
 
         break;
     }
