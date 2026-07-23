@@ -99,3 +99,32 @@ jobs:
               }]
             }')" "$DISCORD_WEBHOOK"
 
+  aur-publish:
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          # Strip "v" prefix from tag name — gives us the version number
+          VERSION="${GITHUB_REF_NAME#v}"
+
+          # Clone the AUR repo
+          mkdir -p -m 700 ~/.ssh
+          echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
+
+          git clone ssh://aur@aur.archlinux.org/bananadashboard-bin.git
+          cd bananadashboard-bin
+
+          # Update pkgver in PKGBUILD
+          sed -i "s/^pkgver=.*/pkgver=$VERSION/" PKGBUILD
+
+          # Generate new .SRCINFO
+          makepkg --printsrcinfo > .SRCINFO
+
+          # Commit and push
+          git add -A
+          git commit -m "update to v$VERSION"
+          git push origin master
+

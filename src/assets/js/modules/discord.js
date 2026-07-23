@@ -26,7 +26,9 @@ function findSocket(id = 0) {
       sock.removeListener('error', onerror);
       resolve(sock);
     });
+
     sock.once('error', onerror);
+
     function onerror() {
       if (id < 10) resolve(findSocket(id + 1));
       else reject(new Error('No Discord IPC socket found'));
@@ -37,6 +39,7 @@ function findSocket(id = 0) {
 // Discord RPC protocol helpers
 function encode(op, data) {
   data = JSON.stringify(data);
+
   const len = Buffer.byteLength(data);
   const packet = Buffer.alloc(8 + len);
   packet.writeInt32LE(op, 0);
@@ -48,10 +51,12 @@ function encode(op, data) {
 function setupSocket(sock) {
   socket = sock;
   buf = '';
+
   sock.on('data', (chunk) => {
     buf += chunk.toString('binary');
     processBuffer();
   });
+
   sock.on('close', () => {
     connected = false;
     notify();
@@ -62,10 +67,13 @@ function processBuffer() {
   while (buf.length >= 8) {
     const op = Buffer.from(buf.slice(0, 4), 'binary').readInt32LE(0);
     const len = Buffer.from(buf.slice(4, 8), 'binary').readInt32LE(0);
+
     if (buf.length < 8 + len) break;
+
     const raw = buf.slice(8, 8 + len);
     buf = buf.slice(8 + len);
     const data = JSON.parse(Buffer.from(raw, 'binary').toString('utf8'));
+
     handleFrame(op, data);
   }
 }
@@ -92,10 +100,12 @@ function onStatus(cb) {
 // Connection lifecycle
 async function init() {
   startTime = Date.now();
+
   if (!enabled) {
     notify();
     return;
   }
+
   try {
     const sock = await findSocket();
     setupSocket(sock);
@@ -107,12 +117,14 @@ async function init() {
 
 function destroy() {
   if (presenceTimer) clearInterval(presenceTimer);
+
   if (socket) {
     try {
       socket.end();
     } catch {}
     socket = null;
   }
+
   connected = false;
   notify();
 }
@@ -137,6 +149,7 @@ function setTab(name) {
 
 function update() {
   if (!socket || !connected) return;
+
   const nonce = Math.random().toString(36).slice(2);
   const activity = {
     cmd: 'SET_ACTIVITY',

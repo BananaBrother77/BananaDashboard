@@ -23,87 +23,84 @@
     </div>
 
     <aside class="sidebar">
-
       <div class="sidebar-scroll">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">BananaDashboard</span>
+        </div>
 
-      <div class="sidebar-brand">
-        <span class="sidebar-brand-name">BananaDashboard</span>
-      </div>
+        <div class="sidebar-divider"></div>
 
-      <div class="sidebar-divider"></div>
+        <span class="nav-section-label">Main</span>
 
-      <span class="nav-section-label">Main</span>
+        <button class="nav-item active" data-tab="overview">
+          <div class="banana-nav-icon"></div>
+          <span data-i18n="tab_overview">System Overview</span>
+        </button>
 
-      <button class="nav-item active" data-tab="overview">
-        <div class="banana-nav-icon"></div>
-        <span data-i18n="tab_overview">System Overview</span>
-      </button>
+        <button class="nav-item" data-tab="resources">
+          <i data-lucide="activity" width="20" height="20"></i>
+          <span data-i18n="tab_resources">Resources</span>
+        </button>
 
-      <button class="nav-item" data-tab="resources">
-        <i data-lucide="activity" width="20" height="20"></i>
-        <span data-i18n="tab_resources">Resources</span>
-      </button>
+        <button class="nav-item" data-tab="network">
+          <i data-lucide="wifi" width="20" height="20"></i>
+          <span data-i18n="tab_network">Network</span>
+        </button>
 
-      <button class="nav-item" data-tab="network">
-        <i data-lucide="wifi" width="20" height="20"></i>
-        <span data-i18n="tab_network">Network</span>
-      </button>
+        <button class="nav-item" data-tab="battery">
+          <i data-lucide="battery" width="20" height="20"></i>
+          <span data-i18n="tab_battery">Battery</span>
+        </button>
 
-      <button class="nav-item" data-tab="battery">
-        <i data-lucide="battery" width="20" height="20"></i>
-        <span data-i18n="tab_battery">Battery</span>
-      </button>
+        <div class="sidebar-divider"></div>
 
-      <div class="sidebar-divider"></div>
+        <span class="nav-section-label">Tools</span>
 
-      <span class="nav-section-label">Tools</span>
+        <button class="nav-item" data-tab="processes">
+          <i data-lucide="list-checks" width="20" height="20"></i>
+          <span data-i18n="tab_processes">Process Manager</span>
+        </button>
 
-      <button class="nav-item" data-tab="processes">
-        <i data-lucide="list-checks" width="20" height="20"></i>
-        <span data-i18n="tab_processes">Process Manager</span>
-      </button>
+        <button class="nav-item" data-tab="startup">
+          <i data-lucide="rocket" width="20" height="20"></i>
+          <span data-i18n="tab_startup">Startup Apps</span>
+        </button>
 
-      <button class="nav-item" data-tab="startup">
-        <i data-lucide="rocket" width="20" height="20"></i>
-        <span data-i18n="tab_startup">Startup Apps</span>
-      </button>
+        <button class="nav-item" data-tab="files">
+          <i data-lucide="folder" width="20" height="20"></i>
+          <span data-i18n="tab_files">File Manager</span>
+        </button>
 
-      <button class="nav-item" data-tab="files">
-        <i data-lucide="folder" width="20" height="20"></i>
-        <span data-i18n="tab_files">File Manager</span>
-      </button>
+        <button class="nav-item" data-tab="mcToolkit">
+          <i data-lucide="gamepad-2" width="20" height="20"></i>
+          <span data-i18n="tab_mctoolkit">MCToolkit</span>
+        </button>
 
-      <button class="nav-item" data-tab="mcToolkit">
-        <i data-lucide="gamepad-2" width="20" height="20"></i>
-        <span data-i18n="tab_mctoolkit">MCToolkit</span>
-      </button>
+        <button class="nav-item" data-tab="stats">
+          <i data-lucide="bar-chart-3" width="20" height="20"></i>
+          <span data-i18n="tab_stats">Website Statistics</span>
+        </button>
 
-      <button class="nav-item" data-tab="stats">
-        <i data-lucide="bar-chart-3" width="20" height="20"></i>
-        <span data-i18n="tab_stats">Website Statistics</span>
-      </button>
+        <div class="sidebar-divider"></div>
 
-      <div class="sidebar-divider"></div>
+        <span class="nav-section-label">MCServerHost</span>
 
-      <span class="nav-section-label">MCServerHost</span>
+        <button class="nav-item" data-tab="mcServerHost">
+          <i data-lucide="server" width="20" height="20"></i>
+          <span data-i18n="tab_mcserverhost">MCServerHost</span>
+        </button>
 
-      <button class="nav-item" data-tab="mcServerHost">
-        <i data-lucide="server" width="20" height="20"></i>
-        <span data-i18n="tab_mcserverhost">MCServerHost</span>
-      </button>
+        <button class="nav-item" data-tab="mcshTools">
+          <i data-lucide="wrench" width="20" height="20"></i>
+          <span data-i18n="tab_mcshtools">MCSH Tools</span>
+        </button>
 
-      <button class="nav-item" data-tab="mcshTools">
-        <i data-lucide="wrench" width="20" height="20"></i>
-        <span data-i18n="tab_mcshtools">MCSH Tools</span>
-      </button>
+        <button class="nav-item" data-tab="mcshStatus">
+          <i data-lucide="eye" width="20" height="20"></i>
+          <span data-i18n="tab_mcshstatus">MCSH Status</span>
+        </button>
 
-      <button class="nav-item" data-tab="mcshStatus">
-        <i data-lucide="eye" width="20" height="20"></i>
-        <span data-i18n="tab_mcshstatus">MCSH Status</span>
-      </button>
-
-      <div class="sidebar-spacer"></div>
-
+        <div class="sidebar-spacer"></div>
       </div>
 
       <div class="sidebar-divider"></div>
@@ -126,7 +123,11 @@
           <button class="icon-btn" title="Refresh">
             <i data-lucide="refresh-cw" width="20" height="20"></i>
           </button>
-          <button class="icon-btn webview-toggle-btn hidden" id="webviewFullscreenBtn" title="Fullscreen">
+          <button
+            class="icon-btn webview-toggle-btn hidden"
+            id="webviewFullscreenBtn"
+            title="Fullscreen"
+          >
             <i data-lucide="maximize" width="20" height="20"></i>
           </button>
         </div>
@@ -136,58 +137,58 @@
            TAB: OVERVIEW (active by default)
            ============================================================ -->
       <div class="tab-content active" id="tabOverview">
-        <section class="panel welcome-section reveal">
+        <section class="panel welcome-section reveal" data-hideable>
           <h2 class="welcome-heading" id="welcomeHeading">
             <span data-i18n="overview_welcome">Welcome,</span>
             <span id="userName"></span>!
           </h2>
         </section>
 
-        <section class="panel info-panel reveal">
-          <div class="info-row">
+        <section class="panel info-panel reveal" data-hideable>
+          <div class="info-row" data-hideable>
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_os">OS</span>
             <span class="info-value" id="osVersionCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="terminal" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_host">Host</span>
             <span class="info-value" id="hostnameCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_kernel">Kernel</span>
             <span class="info-value" id="kernelVersionCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_cpu">CPU</span>
             <span class="info-value" id="cpuCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="layers" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_cores">Cores</span>
             <span class="info-value" id="cpuCoresCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_gpu">GPU</span>
             <span class="info-value" id="gpuCard">—</span>
           </div>
           <div class="info-divider"></div>
-          <div class="info-row">
+          <div class="info-row" data-hideable>
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="info-label" data-i18n="label_ram">RAM</span>
             <span class="info-value" id="ramCard">—</span>
           </div>
         </section>
 
-        <section class="panel detail-panel reveal">
+        <section class="panel detail-panel reveal" data-hideable>
           <button class="detail-toggle" id="detailToggle">
             <i data-lucide="chevron-down" width="18" height="18"></i>
             <span data-i18n="more_info">More Info</span>
@@ -229,18 +230,18 @@
         </section>
 
         <section class="quick-actions reveal">
-          <div class="action-card" data-tab="overview">
-            <i data-lucide="server" width="24" height="24"></i>
+          <div class="action-card" data-tab="mcserverhost" data-hideable>
+            <i data-lucide="gamepad-2" width="24" height="24"></i>
             <div>
-              <div class="action-text" data-i18n="action_system">
-                System Information
+              <div class="action-text" data-i18n="action_mcserverhost">
+                MCServerHost
               </div>
-              <div class="action-sub" data-i18n="action_system_sub">
-                View detailed system info
+              <div class="action-sub" data-i18n="action_mcserverhost_sub">
+                Manage your Minecraft server
               </div>
             </div>
           </div>
-          <div class="action-card" data-tab="resources">
+          <div class="action-card" data-tab="resources" data-hideable>
             <i data-lucide="activity" width="24" height="24"></i>
             <div>
               <div class="action-text" data-i18n="action_resources">
@@ -251,7 +252,7 @@
               </div>
             </div>
           </div>
-          <div class="action-card" data-tab="files">
+          <div class="action-card" data-tab="files" data-hideable>
             <i data-lucide="folder" width="24" height="24"></i>
             <div>
               <div class="action-text" data-i18n="action_files">
@@ -270,34 +271,34 @@
            ============================================================ -->
       <div class="tab-content" id="tabResources">
         <div class="resource-stats reveal">
-          <div class="resource-stat">
+          <div class="resource-stat" data-hideable>
             <i data-lucide="cpu" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_cpu">CPU</span>
             <span class="resource-value" id="cpuValue">—</span>
           </div>
-          <div class="resource-stat">
+          <div class="resource-stat" data-hideable>
             <i data-lucide="monitor" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_gpu">GPU</span>
             <span class="resource-value" id="gpuValue">—</span>
           </div>
-          <div class="resource-stat">
+          <div class="resource-stat" data-hideable>
             <i data-lucide="thermometer" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_temp">Temp</span>
             <span class="resource-value" id="gpuTempValue">—</span>
           </div>
-          <div class="resource-stat">
+          <div class="resource-stat" data-hideable>
             <i data-lucide="memory-stick" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_ram">RAM</span>
             <span class="resource-value" id="ramValue">—</span>
           </div>
-          <div class="resource-stat">
+          <div class="resource-stat" data-hideable>
             <i data-lucide="hard-drive" width="20" height="20"></i>
             <span class="resource-label" data-i18n="label_disk">Disk</span>
             <span class="resource-value" id="diskValue">—</span>
           </div>
         </div>
         <div class="chart-grid">
-          <section class="panel chart-panel reveal">
+          <section class="panel chart-panel reveal" data-hideable>
             <div class="chart-header">
               <i data-lucide="cpu" width="18" height="18"></i>
               <span data-i18n="chart_cpu">CPU Usage</span>
@@ -306,7 +307,7 @@
               <canvas id="cpuChart"></canvas>
             </div>
           </section>
-          <section class="panel chart-panel reveal">
+          <section class="panel chart-panel reveal" data-hideable>
             <div class="chart-header">
               <i data-lucide="monitor" width="18" height="18"></i>
               <span data-i18n="chart_gpu">GPU Usage</span>
@@ -315,7 +316,7 @@
               <canvas id="gpuChart"></canvas>
             </div>
           </section>
-          <section class="panel chart-panel reveal">
+          <section class="panel chart-panel reveal" data-hideable>
             <div class="chart-header">
               <i data-lucide="memory-stick" width="18" height="18"></i>
               <span data-i18n="chart_ram">RAM Usage</span>
@@ -324,7 +325,7 @@
               <canvas id="ramChart"></canvas>
             </div>
           </section>
-          <section class="panel chart-panel reveal">
+          <section class="panel chart-panel reveal" data-hideable>
             <div class="chart-header">
               <i data-lucide="hard-drive" width="18" height="18"></i>
               <span data-i18n="chart_storage">Storage</span>
@@ -335,9 +336,13 @@
           </section>
         </div>
 
-        <section class="panel disk-panel reveal" id="diskInfo"></section>
+        <section
+          class="panel disk-panel reveal"
+          id="diskInfo"
+          data-hideable
+        ></section>
 
-        <section class="panel app-panel reveal">
+        <section class="panel app-panel reveal" data-hideable>
           <h2 class="section-header">
             <i data-lucide="terminal" width="22" height="22"></i>
             <span data-i18n="app_resources">App Resources</span>
@@ -372,7 +377,7 @@
            TAB: FILE MANAGER (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tabFiles">
-        <section class="panel placeholder-section reveal">
+        <section class="panel placeholder-section reveal" data-hideable>
           <i data-lucide="folder" width="48" height="48"></i>
           <h2 class="placeholder-title">File Manager</h2>
           <p class="placeholder-desc">
@@ -386,7 +391,7 @@
            TAB: NETWORK (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tabNetwork">
-        <section class="panel placeholder-section reveal">
+        <section class="panel placeholder-section reveal" data-hideable>
           <i data-lucide="wifi" width="48" height="48"></i>
           <h2 class="placeholder-title">Network</h2>
           <p class="placeholder-desc">
@@ -400,7 +405,7 @@
            TAB: BATTERY (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tabBattery">
-        <section class="panel placeholder-section reveal">
+        <section class="panel placeholder-section reveal" data-hideable>
           <i data-lucide="battery" width="48" height="48"></i>
           <h2 class="placeholder-title">Battery</h2>
           <p class="placeholder-desc">
@@ -414,7 +419,7 @@
            TAB: PROCESS MANAGER (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tabProcesses">
-        <section class="panel placeholder-section reveal">
+        <section class="panel placeholder-section reveal" data-hideable>
           <i data-lucide="list-checks" width="48" height="48"></i>
           <h2 class="placeholder-title">Process Manager</h2>
           <p class="placeholder-desc">
@@ -427,7 +432,7 @@
            TAB: STARTUP APPS (placeholder)
            ============================================================ -->
       <div class="tab-content" id="tabStartup">
-        <section class="panel placeholder-section reveal">
+        <section class="panel placeholder-section reveal" data-hideable>
           <i data-lucide="rocket" width="48" height="48"></i>
           <h2 class="placeholder-title">Startup Apps</h2>
           <p class="placeholder-desc">
@@ -439,20 +444,23 @@
       <!-- ============================================================
            TAB: MCSERVERHOST
            ============================================================ -->
-      <div class="tab-content webview-tab" id="tabMcServerHost">
-        <div class="panel webview-panel">
+      <div class="tab-content webview-tab" id="tabMcserverhost">
+        <div class="panel webview-panel" data-hideable>
           <button class="webview-exit-btn" title="Exit fullscreen">
             <i data-lucide="minimize-2" width="20" height="20"></i>
           </button>
-          <webview id="mcServerHostWebview" src="https://www.mcserverhost.com/"></webview>
+          <webview
+            id="mcServerHostWebview"
+            src="https://www.mcserverhost.com/"
+          ></webview>
         </div>
       </div>
 
       <!-- ============================================================
            TAB: MCSH TOOLS
            ============================================================ -->
-      <div class="tab-content webview-tab" id="tabMcshTools">
-        <div class="panel webview-panel">
+      <div class="tab-content webview-tab" id="tabMcshtools">
+        <div class="panel webview-panel" data-hideable>
           <button class="webview-exit-btn" title="Exit fullscreen">
             <i data-lucide="minimize-2" width="20" height="20"></i>
           </button>
@@ -463,12 +471,15 @@
       <!-- ============================================================
            TAB: MCSH STATUS
            ============================================================ -->
-      <div class="tab-content webview-tab" id="tabMcshStatus">
-        <div class="panel webview-panel">
+      <div class="tab-content webview-tab" id="tabMcshstatus">
+        <div class="panel webview-panel" data-hideable>
           <button class="webview-exit-btn" title="Exit fullscreen">
             <i data-lucide="minimize-2" width="20" height="20"></i>
           </button>
-          <webview id="mcshStatusWebview" src="https://maximerix.dev/mcsh/status/"></webview>
+          <webview
+            id="mcshStatusWebview"
+            src="https://maximerix.dev/mcsh/status/"
+          ></webview>
         </div>
       </div>
 
@@ -476,26 +487,30 @@
            TAB: MCTOOLKIT
            ============================================================ -->
       <div class="tab-content webview-tab" id="tabMcToolkit">
-        <div class="panel webview-panel">
+        <div class="panel webview-panel" data-hideable>
           <button class="webview-exit-btn" title="Exit fullscreen">
             <i data-lucide="minimize-2" width="20" height="20"></i>
           </button>
-          <webview id="mcToolkitWebview" src="https://mctoolkit.bananabrother77.online/"></webview>
+          <webview
+            id="mcToolkitWebview"
+            src="https://mctoolkit.bananabrother77.online/"
+          ></webview>
         </div>
       </div>
 
       <!-- ============================================================
-           TAB: WEBSITE STATISTICS (placeholder)
+           TAB: WEBSITE STATISTICS (webview)
            ============================================================ -->
-      <div class="tab-content" id="tabStats">
-        <section class="panel placeholder-section reveal">
-          <i data-lucide="bar-chart-3" width="48" height="48"></i>
-          <h2 class="placeholder-title">Website Statistics</h2>
-          <p class="placeholder-desc">
-            Analytics and visitor data from your BananaBrother77 websites will
-            be displayed here.
-          </p>
-        </section>
+      <div class="tab-content webview-tab" id="tabStats">
+        <div class="panel webview-panel" data-hideable>
+          <button class="webview-exit-btn" title="Exit fullscreen">
+            <i data-lucide="minimize-2" width="20" height="20"></i>
+          </button>
+          <webview
+            id="statsWebview"
+            src="https://analytics.google.com/"
+          ></webview>
+        </div>
       </div>
 
       <!-- ============================================================
@@ -506,7 +521,11 @@
           <aside class="settings-nav">
             <div class="settings-search">
               <i data-lucide="search" width="16" height="16"></i>
-              <input type="text" id="settingsSearch" placeholder="Search settings…">
+              <input
+                type="text"
+                id="settingsSearch"
+                placeholder="Search settings…"
+              />
             </div>
             <div class="settings-nav-list">
               <button class="settings-nav-item active" data-setting-cat="all">
@@ -533,7 +552,11 @@
           </aside>
 
           <div class="settings-content">
-            <section class="panel settings-section reveal settings-category active" data-category="appearance">
+            <section
+              class="panel settings-section reveal settings-category active"
+              data-category="appearance"
+              data-hideable
+            >
               <h2 class="section-header">
                 <i data-lucide="palette" width="22" height="22"></i>
                 <span data-i18n="settings_theme">Theme</span>
@@ -577,7 +600,75 @@
               </button>
             </section>
 
-            <section class="panel settings-section reveal settings-category active" data-category="system">
+            <section
+              class="panel settings-section reveal settings-category active"
+              data-category="appearance"
+              data-hideable
+            >
+              <h2 class="section-header">
+                <i data-lucide="eye-off" width="22" height="22"></i>
+                <span data-i18n="settings_hidden_tabs">Hidden Tabs</span>
+              </h2>
+              <p class="settings-desc" data-i18n="settings_hidden_tabs_desc">
+                Right-click a sidebar tab and select Hide Tab. Unhide them here.
+              </p>
+              <div class="hidden-tabs-list" id="hiddenTabsList"></div>
+
+              <h2 class="section-header section-header-spaced">
+                <i data-lucide="eye-off" width="22" height="22"></i>
+                <span data-i18n="settings_hidden_elements"
+                  >Hidden Elements</span
+                >
+              </h2>
+              <p
+                class="settings-desc"
+                data-i18n="settings_hidden_elements_desc"
+              >
+                Right-click any panel and select Hide this. Unhide them here.
+              </p>
+              <div class="hidden-tabs-list" id="hiddenElementsList"></div>
+
+              <h2 class="section-header section-header-spaced">
+                <i data-lucide="rotate-ccw" width="22" height="22"></i>
+                <span data-i18n="settings_reset">Reset Changes</span>
+              </h2>
+              <div class="reset-btns">
+                <button
+                  class="reset-btn"
+                  data-reset="names"
+                  data-i18n="settings_reset_names"
+                >
+                  Reset Tab Names
+                </button>
+                <button
+                  class="reset-btn"
+                  data-reset="hidden-tabs"
+                  data-i18n="settings_reset_hidden_tabs"
+                >
+                  Reset Hidden Tabs
+                </button>
+                <button
+                  class="reset-btn"
+                  data-reset="hidden-modules"
+                  data-i18n="settings_reset_hidden_modules"
+                >
+                  Reset Hidden Modules
+                </button>
+                <button
+                  class="reset-btn reset-btn-danger"
+                  data-reset="all"
+                  data-i18n="settings_reset_all"
+                >
+                  Reset All
+                </button>
+              </div>
+            </section>
+
+            <section
+              class="panel settings-section reveal settings-category active"
+              data-category="system"
+              data-hideable
+            >
               <h2 class="section-header">
                 <i data-lucide="gauge" width="22" height="22"></i>
                 <span data-i18n="settings_refresh">Resource Refresh</span>
@@ -598,7 +689,11 @@
               </div>
             </section>
 
-            <section class="panel settings-section reveal settings-category active" data-category="updates">
+            <section
+              class="panel settings-section reveal settings-category active"
+              data-category="updates"
+              data-hideable
+            >
               <h2 class="section-header">
                 <i data-lucide="refresh-cw" width="22" height="22"></i>
                 <span data-i18n="settings_updates">Updates</span>
@@ -606,12 +701,19 @@
 
               <div class="version-status-container">
                 <div class="version-info">
-                  <span class="version-label" data-i18n="settings_version">Version</span>
+                  <span class="version-label" data-i18n="settings_version"
+                    >Version</span
+                  >
                   <span class="version-value" id="appVersion">—</span>
                 </div>
 
                 <div class="update-status" id="updateStatusBar">
-                  <span class="update-status-text" id="updateStatusText" data-i18n="update_checking">Checking for updates...</span>
+                  <span
+                    class="update-status-text"
+                    id="updateStatusText"
+                    data-i18n="update_checking"
+                    >Checking for updates...</span
+                  >
                 </div>
               </div>
 
@@ -631,7 +733,11 @@
               </div>
             </section>
 
-            <section class="panel settings-section reveal settings-category active" data-category="rpc">
+            <section
+              class="panel settings-section reveal settings-category active"
+              data-category="rpc"
+              data-hideable
+            >
               <h2 class="section-header">
                 <i data-lucide="disc" width="22" height="22"></i>
                 <span data-i18n="settings_rpc">Discord Rich Presence</span>
@@ -639,7 +745,12 @@
 
               <div class="rpc-status" id="rpcStatusBar">
                 <span class="rpc-dot" id="rpcDot"></span>
-                <span class="rpc-status-text" id="rpcStatusText" data-i18n="rpc_connecting">Connecting...</span>
+                <span
+                  class="rpc-status-text"
+                  id="rpcStatusText"
+                  data-i18n="rpc_connecting"
+                  >Connecting...</span
+                >
               </div>
 
               <div class="rpc-actions">
@@ -653,7 +764,9 @@
                 </button>
               </div>
 
-              <p class="settings-desc" data-i18n="rpc_desc">Show your current tab and system info in your Discord status.</p>
+              <p class="settings-desc" data-i18n="rpc_desc">
+                Show your current tab and system info in your Discord status.
+              </p>
             </section>
           </div>
         </div>
@@ -673,14 +786,58 @@
       </button>
     </div>
 
+    <div class="context-menu" id="contextMenu" hidden>
+      <div class="context-nav-actions" id="contextNavActions">
+        <div class="context-item" data-action="rename">
+          <i data-lucide="pencil" width="16" height="16"></i>
+          <span data-i18n="ctx_rename">Rename</span>
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item" data-action="hide">
+          <i data-lucide="eye-off" width="16" height="16"></i>
+          <span data-i18n="ctx_hide">Hide Tab</span>
+        </div>
+      </div>
+      <div class="context-panel-actions" id="contextPanelActions" hidden>
+        <div class="context-item" data-action="hide-panel">
+          <i data-lucide="eye-off" width="16" height="16"></i>
+          <span data-i18n="ctx_hide_panel">Hide this</span>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@1.17.0"></script>
     <script src="assets/js/translations.js"></script>
     <script src="assets/js/modules/resources.js"></script>
     <script src="assets/js/reveal.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/modules/sidebar.js"></script>
+    <script src="assets/js/modules/overview.js"></script>
+    <script src="assets/js/modules/rpc.js"></script>
+    <script src="assets/js/modules/updater.js"></script>
+    <script src="assets/js/modules/webview.js"></script>
+    <script src="assets/js/modules/context-menu.js"></script>
+    <script src="assets/js/modules/settings.js"></script>
     <script>
       lucide.createIcons();
+
+      Promise.all([
+        loadSystemInfo(),
+        app.version
+          ? window.dashboardAPI.getAppVersion().then((v) => {
+              app.version.textContent = 'v' + v;
+            })
+          : Promise.resolve(),
+        new Promise((r) => setTimeout(r, 1000)),
+      ]).then(() => {
+        if (app.loader) {
+          loaderHidden = true;
+          app.loader.classList.add('hidden');
+          const activeTab = document.querySelector('.tab-content.active');
+          if (activeTab && window.resetReveal) resetReveal(activeTab);
+        }
+      });
     </script>
   </body>
 </html>

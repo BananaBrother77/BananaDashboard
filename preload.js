@@ -20,4 +20,6 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (_, data) => callback(data));
   },
+  onHideTab: (callback) =>
+    ipcRenderer.on('hide-tab', (tabId) => callback(tabId)),
 });

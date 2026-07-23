@@ -26,7 +26,7 @@ const charts = {
   gpu: document.getElementById('gpuChart'),
 };
 
-const app = {
+const procInfo = {
   pid: document.getElementById('appPid'),
   memory: document.getElementById('appMemory'),
   heap: document.getElementById('appHeap'),
@@ -267,6 +267,7 @@ resources.updateDiskChart = function (partitions) {
 
 resources.updateDiskStat = function (partitions) {
   if (!stats.diskValue || !partitions || partitions.length === 0) return;
+
   const total = partitions.reduce((s, p) => s + p.size, 0);
   const used = partitions.reduce((s, p) => s + p.used, 0);
   const pct = total > 0 ? Math.round((used / total) * 100) : 0;
@@ -282,10 +283,12 @@ resources.updateDiskSummary = function (partitions) {
 
   partitions.forEach((p, i) => {
     seen.add(p.target);
+
     const pct = p.size > 0 ? Math.round((p.used / p.size) * 100) : 0;
     const color = colors[i % colors.length];
 
     let row = this._diskRows.get(p.target);
+
     if (!row) {
       row = document.createElement('div');
       row.className = 'disk-row';
@@ -321,13 +324,13 @@ resources.updateDiskSummary = function (partitions) {
 };
 
 resources.updateAppUsage = function (data) {
-  if (!data || !app.pid) return;
-  app.pid.textContent = data.pid;
-  app.memory.textContent = this.formatBytes(data.memory);
+  if (!data || !procInfo.pid) return;
+  procInfo.pid.textContent = data.pid;
+  procInfo.memory.textContent = this.formatBytes(data.memory);
 
   const heapPct =
     data.heapTotal > 0 ? Math.round((data.heapUsed / data.heapTotal) * 100) : 0;
-  app.heap.textContent =
+  procInfo.heap.textContent =
     this.formatBytes(data.heapUsed) +
     ' / ' +
     this.formatBytes(data.heapTotal) +
@@ -335,10 +338,10 @@ resources.updateAppUsage = function (data) {
     heapPct +
     '%)';
 
-  app.cpu.textContent = data.cpu.toFixed(1) + '%';
-  app.uptime.textContent = data.uptime;
-  if (app.versions) {
-    app.versions.textContent =
+  procInfo.cpu.textContent = data.cpu.toFixed(1) + '%';
+  procInfo.uptime.textContent = data.uptime;
+  if (procInfo.versions) {
+    procInfo.versions.textContent =
       'Node ' +
       data.node +
       '  ·  Electron ' +
@@ -365,6 +368,7 @@ resources.fetchAndUpdate = async function () {
     if (res.gpu && res.gpu.usage !== null) {
       const gpuPct = Math.round(res.gpu.usage);
       stats.gpuValue.textContent = gpuPct + '%';
+
       if (res.gpu.memTotal) {
         const memUsedGB = (res.gpu.memUsed / 1024 ** 3).toFixed(1);
         const memTotalGB = (res.gpu.memTotal / 1024 ** 3).toFixed(1);
@@ -421,6 +425,7 @@ resources.applyTheme = function () {
 
   if (this.charts.cpu) {
     const cpu = this.charts.cpu;
+
     cpu.data.datasets[0].borderColor = accent;
     cpu.data.datasets[0].backgroundColor =
       'rgba(' + ar + ', ' + ag + ', ' + ab + ', 0.1)';
@@ -431,6 +436,7 @@ resources.applyTheme = function () {
 
   if (this.charts.ram) {
     const ram = this.charts.ram;
+
     ram.data.datasets[0].borderColor = accent2;
     ram.data.datasets[0].backgroundColor =
       'rgba(' + ar2 + ', ' + ag2 + ', ' + ab2 + ', 0.1)';
@@ -441,6 +447,7 @@ resources.applyTheme = function () {
 
   if (this.charts.gpu) {
     const gpu = this.charts.gpu;
+
     gpu.data.datasets[0].borderColor = accent;
     gpu.data.datasets[0].backgroundColor =
       'rgba(' + ar + ', ' + ag + ', ' + ab + ', 0.1)';
