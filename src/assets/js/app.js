@@ -168,7 +168,9 @@ function switchTab(tabName) {
   ];
   activeWebviews.forEach((name) => {
     const wv = webviews[name];
-    if (wv) wv.style.display = tabName === name.toLowerCase() ? '' : 'none';
+    if (wv)
+      wv.style.display =
+        tabName.toLowerCase() === name.toLowerCase() ? '' : 'none';
   });
 }
 

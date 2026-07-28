@@ -11,6 +11,12 @@ app.commandLine.appendSwitch('disable-software-rasterizer');
 
 const PLATFORM = os.platform();
 
+function isAURInstall() {
+  if (PLATFORM !== 'linux') return false;
+  const exe = app.getPath('exe');
+  return exe.startsWith('/opt/') || exe.startsWith('/usr/');
+}
+
 app.name = 'bananadashboard';
 app.setAppUserModelId('online.bananabrother77.dashboard');
 if (PLATFORM === 'linux') app.setDesktopName('bananadashboard');
@@ -674,6 +680,8 @@ function saveRpcEnabled(val) {
   } catch {}
 }
 
+const isAUR = isAURInstall();
+
 app.whenReady().then(() => {
   createWindow();
 
@@ -717,9 +725,19 @@ ipcMain.handle('set-rpc-enabled', (_, val) => {
 
 ipcMain.handle('get-app-version', () => app.getVersion());
 
+ipcMain.handle('get-install-type', () => (isAUR ? 'aur' : 'standalone'));
+
 ipcMain.handle('check-for-updates', () => autoUpdater.checkForUpdates());
-ipcMain.handle('download-update', () => autoUpdater.downloadUpdate());
-ipcMain.handle('quit-and-install', () => autoUpdater.quitAndInstall());
+
+ipcMain.handle('download-update', () => {
+  if (isAUR) return;
+  return autoUpdater.downloadUpdate();
+});
+
+ipcMain.handle('quit-and-install', () => {
+  if (isAUR) return;
+  autoUpdater.quitAndInstall();
+});
 
 ipcMain.handle('get-detailed-sysinfo', () => {
   function readFile(p) {

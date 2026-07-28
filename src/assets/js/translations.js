@@ -59,6 +59,8 @@ const translations = {
     update_error: 'Update failed',
     update_check_btn: 'Check for Updates',
     update_install_btn: 'Restart & Install',
+    update_aur_available:
+      'Update available | run: yay -S bananadashboard-bin (or paru)',
     settings_rpc: 'Discord Rich Presence',
     rpc_connected: 'Connected',
     rpc_disconnected: 'Disconnected',
@@ -146,6 +148,8 @@ const translations = {
     update_error: 'Update fehlgeschlagen',
     update_check_btn: 'Nach Updates suchen',
     update_install_btn: 'Neustarten & Installieren',
+    update_aur_available:
+      'Update verfuegbar | führe aus: yay -S bananadashboard-bin (oder paru)',
     settings_rpc: 'Discord Rich Presence',
     rpc_connected: 'Verbunden',
     rpc_disconnected: 'Getrennt',

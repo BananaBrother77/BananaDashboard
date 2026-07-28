@@ -1,5 +1,10 @@
 if (update.bar) {
   let updateReady = false;
+  let isAUR = false;
+
+  window.dashboardAPI.getInstallType().then((type) => {
+    isAUR = type === 'aur';
+  });
 
   window.dashboardAPI.onUpdateStatus((data) => {
     switch (data.status) {
@@ -13,17 +18,27 @@ if (update.bar) {
 
       case 'available':
         const ver = data.info ? data.info.version : '';
-        update.text.textContent =
-          getTranslation('update_available') + ' (v' + ver + ')';
-        update.bar.className = 'update-status available';
-        updateReady = false;
-        update.installBtn.classList.remove('hidden');
-        update.installBtn.querySelector('span').textContent =
-          getTranslation('update_download_btn') || 'Download';
-        showToast(
-          getTranslation('update_available') || 'Update available',
-          'v' + ver,
-        );
+
+        if (isAUR) {
+          update.text.textContent =
+            getTranslation('update_aur_available') ||
+            'Update available | run: yay -S bananadashboard-bin';
+          update.bar.className = 'update-status available';
+          update.installBtn.classList.add('hidden');
+          update.progress.classList.add('hidden');
+        } else {
+          update.text.textContent =
+            getTranslation('update_available') + ' (v' + ver + ')';
+          update.bar.className = 'update-status available';
+          updateReady = false;
+          update.installBtn.classList.remove('hidden');
+          update.installBtn.querySelector('span').textContent =
+            getTranslation('update_download_btn') || 'Download';
+          showToast(
+            getTranslation('update_available') || 'Update available',
+            'v' + ver,
+          );
+        }
 
         break;
 
