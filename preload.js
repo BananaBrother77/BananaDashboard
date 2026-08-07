@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
   getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
   getAppUsage: () => ipcRenderer.invoke('get-app-usage'),
   getResources: () => ipcRenderer.invoke('get-resources'),
+  getBatteryInfo: () => ipcRenderer.invoke('get-battery-info'),
   setTab: (tab) => ipcRenderer.invoke('set-presence-tab', tab),
   getRpcStatus: () => ipcRenderer.invoke('get-rpc-status'),
   reconnectRpc: () => ipcRenderer.invoke('reconnect-rpc'),

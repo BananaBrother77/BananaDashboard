@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/overview.css" />
     <link rel="stylesheet" href="assets/css/resources.css" />
+    <link rel="stylesheet" href="assets/css/battery.css" />
     <link rel="stylesheet" href="assets/css/settings.css" />
   </head>
   <body>
@@ -402,16 +403,40 @@
       </div>
 
       <!-- ============================================================
-           TAB: BATTERY (placeholder)
+           TAB: BATTERY
            ============================================================ -->
       <div class="tab-content" id="tabBattery">
-        <section class="panel placeholder-section reveal" data-hideable>
-          <i data-lucide="battery" width="48" height="48"></i>
-          <h2 class="placeholder-title">Battery</h2>
-          <p class="placeholder-desc">
-            Monitor battery status, charge level, estimated time, and power
-            usage.
-          </p>
+        <div class="resource-stats reveal">
+          <div class="resource-stat" data-hideable>
+            <i data-lucide="battery-charging" width="20" height="20"></i>
+            <span class="resource-label" data-i18n="battery_status"
+              >Status</span
+            >
+            <span class="resource-value" id="batteryStatus">—</span>
+          </div>
+          <div class="resource-stat" data-hideable>
+            <i data-lucide="clock" width="20" height="20"></i>
+            <span
+              class="resource-label"
+              id="batteryTimeLabel"
+              data-i18n="battery_time"
+              >Time Remaining</span
+            >
+            <span class="resource-value" id="batteryTime">—</span>
+          </div>
+        </div>
+
+        <section class="panel battery-panel reveal" data-hideable>
+          <i
+            data-lucide="battery-full"
+            width="52"
+            height="52"
+            id="batteryIcon"
+          ></i>
+          <span class="battery-percent" id="batteryLevel">—</span>
+          <div class="battery-bar" id="batteryBar">
+            <div class="battery-fill" id="batteryFill"></div>
+          </div>
         </section>
       </div>
 
@@ -817,6 +842,7 @@
     <script src="assets/js/modules/rpc.js"></script>
     <script src="assets/js/modules/updater.js"></script>
     <script src="assets/js/modules/webview.js"></script>
+    <script src="assets/js/modules/battery.js"></script>
     <script src="assets/js/modules/context-menu.js"></script>
     <script src="assets/js/modules/settings.js"></script>
     <script>

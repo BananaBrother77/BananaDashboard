@@ -657,6 +657,102 @@ function getGpuStats() {
   return fallback;
 }
 
+ipcMain.handle('get-battery-info', () => {
+  try {
+    if (PLATFORM === 'linux') {
+      const batPath = '/sys/class/power_supply/BAT0';
+
+      const capacity = parseInt(
+        fs.readFileSync(`${batPath}/capacity`, 'utf8'),
+      );
+      const status = fs.readFileSync(`${batPath}/status`, 'utf8').trim();
+      let timeRemaining = null;
+
+      const energyNowFile = fs.existsSync(`${batPath}/energy_now`)
+        ? 'energy_now'
+        : 'charge_now';
+      const powerNowFile = fs.existsSync(`${batPath}/power_now`)
+        ? 'power_now'
+        : 'current_now';
+
+      const energyNow = parseFloat(
+        fs.readFileSync(`${batPath}/${energyNowFile}`, 'utf8'),
+      );
+
+      const powerNow = parseFloat(
+        fs.readFileSync(`${batPath}/${powerNowFile}`, 'utf8'),
+      );
+
+      if (powerNow > 0) {
+        if (status === 'Discharging') {
+          timeRemaining = Math.round((energyNow / powerNow) * 60);
+        } else if (status === 'Charging' && capacity > 0) {
+          const energyNeeded = energyNow * (100 / capacity - 1);
+          timeRemaining = Math.round((energyNeeded / powerNow) * 60);
+        }
+      }
+
+      return { capacity, status, timeRemaining };
+    } else if (PLATFORM === 'darwin') {
+      const out = execFileSync('pmset', ['-g', 'batt'], {
+        encoding: 'utf8',
+        timeout: 3000,
+      });
+
+      const capacity = parseInt(out.match(/(\d+)%/)?.[1]);
+      const status = macStatus(out);
+      const timeRemaining = out.match(/(\d+:\d+)\s+remaining/)?.[1] || null;
+
+      if (!Number.isNaN(capacity)) return { capacity, status, timeRemaining };
+    } else if (PLATFORM === 'win32') {
+      const out = execFileSync(
+        'powershell.exe',
+        [
+          '-NoProfile',
+          '-Command',
+          'Get-CimInstance -ClassName Win32_Battery | ConvertTo-Json -Compress',
+        ],
+        { encoding: 'utf8', timeout: 3000 },
+      );
+      const data = JSON.parse(out.trim());
+
+      return {
+        capacity: data.EstimatedChargeRemaining,
+        status: winStatus(data.BatteryStatus),
+        timeRemaining: null,
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+});
+
+function macStatus(out) {
+  if (/discharging/i.test(out)) return 'Discharging';
+  if (/not charging/i.test(out)) return 'Not Charging';
+  if (/charged|finishing/i.test(out)) return 'Full';
+  if (/AC Power/i.test(out)) return 'Charging';
+
+  return 'Unknown';
+}
+
+function winStatus(code) {
+  const map = {
+    1: 'Discharging',
+    2: 'Not Charging',
+    3: 'Full',
+    6: 'Charging',
+    7: 'Charging',
+    8: 'Charging',
+    9: 'Charging',
+    11: 'Charging',
+  };
+
+  return map[code] || 'Unknown';
+}
+
 function sendToWindow(channel, data) {
   if (mainWindow && !mainWindow.isDestroyed())
     mainWindow.webContents.send(channel, data);

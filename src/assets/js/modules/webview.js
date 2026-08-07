@@ -1,17 +1,3 @@
-function injectNoBlur(webview) {
-  if (!webview) return;
-
-  webview.addEventListener('dom-ready', () => {
-    webview.insertCSS(
-      '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
-    );
-  });
-}
-
-injectNoBlur(webviews.mcToolkit);
-injectNoBlur(webviews.mcshStatus);
-injectNoBlur(webviews.stats);
-
 // Webview fullscreen
 function isWebviewTab(tabName) {
   return ['mcServerHost', 'mcshTools', 'mcshStatus', 'mcToolkit', 'stats'].some(

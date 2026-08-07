@@ -70,6 +70,15 @@ const settings = {
   hiddenElementsList: document.getElementById('hiddenElementsList'),
 };
 
+const battery = {
+  level: document.getElementById('batteryLevel'),
+  status: document.getElementById('batteryStatus'),
+  time: document.getElementById('batteryTime'),
+  timeLabel: document.getElementById('batteryTimeLabel'),
+  icon: document.getElementById('batteryIcon'),
+  fill: document.getElementById('batteryFill'),
+};
+
 const nav = {
   pageTitle: document.querySelector('.page-title'),
   btns: document.querySelectorAll('.nav-item[data-tab]'),
@@ -166,6 +175,7 @@ function switchTab(tabName) {
     'mcshStatus',
     'stats',
   ];
+
   activeWebviews.forEach((name) => {
     const wv = webviews[name];
     if (wv)
