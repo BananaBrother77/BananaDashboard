@@ -129,6 +129,6 @@ jobs:
           git config --global user.name "BananaBrother77"
 
           git add -A
-          git diff --quiet || git commit -m "update to v$VERSION"
+          git diff --quiet HEAD || git commit -m "update to v$VERSION"
           git push origin master
 
