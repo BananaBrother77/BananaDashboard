@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const os = require('os');
+const si = require('systeminformation');
 const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { autoUpdater } = require('electron-updater');
@@ -662,9 +663,7 @@ ipcMain.handle('get-battery-info', () => {
     if (PLATFORM === 'linux') {
       const batPath = '/sys/class/power_supply/BAT0';
 
-      const capacity = parseInt(
-        fs.readFileSync(`${batPath}/capacity`, 'utf8'),
-      );
+      const capacity = parseInt(fs.readFileSync(`${batPath}/capacity`, 'utf8'));
       const status = fs.readFileSync(`${batPath}/status`, 'utf8').trim();
       let timeRemaining = null;
 
@@ -752,6 +751,74 @@ function winStatus(code) {
 
   return map[code] || 'Unknown';
 }
+
+function isDhcpEnabled(ifaceName) {
+  try {
+    if (PLATFORM === 'linux') {
+      const routes = execFileSync('ip', ['-o', 'route'], {
+        encoding: 'utf8',
+      });
+
+      return routes
+        .split('\n')
+        .some(
+          (line) =>
+            line.includes(`dev ${ifaceName}`) && line.includes('proto dhcp'),
+        );
+    }
+
+    if (PLATFORM === 'win32') {
+      const config = execFileSync('ipconfig', ['/all'], { encoding: 'utf8' });
+      const match = config.match(
+        new RegExp(`DHCP Enabled[^\\r\\n]*?:\\s+(\\w+)`, 'i'),
+      );
+
+      return match ? match[1].toLowerCase() === 'yes' : false;
+    }
+
+    if (PLATFORM === 'darwin') {
+      try {
+        execFileSync('ipconfig', ['getpacket', ifaceName], {
+          stdio: 'ignore',
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    return false;
+  } catch {
+    return null;
+  }
+}
+
+ipcMain.handle('get-network-interfaces', async () => {
+  try {
+    const interfaces = await si.networkInterfaces();
+
+    const networkInfo = interfaces.map((iface) => {
+      const dhcp = isDhcpEnabled(iface.iface);
+
+      return {
+        iface: iface.iface,
+        type: iface.type,
+        internal: iface.internal,
+        operstate: iface.operstate,
+        ip4: iface.ip4,
+        ip6: iface.ip6,
+        mac: iface.mac,
+        netmask: iface.ip4subnet,
+        dhcp: dhcp === null ? iface.dhcp : dhcp,
+      };
+    });
+
+    return networkInfo;
+  } catch (error) {
+    console.error('Error getting network interfaces:', error);
+    return [];
+  }
+});
 
 function sendToWindow(channel, data) {
   if (mainWindow && !mainWindow.isDestroyed())

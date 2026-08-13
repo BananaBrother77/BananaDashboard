@@ -79,6 +79,15 @@ const battery = {
   fill: document.getElementById('batteryFill'),
 };
 
+const network = {
+  ip4Display: document.getElementById('ip4Display'),
+  ip6Display: document.getElementById('ip6Display'),
+  macDisplay: document.getElementById('macDisplay'),
+  netmaskDisplay: document.getElementById('netmaskDisplay'),
+  typeDisplay: document.getElementById('typeDisplay'),
+  dhcpDisplay: document.getElementById('dhcpDisplay'),
+};
+
 const nav = {
   pageTitle: document.querySelector('.page-title'),
   btns: document.querySelectorAll('.nav-item[data-tab]'),

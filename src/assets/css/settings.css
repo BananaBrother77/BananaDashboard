@@ -180,6 +180,12 @@
   background: var(--hover-bg);
 }
 
+.lang-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .lang-name {
   flex: 1;
   text-align: left;

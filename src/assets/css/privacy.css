@@ -1,0 +1,31 @@
+/* Privacy mode */
+.privacy-mode .sensitive {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.2s ease;
+}
+
+.privacy-mode .sensitive::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: var(--accent-focus-ring);
+  border: 1px solid var(--panel-border);
+  transition: opacity 0.2s ease;
+}
+
+.privacy-mode .sensitive.revealed {
+  color: var(--text-main);
+  cursor: text;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+.privacy-mode .sensitive.revealed::after {
+  opacity: 0;
+}
