@@ -465,7 +465,11 @@ resources.applyTheme = function () {
 resources.setRefreshRate = function (ms) {
   this.intervalMs = ms;
   if (this.interval) clearInterval(this.interval);
-  this.interval = ms > 0 ? setInterval(() => this.fetchAndUpdate(), ms) : null;
+  this.interval = this.charts.cpu
+    ? ms > 0
+      ? setInterval(() => this.fetchAndUpdate(), ms)
+      : null
+    : null;
 };
 
 resources.destroy = function () {
@@ -473,5 +477,11 @@ resources.destroy = function () {
     clearInterval(this.interval);
     this.interval = null;
   }
-  Object.values(this.charts).forEach((c) => c.destroy());
+  
+  Object.keys(this.charts).forEach((k) => {
+    if (this.charts[k]) {
+      this.charts[k].destroy();
+      this.charts[k] = null;
+    }
+  });
 };
