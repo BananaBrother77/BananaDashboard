@@ -886,6 +886,12 @@ ipcMain.handle('set-rpc-enabled', (_, val) => {
   discord.setEnabled(val);
 });
 
+ipcMain.handle('set-start-fullscreen', (_, val) => {
+  if (!mainWindow) return;
+  if (val) mainWindow.maximize();
+  else if (mainWindow.isMaximized()) mainWindow.unmaximize();
+});
+
 ipcMain.handle('get-app-version', () => app.getVersion());
 
 ipcMain.handle('get-install-type', () => (isAUR ? 'aur' : 'standalone'));

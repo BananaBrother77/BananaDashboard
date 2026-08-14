@@ -1,4 +1,4 @@
-async function displayBatteryInfo() {
+(async function displayBatteryInfo() {
   const info = await window.dashboardAPI.getBatteryInfo();
   if (!info) return;
 
@@ -6,11 +6,11 @@ async function displayBatteryInfo() {
   battery.fill.style.width = info.capacity + '%';
   battery.status.textContent = info.status;
   battery.time.textContent = formatTime(info.timeRemaining);
-  
+
   battery.timeLabel.textContent = getTranslation(
     info.status === 'Charging' ? 'battery_time_to_full' : 'battery_time',
   );
-}
+})();
 
 function formatTime(time) {
   if (!time || time <= 0) return '—';
@@ -21,5 +21,7 @@ function formatTime(time) {
   return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
-setInterval(displayBatteryInfo, parseInt(localStorage.getItem('banana-refresh')) || 2000);
-displayBatteryInfo();
+setInterval(
+  displayBatteryInfo,
+  parseInt(localStorage.getItem('banana-refresh')) || 2000,
+);

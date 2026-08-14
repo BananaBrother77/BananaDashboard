@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
   getNetworkInterfaces: () => ipcRenderer.invoke('get-network-interfaces'),
 
   setTab: (tab) => ipcRenderer.invoke('set-presence-tab', tab),
+  setStartFullscreen: (val) =>
+    ipcRenderer.invoke('set-start-fullscreen', val),
   getRpcStatus: () => ipcRenderer.invoke('get-rpc-status'),
   reconnectRpc: () => ipcRenderer.invoke('reconnect-rpc'),
   setRpcEnabled: (val) => ipcRenderer.invoke('set-rpc-enabled', val),

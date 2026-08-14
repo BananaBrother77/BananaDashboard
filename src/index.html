@@ -772,6 +772,28 @@
 
             <section
               class="panel settings-section reveal settings-category active"
+              data-category="system"
+              data-hideable
+            >
+              <h2 class="section-header">
+                <i data-lucide="maximize" width="22" height="22"></i>
+                <span data-i18n="settings_fullscreen">Start Maximized</span>
+              </h2>
+              <p class="settings-desc" data-i18n="settings_fullscreen_desc">
+                Launch the app maximized.
+              </p>
+              <button class="lang-btn" id="fullscreenToggle">
+                <i data-lucide="maximize" width="18" height="18"></i>
+                <span
+                  class="lang-name"
+                  data-i18n="settings_fullscreen_disabled"
+                  >Disabled</span
+                >
+              </button>
+            </section>
+
+            <section
+              class="panel settings-section reveal settings-category active"
               data-category="updates"
               data-hideable
             >
@@ -903,6 +925,7 @@
     <script src="assets/js/modules/context-menu.js"></script>
     <script src="assets/js/modules/settings.js"></script>
     <script src="assets/js/modules/privacy.js"></script>
+    <script src="assets/js/modules/fullscreen.js"></script>
     <script>
       lucide.createIcons();
 

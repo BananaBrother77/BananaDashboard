@@ -68,6 +68,7 @@ const settings = {
   refreshSelect: document.getElementById('refreshSelect'),
   hiddenTabsList: document.getElementById('hiddenTabsList'),
   hiddenElementsList: document.getElementById('hiddenElementsList'),
+  fullscreenToggle: document.getElementById('fullscreenToggle'),
 };
 
 const battery = {
