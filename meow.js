@@ -793,12 +793,41 @@ function isDhcpEnabled(ifaceName) {
   }
 }
 
-ipcMain.handle('get-network-interfaces', async () => {
+let lastLatency = { value: null, at: 0 };
+const LATENCY_POLL_MS = 30 * 1000;
+
+async function getLatency() {
+  if (Date.now() - lastLatency.at < LATENCY_POLL_MS) return lastLatency.value;
+
   try {
-    const interfaces = await si.networkInterfaces();
+    lastLatency = { value: await si.inetLatency(), at: Date.now() };
+  } catch {
+    lastLatency = { value: null, at: Date.now() };
+  }
+  return lastLatency.value;
+}
+
+ipcMain.handle('get-network-status', async () => {
+  try {
+    const [ifacesRes, statsRes, gatewayRes] = await Promise.allSettled([
+      si.networkInterfaces(),
+      si.networkStats(),
+      si.networkGatewayDefault(),
+    ]);
+
+    const interfaces = ifacesRes.status === 'fulfilled' ? ifacesRes.value : [];
+    const stats = statsRes.status === 'fulfilled' ? statsRes.value : [];
+    const gateway = gatewayRes.status === 'fulfilled' ? gatewayRes.value : null;
+    const latency = await getLatency();
+
+    const statsByIface = {};
+    stats.forEach((s) => {
+      statsByIface[s.iface] = s;
+    });
 
     const networkInfo = interfaces.map((iface) => {
       const dhcp = isDhcpEnabled(iface.iface);
+      const st = statsByIface[iface.iface] || {};
 
       return {
         iface: iface.iface,
@@ -809,14 +838,21 @@ ipcMain.handle('get-network-interfaces', async () => {
         ip6: iface.ip6,
         mac: iface.mac,
         netmask: iface.ip4subnet,
+        speed: iface.speed,
         dhcp: dhcp === null ? iface.dhcp : dhcp,
+        rx_sec: st.rx_sec ?? null,
+        tx_sec: st.tx_sec ?? null,
       };
     });
 
-    return networkInfo;
+    return {
+      interfaces: networkInfo,
+      gateway: gateway || null,
+      latency: latency ?? null,
+    };
   } catch (error) {
-    console.error('Error getting network interfaces:', error);
-    return [];
+    console.error('Error getting network status:', error);
+    return { interfaces: [], gateway: null, latency: null };
   }
 });
 

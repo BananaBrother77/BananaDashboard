@@ -87,6 +87,11 @@ const network = {
   netmaskDisplay: document.getElementById('netmaskDisplay'),
   typeDisplay: document.getElementById('typeDisplay'),
   dhcpDisplay: document.getElementById('dhcpDisplay'),
+  downDisplay: document.getElementById('downDisplay'),
+  upDisplay: document.getElementById('upDisplay'),
+  gatewayDisplay: document.getElementById('gatewayDisplay'),
+  latencyDisplay: document.getElementById('latencyDisplay'),
+  interfacesList: document.getElementById('interfacesList'),
 };
 
 const nav = {

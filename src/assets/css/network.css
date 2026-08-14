@@ -15,3 +15,93 @@
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-weight: 500;
 }
+
+/* All-interfaces panel */
+.network-interfaces {
+  padding: 20px 24px;
+}
+
+.network-interfaces-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted-bright);
+  margin-bottom: 14px;
+}
+
+.network-interfaces-title svg {
+  width: 20px;
+  height: 20px;
+}
+
+#interfacesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.iface-card {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+}
+
+.iface-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.iface-name {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.iface-status {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.iface-status.up {
+  color: var(--online-green);
+}
+
+.iface-status.down {
+  color: var(--offline-red);
+}
+
+.iface-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 0.8rem;
+}
+
+.iface-card-label {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+}
+
+.iface-card-value {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: var(--text-main);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
+}

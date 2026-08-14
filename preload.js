@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
   getResources: () => ipcRenderer.invoke('get-resources'),
   getBatteryInfo: () => ipcRenderer.invoke('get-battery-info'),
   
-  getNetworkInterfaces: () => ipcRenderer.invoke('get-network-interfaces'),
+  getNetworkStatus: () => ipcRenderer.invoke('get-network-status'),
 
   setTab: (tab) => ipcRenderer.invoke('set-presence-tab', tab),
   setStartFullscreen: (val) =>

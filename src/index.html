@@ -396,10 +396,18 @@
       <div class="tab-content" id="tabNetwork">
         <div class="resource-stats network-stats reveal">
           <div class="resource-stat" data-hideable>
+            <i data-lucide="download" width="20" height="20"></i>
+            <span class="resource-label" data-i18n="net_down">Download</span>
+            <span class="resource-value" id="downDisplay">—</span>
+          </div>
+          <div class="resource-stat" data-hideable>
+            <i data-lucide="upload" width="20" height="20"></i>
+            <span class="resource-label" data-i18n="net_up">Upload</span>
+            <span class="resource-value" id="upDisplay">—</span>
+          </div>
+          <div class="resource-stat" data-hideable>
             <i data-lucide="globe" width="20" height="20"></i>
-            <span class="resource-label" data-i18n="net_ipv4"
-              >IPv4 Address</span
-            >
+            <span class="resource-label" data-i18n="net_ipv4">IPv4 Address</span>
             <span class="resource-value sensitive" id="ip4Display">—</span>
           </div>
           <div class="resource-stat" data-hideable>
@@ -410,6 +418,18 @@
         </div>
 
         <section class="panel info-panel network-info reveal" data-hideable>
+          <div class="info-row" data-hideable>
+            <i data-lucide="router" width="20" height="20"></i>
+            <span class="info-label" data-i18n="net_gateway">Default Gateway</span>
+            <span class="info-value sensitive" id="gatewayDisplay">—</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-row" data-hideable>
+            <i data-lucide="activity" width="20" height="20"></i>
+            <span class="info-label" data-i18n="net_latency">Latency</span>
+            <span class="info-value" id="latencyDisplay">—</span>
+          </div>
+          <div class="info-divider"></div>
           <div class="info-row" data-hideable>
             <i data-lucide="network" width="20" height="20"></i>
             <span class="info-label" data-i18n="net_ipv6">IPv6 Address</span>
@@ -433,6 +453,17 @@
             <span class="info-label" data-i18n="net_dhcp">DHCP Enabled</span>
             <span class="info-value" id="dhcpDisplay">—</span>
           </div>
+        </section>
+
+        <section
+          class="panel info-panel network-interfaces reveal"
+          data-hideable
+        >
+          <h2 class="network-interfaces-title">
+            <i data-lucide="network" width="20" height="20"></i>
+            <span data-i18n="net_interfaces">Network Interfaces</span>
+          </h2>
+          <div id="interfacesList"></div>
         </section>
       </div>
 
