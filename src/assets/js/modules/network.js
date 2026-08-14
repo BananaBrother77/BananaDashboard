@@ -1,6 +1,10 @@
 (function () {
-  const refreshMs = () =>
-    parseInt(localStorage.getItem('banana-refresh')) || 2000;
+  let pollTimer = null;
+
+  function startPolling(ms) {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = ms > 0 ? setInterval(fetchAndRender, ms) : null;
+  }
 
   const ifaceCards = {};
 
@@ -156,5 +160,6 @@
   }
 
   fetchAndRender();
-  setInterval(fetchAndRender, refreshMs());
+  startPolling(refresh.getMs('network'));
+  refresh.register('network', startPolling);
 })();

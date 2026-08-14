@@ -40,8 +40,10 @@ const resources = {
   data: { cpu: [], ram: [], gpu: [], labels: [] },
   maxPoints: 30,
   interval: null,
-  intervalMs: parseInt(localStorage.getItem('banana-refresh')) || 2000,
+  intervalMs: refresh.getMs('resources'),
 };
+
+refresh.register('resources', (ms) => resources.setRefreshRate(ms));
 
 function getPartitionColors() {
   const accent = cssVar('--accent-purple');
@@ -477,7 +479,7 @@ resources.destroy = function () {
     clearInterval(this.interval);
     this.interval = null;
   }
-  
+
   Object.keys(this.charts).forEach((k) => {
     if (this.charts[k]) {
       this.charts[k].destroy();

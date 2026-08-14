@@ -313,6 +313,30 @@
   font-weight: 600;
 }
 
+/* Refresh rate rows */
+.refresh-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.refresh-row + .refresh-row {
+  margin-top: 8px;
+}
+
+.refresh-label {
+  color: var(--text-muted-bright);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.refresh-row .custom-select {
+  max-width: 240px;
+}
+
 /* Discord RPC */
 .rpc-status {
   display: flex;

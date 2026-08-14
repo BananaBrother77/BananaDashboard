@@ -43,47 +43,71 @@ document.querySelectorAll('.reset-btn').forEach((btn) => {
   });
 });
 
-// Custom dropdown
+// Custom dropdown (refresh rate)
 (function () {
-  const container = settings.refreshSelect;
-  if (!container) return;
+  function bindRefreshSelect(container, storageKey, onApply) {
+    if (!container) return;
 
-  const trigger = container.querySelector('.select-trigger');
-  const valueEl = container.querySelector('.select-value');
-  const options = container.querySelectorAll('.select-option');
+    const trigger = container.querySelector('.select-trigger');
+    const valueEl = container.querySelector('.select-value');
+    const options = container.querySelectorAll('.select-option');
 
-  function selectValue(opt) {
-    options.forEach((o) => o.classList.remove('selected'));
-    opt.classList.add('selected');
+    function selectValue(opt) {
+      options.forEach((o) => o.classList.remove('selected'));
+      opt.classList.add('selected');
 
-    valueEl.textContent = opt.textContent;
-    container.classList.remove('open');
+      valueEl.textContent = opt.textContent;
+      container.classList.remove('open');
 
-    const ms = parseInt(opt.dataset.value);
-    localStorage.setItem('banana-refresh', ms);
+      const value = opt.dataset.value;
+      if (value === '') localStorage.removeItem(storageKey);
+      else localStorage.setItem(storageKey, value);
 
-    if (typeof resources !== 'undefined') resources.setRefreshRate(ms);
+      if (onApply) onApply();
+    }
+
+    const saved = localStorage.getItem(storageKey);
+    if (saved != null) {
+      const match = Array.from(options).find(
+        (o) => o.dataset.value === saved,
+      );
+
+      if (match) selectValue(match);
+    } else {
+      const follow = Array.from(options).find((o) => o.dataset.value === '');
+      if (follow) selectValue(follow);
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      container.classList.toggle('open');
+    });
+
+    options.forEach((opt) => {
+      opt.addEventListener('click', () => selectValue(opt));
+    });
+
+    document.addEventListener('click', () => container.classList.remove('open'));
   }
 
-  const savedRate = localStorage.getItem('banana-refresh');
-  if (savedRate) {
-    const match = Array.from(options).find(
-      (o) => o.dataset.value === savedRate,
-    );
-
-    if (match) selectValue(match);
-  }
-
-  trigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    container.classList.toggle('open');
-  });
-
-  options.forEach((opt) => {
-    opt.addEventListener('click', () => selectValue(opt));
-  });
-
-  document.addEventListener('click', () => container.classList.remove('open'));
+  bindRefreshSelect(settings.refreshSelect, 'banana-refresh', () =>
+    refresh.applyAll(),
+  );
+  bindRefreshSelect(
+    settings.resourcesRefreshSelect,
+    'banana-refresh-resources',
+    () => refresh.apply('resources'),
+  );
+  bindRefreshSelect(
+    settings.networkRefreshSelect,
+    'banana-refresh-network',
+    () => refresh.apply('network'),
+  );
+  bindRefreshSelect(
+    settings.batteryRefreshSelect,
+    'banana-refresh-battery',
+    () => refresh.apply('battery'),
+  );
 })();
 
 // Settings category nav + search

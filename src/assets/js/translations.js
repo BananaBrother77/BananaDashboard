@@ -65,6 +65,13 @@ const translations = {
     lang_name: 'English',
     language_switch_target: 'German',
     settings_refresh: 'Resource Refresh',
+    settings_refresh_desc:
+      'Set a default refresh rate, then override it per module.',
+    settings_refresh_default: 'Default',
+    settings_refresh_follow: 'Follow default',
+    settings_refresh_resources: 'Resources',
+    settings_refresh_network: 'Network',
+    settings_refresh_battery: 'Battery',
     settings_privacy: 'Privacy Mode',
     settings_privacy_desc:
       'Hide private values (IP addresses, MAC) until you click them.',
@@ -182,6 +189,13 @@ const translations = {
     lang_name: 'Deutsch',
     language_switch_target: 'English',
     settings_refresh: 'Ressourcen-Aktualisierung',
+    settings_refresh_desc:
+      'Lege eine Standard-Aktualisierungsrate fest und überschreibe sie pro Modul.',
+    settings_refresh_default: 'Standard',
+    settings_refresh_follow: 'Standard folgen',
+    settings_refresh_resources: 'Ressourcen',
+    settings_refresh_network: 'Netzwerk',
+    settings_refresh_battery: 'Akku',
     settings_privacy: 'Datenschutzmodus',
     settings_privacy_desc:
       'Verbirgt private Werte (IP-Adressen, MAC), bis du sie anklickst.',

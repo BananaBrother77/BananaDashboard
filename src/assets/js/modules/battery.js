@@ -2,6 +2,13 @@
   const info = await window.dashboardAPI.getBatteryInfo();
   if (!info) return;
 
+  let pollTimer = null;
+
+  function startPolling(ms) {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = ms > 0 ? setInterval(displayBatteryInfo, ms) : null;
+  }
+
   battery.level.textContent = info.capacity + '%';
   battery.fill.style.width = info.capacity + '%';
   battery.status.textContent = info.status;
@@ -21,8 +28,6 @@
     return h > 0 ? `${h}h ${m}m` : `${m}m`;
   }
 
-  setInterval(
-    displayBatteryInfo,
-    parseInt(localStorage.getItem('banana-refresh')) || 2000,
-  );
+  startPolling(refresh.getMs('battery'));
+  refresh.register('battery', startPolling);
 })();
