@@ -1,7 +1,7 @@
 // Webview fullscreen
 function isWebviewTab(tabName) {
   return ['mcServerHost', 'mcshTools', 'mcshStatus', 'mcToolkit', 'stats'].some(
-    (name) => name.toLowerCase() === tabName,
+    (name) => name.toLowerCase() === tabName.toLowerCase(),
   );
 }
 
