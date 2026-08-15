@@ -1,7 +1,7 @@
 (function () {
   const privacyEnabled = () => localStorage.getItem('banana-privacy') !== 'off';
 
-  const toggle = document.getElementById('privacyToggle');
+  const toggle = settings.privacyToggle;
   const sensitiveEls = document.querySelectorAll('.sensitive');
   const label = toggle?.querySelector('.lang-name') || toggle;
 

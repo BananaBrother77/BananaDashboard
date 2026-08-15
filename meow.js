@@ -1,4 +1,11 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  ipcMain,
+  systemPreferences,
+} = require('electron');
+
 const path = require('path');
 const os = require('os');
 const si = require('systeminformation');
@@ -1156,4 +1163,9 @@ ipcMain.handle('get-detailed-sysinfo', () => {
   }
 
   return info;
+});
+
+ipcMain.handle('get-animation-preferences', () => {
+  const animationSettings = systemPreferences.getAnimationSettings();
+  return animationSettings;
 });

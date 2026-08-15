@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('dashboardAPI', {
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   getInstallType: () => ipcRenderer.invoke('get-install-type'),
   getDetailedSysinfo: () => ipcRenderer.invoke('get-detailed-sysinfo'),
+  getAnimationPreferences: () => ipcRenderer.invoke('get-animation-preferences'),
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
   quitAndInstall: () => ipcRenderer.invoke('quit-and-install'),

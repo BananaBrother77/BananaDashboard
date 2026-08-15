@@ -72,6 +72,9 @@ const settings = {
   hiddenTabsList: document.getElementById('hiddenTabsList'),
   hiddenElementsList: document.getElementById('hiddenElementsList'),
   fullscreenToggle: document.getElementById('fullscreenToggle'),
+  privacyToggle: document.getElementById('privacyToggle'),
+  webviewUnloadToggle: document.getElementById('webviewUnloadToggle'),
+  animationToggle: document.getElementById('animationToggle'),
 };
 
 const battery = {
@@ -138,6 +141,67 @@ function showToast(title, desc) {
   }, 8000);
 }
 
+// Webview tab config (id + src are re-created lazily)
+const webviewConfig = {
+  mcToolkit: {
+    id: 'mcToolkitWebview',
+    src: 'https://mctoolkit.bananabrother77.online/',
+  },
+  mcServerHost: {
+    id: 'mcServerHostWebview',
+    src: 'https://www.mcserverhost.com/',
+  },
+  mcshTools: { id: 'mcshToolsWebview', src: 'https://mcsh.tools/' },
+  mcshStatus: {
+    id: 'mcshStatusWebview',
+    src: 'https://maximerix.dev/mcsh/status/',
+  },
+  stats: { id: 'statsWebview', src: 'https://analytics.google.com/' },
+};
+
+function webviewsUnloadEnabled() {
+  return localStorage.getItem('banana-webview-unload') !== 'off';
+}
+
+function showWebview(name) {
+  const cfg = webviewConfig[name];
+  if (!cfg) return;
+
+  const tabId = 'tab' + name.charAt(0).toUpperCase() + name.slice(1);
+  const panel = document.getElementById(tabId)?.querySelector('.webview-panel');
+  if (!panel) return;
+
+  const placeholder = panel.querySelector('.webview-loading');
+  let wv = webviews[name];
+
+  if (!wv) {
+    wv = document.createElement('webview');
+    wv.id = cfg.id;
+    wv.src = cfg.src;
+    wv.style.opacity = '0';
+
+    wv.addEventListener('did-stop-loading', () => {
+      if (placeholder) placeholder.hidden = true;
+      wv.style.opacity = '1';
+    });
+
+    panel.appendChild(wv);
+    webviews[name] = wv;
+
+    if (placeholder) placeholder.hidden = false;
+  } else {
+    if (placeholder) placeholder.hidden = true;
+    wv.style.display = '';
+  }
+}
+
+function unloadWebview(name) {
+  if (webviews[name]) {
+    webviews[name].remove();
+    webviews[name] = null;
+  }
+}
+
 // Tab switching
 function switchTab(tabName) {
   nav.btns.forEach((b) => b.classList.remove('active'));
@@ -186,19 +250,17 @@ function switchTab(tabName) {
 
   if (content && window.resetReveal) resetReveal(content);
 
-  const activeWebviews = [
-    'mcToolkit',
-    'mcServerHost',
-    'mcshTools',
-    'mcshStatus',
-    'stats',
-  ];
+  Object.keys(webviewConfig).forEach((name) => {
+    const isActive = tabName.toLowerCase() === name.toLowerCase();
 
-  activeWebviews.forEach((name) => {
-    const wv = webviews[name];
-    if (wv)
-      wv.style.display =
-        tabName.toLowerCase() === name.toLowerCase() ? '' : 'none';
+    if (isActive) {
+      showWebview(name);
+    } else if (webviewsUnloadEnabled()) {
+      unloadWebview(name);
+    } else {
+      showWebview(name);
+      if (webviews[name]) webviews[name].style.display = 'none';
+    }
   });
 }
 

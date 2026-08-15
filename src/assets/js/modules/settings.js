@@ -43,6 +43,42 @@ document.querySelectorAll('.reset-btn').forEach((btn) => {
   });
 });
 
+// Webview unload toggle
+(function () {
+  const unloadEnabled = () =>
+    localStorage.getItem('banana-webview-unload') !== 'off';
+
+  const toggle = settings.webviewUnloadToggle;
+  const label = toggle?.querySelector('.lang-name') || toggle;
+
+  function applyMode() {
+    const enabled = unloadEnabled();
+
+    if (toggle) toggle.classList.toggle('is-on', enabled);
+
+    if (label) {
+      const key = enabled
+        ? 'settings_webview_unload_enabled'
+        : 'settings_webview_unload_disabled';
+      label.dataset.i18n = key;
+      label.textContent = getTranslation(key);
+    }
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      localStorage.setItem(
+        'banana-webview-unload',
+        unloadEnabled() ? 'off' : 'on',
+      );
+      applyMode();
+      if (typeof switchTab === 'function') switchTab(getTabFromURL());
+    });
+  }
+
+  applyMode();
+})();
+
 // Custom dropdown (refresh rate)
 (function () {
   function bindRefreshSelect(container, storageKey, onApply) {
@@ -68,9 +104,7 @@ document.querySelectorAll('.reset-btn').forEach((btn) => {
 
     const saved = localStorage.getItem(storageKey);
     if (saved != null) {
-      const match = Array.from(options).find(
-        (o) => o.dataset.value === saved,
-      );
+      const match = Array.from(options).find((o) => o.dataset.value === saved);
 
       if (match) selectValue(match);
     } else {
@@ -87,7 +121,9 @@ document.querySelectorAll('.reset-btn').forEach((btn) => {
       opt.addEventListener('click', () => selectValue(opt));
     });
 
-    document.addEventListener('click', () => container.classList.remove('open'));
+    document.addEventListener('click', () =>
+      container.classList.remove('open'),
+    );
   }
 
   bindRefreshSelect(settings.refreshSelect, 'banana-refresh', () =>
