@@ -8,12 +8,17 @@ A desktop system dashboard built with Electron. Think of it like a server dashbo
 
 - **Overview** -- System info at a glance: OS, kernel, CPU, RAM, GPU, uptime, plus a collapsible More Info panel (shell, DE, terminal, packages, local IP, battery, swap)
 - **Resources** -- Live CPU, RAM, GPU, and disk usage graphs with configurable refresh rate; per-partition disk breakdown; app resource usage (PID, memory, heap)
+- **Network** -- Live download/upload rates, IPv4/IPv6, MAC address, gateway, latency, and per-interface cards with link speed and status
+- **Battery** -- Charge percentage, status, and time remaining (or time to full while charging)
 - **Theme system** -- Six color themes (purple, green, red, yellow, blue, pink) that persist across sessions
 - **Multi-language** -- English and German UI, switchable on the fly
+- **Privacy mode** -- Hide sensitive values (IP addresses, MAC) until you click them
+- **Customization** -- Right-click sidebar tabs to rename or hide them, double-click section labels to rename, right-click panels to hide. Restore everything from Settings
+- **Performance** -- Disable UI animations for a snappier UI and unload hidden website tabs so they don't keep running in the background
 - **Discord Rich Presence** -- Shows your current tab and system status in Discord
 - **Auto-updates** -- Checks for new versions on startup, manual download flow with progress bar
-- **Settings** -- Theme picker, language toggle, refresh rate control, settings search, version info, update management, Discord RPC toggle
-- **Webview tabs** -- Embedded MCToolkit, MCServerHost, and MCSH Tools panels with fullscreen mode
+- **Settings** -- Searchable settings grouped by category (appearance, system, performance, updates, Discord RPC) covering theme, language, refresh rates, privacy, start-maximized, and hidden tab/element management with one-click reset
+- **Webview tabs** -- Embedded MCToolkit, MCServerHost, MCSH Tools, and Website Statistics panels with fullscreen mode
 - **Sidebar collapse** -- Click the edge bar or press Ctrl+B to collapse the sidebar for more content space
 - **Loading screen** -- Animated splash with logo and spinner while system info loads
 
@@ -22,18 +27,40 @@ A desktop system dashboard built with Electron. Think of it like a server dashbo
 - **Runtime**: Node.js (latest LTS)
 - **Desktop**: Electron 43+
 - **Frontend**: Vanilla HTML, CSS, JavaScript (no frameworks, no bundler)
+- **System data**: `systeminformation` in the main process (plus `nvidia-smi` / `rocm-smi` / Intel sysfs fallback for GPU, `df`/`wmic` for disk)
+- **Updates**: `electron-updater`
 - **Charts**: Chart.js 4.x via CDN
 - **Icons**: Lucide via CDN
-- **Font**: Poppins (Google Fonts)
+- **Font**: Poppins (served from the BananaBrother77 global-assets repo)
 
-## Getting Started
+## Installation
 
-### Prerequisites
+BananaDashboard is a packaged desktop app. You don't need to build anything to use it.
 
-- Node.js (latest LTS)
-- npm
+### Download a binary
 
-### Install
+Grab the installer for your platform from the [Releases page](https://github.com/BananaBrother77/BananaDashboard/releases):
+
+- **Linux** -- `.AppImage` (portable, runs on any distro), `.deb` (Debian/Ubuntu), `.pacman` (Arch)
+- **Windows** -- NSIS installer (`.exe`)
+- **macOS** -- `.dmg`
+
+Install the pacman package:
+
+```bash
+sudo pacman -U dist/bananadashboard-*.pacman
+```
+
+### AUR (Arch Linux)
+
+```bash
+yay -S bananadashboard-bin
+# or: paru -S bananadashboard-bin
+```
+
+## Development
+
+Run the app from source. Requires **Node.js (latest LTS)** and **npm**.
 
 ```bash
 git clone https://github.com/BananaBrother77/BananaDashboard.git
@@ -42,50 +69,17 @@ npm install
 npm start
 ```
 
-### Development
-
-```bash
-npm start
-```
-
 The app starts with an auto-hidden menu bar (press Alt to show it). Tab shortcuts: 1-9 on your keyboard. Press Ctrl+B to collapse the sidebar.
 
 ## Building
 
-### Linux
+Build installers for your platform into `dist/`:
 
 ```bash
-npm run build -- --linux
+npm run build -- --linux   # .AppImage, .deb, .pacman
+npm run build -- --mac     # .dmg
+npm run build -- --win     # NSIS installer (.exe)
 ```
-
-Output in `dist/`:
-- `.AppImage` -- portable, runs on any distro
-- `.deb` -- Debian/Ubuntu packages
-- `.pacman` -- Arch Linux packages
-
-Install the pacman package:
-
-```bash
-sudo pacman -U dist/bananadashboard-*.pacman
-```
-
-After installing, you may need to log out and back in to pick up the icon in KDE.
-
-### macOS
-
-```bash
-npm run build -- --mac
-```
-
-Output: `.dmg`
-
-### Windows
-
-```bash
-npm run build -- --win
-```
-
-Output: NSIS installer (`.exe`)
 
 ## Auto-Updates
 
@@ -98,9 +92,21 @@ The app uses `electron-updater` to check for new versions from GitHub Releases o
 
 You can also manually check from **Settings > Updates > Check for Updates**.
 
-## Downloads
+> **Note for AUR users:** the built-in auto-updater is skipped for AUR installs. Update via your package manager instead (`yay -S bananadashboard-bin` or `paru -S bananadashboard-bin`).
 
-Pre-built binaries for Linux (AppImage, deb, pacman), Windows (NSIS installer), and macOS (DMG) are available on the [Releases page](https://github.com/BananaBrother77/BananaDashboard/releases).
+## CI / Releases
+
+Pushing a tag matching `v*` triggers a GitHub Actions workflow that:
+
+1. Builds Linux (AppImage, deb, pacman), Windows (NSIS), and macOS (DMG) packages
+2. Creates a GitHub Release with the binaries and auto-generated notes
+3. Posts a notification to Discord
+4. Publishes a new `bananadashboard-bin` version to the AUR
+
+```bash
+git tag -a v1.0.0 -m "Release v1.0.0"   # annotated tags recommended
+git push origin v1.0.0
+```
 
 ## Discord Rich Presence
 
@@ -112,23 +118,40 @@ If Discord is running, the app connects automatically and updates presence every
 
 ```
 BananaDashboard/
-├── meow.js                    # Electron main process (window, IPC, system info)
-├── preload.js                 # Context bridge (secure IPC)
+├── meow.js                    # Electron main process (window, IPC, system info, updater, menu)
+├── preload.js                 # Context bridge (window.dashboardAPI)
 ├── src/
-│   ├── index.html             # Main app shell
+│   ├── index.html             # App shell
 │   └── assets/
 │       ├── css/
-│       │   ├── style.css      # Base design system (layout, sidebar, typography)
+│       │   ├── style.css      # Design system (layout, sidebar, themes, reveal animations)
 │       │   ├── overview.css   # Overview tab styles
 │       │   ├── resources.css  # Resources tab styles (charts, disk)
-│       │   └── settings.css   # Settings tab styles (theme, language, RPC)
+│       │   ├── network.css    # Network tab styles
+│       │   ├── battery.css    # Battery tab styles
+│       │   ├── privacy.css    # Privacy mode styles
+│       │   └── settings.css   # Settings tab styles
 │       └── js/
-│           ├── app.js         # Renderer logic (tab switching, theme, language, RPC)
+│           ├── app.js         # Shared element refs, tab switching, IPC calls
 │           ├── translations.js# i18n (en/de)
-│           ├── reveal.js      # Scroll animations
+│           ├── reveal.js      # Scroll-in reveal animations
 │           └── modules/
 │               ├── resources.js # Live resource monitoring (Chart.js)
-│               └── discord.js   # Discord RPC via raw IPC socket
+│               ├── network.js   # Network stats polling + interface cards
+│               ├── battery.js   # Battery polling
+│               ├── overview.js  # Overview + More Info panel
+│               ├── refresh.js   # Per-module refresh rate system
+│               ├── animations.js# Disable UI animations toggle
+│               ├── privacy.js   # Privacy mode toggle
+│               ├── fullscreen.js# Start-maximized toggle
+│               ├── sidebar.js   # Sidebar collapse + section rename
+│               ├── context-menu.js # Right-click rename/hide tabs & panels
+│               ├── webview.js   # Webview fullscreen + refresh button
+│               ├── settings.js  # Settings categories, search, toggles
+│               ├── updater.js   # Update status UI
+│               ├── rpc.js       # Discord RPC status UI
+│               └── discord.js   # Discord RPC via raw IPC socket (main process)
+├── .github/workflows/release.yml  # CI build + release + AUR publish
 ├── package.json
 └── README.md
 ```

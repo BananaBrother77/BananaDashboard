@@ -3,19 +3,13 @@
     localStorage.getItem('banana-fullscreen') !== 'off';
 
   const toggle = settings.fullscreenToggle;
-  const label = toggle?.querySelector('.lang-name') || toggle;
 
   function applyMode() {
     const enabled = fullscreenEnabled();
 
-    if (toggle) toggle.classList.toggle('is-on', enabled);
-
-    if (label && window.getTranslation) {
-      const key = enabled
-        ? 'settings_fullscreen_enabled'
-        : 'settings_fullscreen_disabled';
-      label.dataset.i18n = key;
-      label.textContent = getTranslation(key);
+    if (toggle) {
+      toggle.classList.toggle('is-on', enabled);
+      toggle.setAttribute('aria-checked', String(enabled));
     }
   }
 

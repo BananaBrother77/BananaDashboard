@@ -81,22 +81,15 @@ const translations = {
     settings_privacy: 'Privacy Mode',
     settings_privacy_desc:
       'Hide private values (IP addresses, MAC) until you click them.',
-    settings_privacy_enabled: 'Enabled',
-    settings_privacy_disabled: 'Disabled',
     settings_fullscreen: 'Start Maximized',
-    settings_fullscreen_desc: 'Launch the app maximized.',
-    settings_fullscreen_enabled: 'Enabled',
-    settings_fullscreen_disabled: 'Disabled',
+    settings_fullscreen_desc:
+      'Launch the app maximized. Applies on next launch.',
     settings_webview_unload: 'Unload hidden websites',
     settings_webview_unload_desc:
       "Close website tabs when you switch away so they don't run in the background. They reload when you open them again.",
-    settings_webview_unload_enabled: 'Enabled',
-    settings_webview_unload_disabled: 'Disabled',
     settings_animation_disable: 'Disable Animations',
     settings_animation_disable_desc:
       'Disable element loading animations for a cleaner experience.',
-    settings_animation_disable_enabled: 'Enabled',
-    settings_animation_disable_disabled: 'Disabled',
     webview_loading: 'Loading...',
     settings_refresh_off: 'Off',
     settings_version: 'Version',
@@ -222,22 +215,15 @@ const translations = {
     settings_privacy: 'Datenschutzmodus',
     settings_privacy_desc:
       'Verbirgt private Werte (IP-Adressen, MAC), bis du sie anklickst.',
-    settings_privacy_enabled: 'Aktiviert',
-    settings_privacy_disabled: 'Deaktiviert',
     settings_fullscreen: 'Maximiert starten',
-    settings_fullscreen_desc: 'Startet die App maximiert.',
-    settings_fullscreen_enabled: 'Aktiviert',
-    settings_fullscreen_disabled: 'Deaktiviert',
+    settings_fullscreen_desc:
+      'Startet die App maximiert. Wirkt beim nächsten Start.',
     settings_webview_unload: 'Websites im Hintergrund entladen',
     settings_webview_unload_desc:
       'Schließt Website-Tabs, wenn du sie verlässt, damit sie nicht im Hintergrund laufen. Beim erneuten Öffnen laden sie neu.',
-    settings_webview_unload_enabled: 'Aktiviert',
-    settings_webview_unload_disabled: 'Deaktiviert',
     settings_animation_disable: 'Animationen deaktivieren',
     settings_animation_disable_desc:
       'Deaktiviert die Lade-Animationen der Elemente für ein aufgeräumteres Erlebnis.',
-    settings_animation_disable_enabled: 'Aktiviert',
-    settings_animation_disable_disabled: 'Deaktiviert',
     webview_loading: 'Lädt...',
     settings_refresh_off: 'Aus',
     settings_version: 'Version',

@@ -917,19 +917,28 @@
               data-category="system"
               data-hideable
             >
-              <h2 class="section-header">
-                <i data-lucide="shield" width="22" height="22"></i>
-                <span data-i18n="settings_privacy">Privacy Mode</span>
-              </h2>
-              <p class="settings-desc" data-i18n="settings_privacy_desc">
-                Hide private values (IP addresses, MAC) until you click them.
-              </p>
-              <button class="lang-btn" id="privacyToggle">
-                <i data-lucide="shield" width="18" height="18"></i>
-                <span class="lang-name" data-i18n="settings_privacy_enabled"
-                  >Enabled</span
-                >
-              </button>
+              <div class="setting-row">
+                <div class="setting-row-info">
+                  <i data-lucide="shield" width="18" height="18"></i>
+                  <div>
+                    <span class="setting-row-title" data-i18n="settings_privacy"
+                      >Privacy Mode</span
+                    >
+                    <span
+                      class="setting-row-desc"
+                      data-i18n="settings_privacy_desc"
+                      >Hide private values (IP addresses, MAC) until you click
+                      them.</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="switch"
+                  id="privacyToggle"
+                  role="switch"
+                  aria-checked="true"
+                ></button>
+              </div>
             </section>
 
             <section
@@ -937,19 +946,29 @@
               data-category="system"
               data-hideable
             >
-              <h2 class="section-header">
-                <i data-lucide="maximize" width="22" height="22"></i>
-                <span data-i18n="settings_fullscreen">Start Maximized</span>
-              </h2>
-              <p class="settings-desc" data-i18n="settings_fullscreen_desc">
-                Launch the app maximized.
-              </p>
-              <button class="lang-btn" id="fullscreenToggle">
-                <i data-lucide="maximize" width="18" height="18"></i>
-                <span class="lang-name" data-i18n="settings_fullscreen_disabled"
-                  >Disabled</span
-                >
-              </button>
+              <div class="setting-row">
+                <div class="setting-row-info">
+                  <i data-lucide="maximize" width="18" height="18"></i>
+                  <div>
+                    <span
+                      class="setting-row-title"
+                      data-i18n="settings_fullscreen"
+                      >Start Maximized</span
+                    >
+                    <span
+                      class="setting-row-desc"
+                      data-i18n="settings_fullscreen_desc"
+                      >Launch the app maximized. Applies on next launch.</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="switch"
+                  id="fullscreenToggle"
+                  role="switch"
+                  aria-checked="true"
+                ></button>
+              </div>
             </section>
 
             <section
@@ -957,26 +976,30 @@
               data-category="performance"
               data-hideable
             >
-              <h2 class="section-header">
-                <i data-lucide="zap" width="22" height="22"></i>
-                <span data-i18n="settings_animation_disable"
-                  >Disable Animations</span
-                >
-              </h2>
-              <p
-                class="settings-desc"
-                data-i18n="settings_animation_disable_desc"
-              >
-                Disable element loading animations for a cleaner experience.
-              </p>
-              <button class="lang-btn" id="animationToggle">
-                <i data-lucide="zap" width="18" height="18"></i>
-                <span
-                  class="lang-name"
-                  data-i18n="settings_animation_disable_disabled"
-                  >Disabled</span
-                >
-              </button>
+              <div class="setting-row">
+                <div class="setting-row-info">
+                  <i data-lucide="zap" width="18" height="18"></i>
+                  <div>
+                    <span
+                      class="setting-row-title"
+                      data-i18n="settings_animation_disable"
+                      >Disable Animations</span
+                    >
+                    <span
+                      class="setting-row-desc"
+                      data-i18n="settings_animation_disable_desc"
+                      >Disable element loading animations for a cleaner
+                      experience.</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="switch"
+                  id="animationToggle"
+                  role="switch"
+                  aria-checked="false"
+                ></button>
+              </div>
             </section>
 
             <section
@@ -984,24 +1007,31 @@
               data-category="performance"
               data-hideable
             >
-              <h2 class="section-header">
-                <i data-lucide="globe" width="22" height="22"></i>
-                <span data-i18n="settings_webview_unload"
-                  >Unload hidden websites</span
-                >
-              </h2>
-              <p class="settings-desc" data-i18n="settings_webview_unload_desc">
-                Close website tabs when you switch away so they don't run in the
-                background. They reload when you open them again.
-              </p>
-              <button class="lang-btn" id="webviewUnloadToggle">
-                <i data-lucide="globe" width="18" height="18"></i>
-                <span
-                  class="lang-name"
-                  data-i18n="settings_webview_unload_enabled"
-                  >Enabled</span
-                >
-              </button>
+              <div class="setting-row">
+                <div class="setting-row-info">
+                  <i data-lucide="globe" width="18" height="18"></i>
+                  <div>
+                    <span
+                      class="setting-row-title"
+                      data-i18n="settings_webview_unload"
+                      >Unload hidden websites</span
+                    >
+                    <span
+                      class="setting-row-desc"
+                      data-i18n="settings_webview_unload_desc"
+                      >Close website tabs when you switch away so they don't run
+                      in the background. They reload when you open them
+                      again.</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="switch"
+                  id="webviewUnloadToggle"
+                  role="switch"
+                  aria-checked="true"
+                ></button>
+              </div>
             </section>
 
             <section

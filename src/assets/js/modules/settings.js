@@ -49,19 +49,13 @@ document.querySelectorAll('.reset-btn').forEach((btn) => {
     localStorage.getItem('banana-webview-unload') !== 'off';
 
   const toggle = settings.webviewUnloadToggle;
-  const label = toggle?.querySelector('.lang-name') || toggle;
 
   function applyMode() {
     const enabled = unloadEnabled();
 
-    if (toggle) toggle.classList.toggle('is-on', enabled);
-
-    if (label) {
-      const key = enabled
-        ? 'settings_webview_unload_enabled'
-        : 'settings_webview_unload_disabled';
-      label.dataset.i18n = key;
-      label.textContent = getTranslation(key);
+    if (toggle) {
+      toggle.classList.toggle('is-on', enabled);
+      toggle.setAttribute('aria-checked', String(enabled));
     }
   }
 
